@@ -13,4 +13,7 @@ Imports:
     magrittr,
     stats,
     dplyr,
-    rvest
+    rvest,
+    httr,
+    janitor, 
+    jsonlite

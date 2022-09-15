@@ -29,20 +29,9 @@ browse_api <- function() {
     ) %>%
     dplyr::select(resource = "Url Generator", description = "Description", endpoint, url) %>%
     dplyr::mutate(
-      param_url =  paste0("https://dwr.state.co.us/Rest/GET/Help/Api/GET-", gsub("/", "-", endpoint))
+      endpoint_url =  paste0("https://dwr.state.co.us/Rest/GET/Help/Api/GET-", gsub("/", "-", endpoint))
     )
 
   return(tbl)
 
 }
-
-
-
-
-
-
-
-
-
-
-
