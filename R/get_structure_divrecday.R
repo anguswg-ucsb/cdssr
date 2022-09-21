@@ -31,6 +31,8 @@ get_structure_divrecday <- function(
     api_key         = NULL
 ) {
 
+
+
        # check if valid WDID was entered
        if(is.null(wdid)) {
 
