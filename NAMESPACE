@@ -2,6 +2,7 @@
 
 export(browse_api)
 export(get_structure_divrecday)
+export(get_structure_divrecmonth)
 export(get_telemetry_ts)
 export(preview_endpoint)
 importFrom(dplyr,bind_rows)
