@@ -65,6 +65,12 @@ get_telemetry_ts <- function(
   # Loop through pages until there are no more pages to get
   more_pages <- TRUE
 
+  # print message
+  message(paste0("Downloading data from CDSS API...\nTelemetry station abbreviation: ", abbrev,
+                 "\nParameter: ", parameter,
+                 "\nTimescale: ", timescale)
+          )
+
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
 
@@ -88,7 +94,6 @@ get_telemetry_ts <- function(
       url <- paste0(
         base,
         "format=json&dateFormat=spaceSepToSeconds",
-        # "format=jsonforced&dateFormat=spaceSepToSeconds",
         "&fields=abbrev%2Cparameter%2C", date_field, "%2CmeasValue%2CmeasUnit",
         "&abbrev=", abbrev,
         "&endDate=", end,
@@ -106,7 +111,6 @@ get_telemetry_ts <- function(
       url <- paste0(
         base,
         "format=json&dateFormat=spaceSepToSeconds",
-        # "format=jsonforced&dateFormat=spaceSepToSeconds",
         "&fields=abbrev%2Cparameter%2C", date_field, "%2CmeasValue%2CmeasUnit",
         "&abbrev=", abbrev,
         "&endDate=", end,
@@ -118,10 +122,6 @@ get_telemetry_ts <- function(
       )
 
     }
-
-    message(paste0("Downloading data from CDSS API..."))
-    message(paste0("Telemetry station abbreviation: ", abbrev))
-    message(paste0("Parameter: ", parameter))
 
     # GET request to CDSS API
     tryCatch(
@@ -194,9 +194,6 @@ get_telemetry_ts <- function(
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
 
-    # add data from this page to list
-    # data_lst[[page_index]] <- cdss_data
-
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
 
@@ -212,10 +209,6 @@ get_telemetry_ts <- function(
 
   # return final binded dataframe
   return(data_df)
-
-  # Bind rows of list of dataframes
-  # data_df <- dplyr::bind_rows(data_lst)
-  # return(data_df)
 
 }
 

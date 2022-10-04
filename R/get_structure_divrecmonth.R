@@ -60,6 +60,9 @@ get_structure_divrecmonth<- function(
   # Loop through pages until there are no more pages to get
   more_pages <- TRUE
 
+  # print message
+  message(paste0("Downloading data from CDSS API...\nMonthly ", wc_identifier, " records\nWDID: ", wdid))
+
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
 
@@ -96,9 +99,6 @@ get_structure_divrecmonth<- function(
       )
 
     }
-
-    message(paste0("Downloading data from CDSS API..."))
-    message(paste0("WDID: ", wdid))
 
     # GET request to CDSS API
     tryCatch(

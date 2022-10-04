@@ -156,6 +156,36 @@ plot(discharge_ts$value~discharge_ts$datetime, type = "l")
 
 <img src="man/figures/README-plot_ts-1.png" width="100%" style="display: block; margin: auto;" />
 
+<br>
+
+## Retrieve groundwater well data
+
+The `get_groundwater()` function lets users make get requests to the
+various CDSS API groundwater endpoints using the **type** parameter.
+
+Groundwater endpoints:
+
+-   [api/v2/groundwater/waterlevels/wellmeasurements](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-waterlevels-wellmeasurements)
+-   [api/v2/groundwater/waterlevels/wells](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-waterlevels-wells)
+-   [api/v2/groundwater/geophysicallogs/wells](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-geophysicallogs-wells)
+
+``` r
+# Use type = "wellmeasurements" to request wellmeasurements endpoint (api/v2/groundwater/waterlevels/wellmeasurements)
+# well_measure <- cdssr::get_groundwater(
+#   type    = "wellmeasurements",
+#   wellid  = 1274
+#   )
+# 
+# head(well_measure, 10)
+```
+
+And a plot of the depth to water over time…
+
+``` r
+# plot depth to water
+# plot(well_measure$depth_to_water~well_measure$datetime, type = "l")
+```
+
 <br> <br>
 
 > **More functions for more endpoints coming soon!**

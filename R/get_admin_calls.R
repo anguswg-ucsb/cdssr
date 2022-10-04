@@ -151,6 +151,9 @@ get_admin_calls <- function(
     # Loop through pages until there are no more pages to get
     more_pages <- TRUE
 
+    # print message
+    message(paste0("Downloading data from CDSS API...\nAdministrative calls (", ifelse(active, "ACTIVE", "HISTORICAL"), ")"))
+
     # while more pages are avaliable, send get requests to CDSS API
     while (more_pages) {
 
