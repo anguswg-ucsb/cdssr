@@ -114,18 +114,18 @@ Groundwater endpoints:
 
 ```{r get_gw, eval=TRUE, echo=TRUE}
 # Use type = "wellmeasurements" to request wellmeasurements endpoint (api/v2/groundwater/waterlevels/wellmeasurements)
-# well_measure <- cdssr::get_groundwater(
-#   type    = "wellmeasurements",
-#   wellid  = 1274
-#   )
-# 
-# head(well_measure, 10)
+well_measure <- cdssr::get_groundwater(
+  type    = "wellmeasurements",
+  wellid  = 1274
+  )
+
+head(well_measure, 10)
 ```
 
 And a plot of the depth to water over time...
 ```{r plot_gw, eval=TRUE, echo=TRUE, fig.align='center', out.width='100%'}
 # plot depth to water
-# plot(well_measure$depth_to_water~well_measure$datetime, type = "l")
+plot(well_measure$depth_to_water~well_measure$datetime, type = "l")
 ```
 
 <br>

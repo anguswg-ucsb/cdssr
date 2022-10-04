@@ -121,6 +121,7 @@ discharge_ts <- cdssr::get_telemetry_ts(
 #> Downloading data from CDSS API...
 #> Telemetry station abbreviation: CLAFTCCO
 #> Parameter: DISCHRG
+#> Timescale: day
 
 head(discharge_ts, 10)
 #>      abbrev parameter                date value unit   datetime timescale
@@ -171,20 +172,79 @@ Groundwater endpoints:
 
 ``` r
 # Use type = "wellmeasurements" to request wellmeasurements endpoint (api/v2/groundwater/waterlevels/wellmeasurements)
-# well_measure <- cdssr::get_groundwater(
-#   type    = "wellmeasurements",
-#   wellid  = 1274
-#   )
-# 
-# head(well_measure, 10)
+well_measure <- cdssr::get_groundwater(
+  type    = "wellmeasurements",
+  wellid  = 1274
+  )
+#> Downloading data from CDSS API...
+#> Groundwater well measurements
+
+head(well_measure, 10)
+#>    well_id            well_name division water_district county
+#> 1     1274 LSP-020  03N6618CAC2        1              2   WELD
+#> 2     1274 LSP-020  03N6618CAC2        1              2   WELD
+#> 3     1274 LSP-020  03N6618CAC2        1              2   WELD
+#> 4     1274 LSP-020  03N6618CAC2        1              2   WELD
+#> 5     1274 LSP-020  03N6618CAC2        1              2   WELD
+#> 6     1274 LSP-020  03N6618CAC2        1              2   WELD
+#> 7     1274 LSP-020  03N6618CAC2        1              2   WELD
+#> 8     1274 LSP-020  03N6618CAC2        1              2   WELD
+#> 9     1274 LSP-020  03N6618CAC2        1              2   WELD
+#> 10    1274 LSP-020  03N6618CAC2        1              2   WELD
+#>    management_district designated_basin                 publication
+#> 1                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
+#> 2                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
+#> 3                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
+#> 4                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
+#> 5                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
+#> 6                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
+#> 7                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
+#> 8                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
+#> 9                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
+#> 10                  NA               NA LOWER SOUTH PLATTE ALLUVIUM
+#>       measurement_date depth_to_water measuring_point_above_land_surface
+#> 1  1989-05-11 00:00:00          23.30                                  0
+#> 2  1989-10-16 00:00:00          21.43                                  0
+#> 3  1990-03-26 00:00:00          22.64                                  0
+#> 4  1990-10-10 00:00:00          21.77                                  0
+#> 5  1991-04-01 00:00:00          23.25                                  0
+#> 6  1991-10-18 00:00:00          21.10                                  0
+#> 7  1992-03-16 00:00:00          22.62                                  0
+#> 8  1992-03-23 00:00:00          22.71                                  0
+#> 9  1992-11-17 00:00:00          22.69                                  0
+#> 10 1993-03-16 00:00:00          22.62                                  0
+#>    depth_water_below_land_surface elevation_of_water delta data_source
+#> 1                           23.30            4786.06    NA         DWR
+#> 2                           21.43            4787.93 -1.87         DWR
+#> 3                           22.64            4786.72  1.21         DWR
+#> 4                           21.77            4787.59 -0.87         DWR
+#> 5                           23.25            4786.11  1.48         DWR
+#> 6                           21.10            4788.26 -2.15         DWR
+#> 7                           22.62            4786.74  1.52         DWR
+#> 8                           22.71            4786.65  0.09         DWR
+#> 9                           22.69            4786.67 -0.02         DWR
+#> 10                          22.62            4786.74 -0.07         DWR
+#>    published            modified   datetime page_index
+#> 1        Yes 2015-12-17 11:22:16 1989-05-11          1
+#> 2        Yes 2015-12-17 11:22:16 1989-10-16          1
+#> 3        Yes 2015-12-17 11:22:16 1990-03-26          1
+#> 4        Yes 2015-12-17 11:22:16 1990-10-10          1
+#> 5        Yes 2015-12-17 11:22:16 1991-04-01          1
+#> 6        Yes 2015-12-17 11:22:16 1991-10-18          1
+#> 7         No 2015-12-17 11:22:16 1992-03-16          1
+#> 8         No 2015-12-17 11:22:16 1992-03-23          1
+#> 9         No 2015-12-17 11:22:16 1992-11-17          1
+#> 10       Yes 2015-12-17 11:22:16 1993-03-16          1
 ```
 
 And a plot of the depth to water over time…
 
 ``` r
 # plot depth to water
-# plot(well_measure$depth_to_water~well_measure$datetime, type = "l")
+plot(well_measure$depth_to_water~well_measure$datetime, type = "l")
 ```
+
+<img src="man/figures/README-plot_gw-1.png" width="100%" style="display: block; margin: auto;" />
 
 <br> <br>
 
