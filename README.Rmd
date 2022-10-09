@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# cdssr
+# cdssr <img src="man/figures/cdssr_logo.png" align="right" width="25%" />
 
 <!-- badges: start -->
 [![Dependencies](https://img.shields.io/badge/dependencies-9/02-orange?style=flat)](#)

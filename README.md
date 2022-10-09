@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# cdssr
+# cdssr <img src="man/figures/cdssr_logo.png" align="right" width="25%" />
 
 <!-- badges: start -->
 
