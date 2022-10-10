@@ -10,19 +10,6 @@
 #' @importFrom dplyr bind_rows rename mutate relocate
 #' @importFrom janitor clean_names
 #' @return dataframe with monthly structure data for the CDSS structure of interest
-#' @export
-#' @examples
-#' # Retrieve monthly diversion records for given period
-#' monthly_div <- get_structure_divrecmonth(
-#'                wdid             = "2302917",
-#'                wc_identifier    = "diversion",
-#'                start_date       = "2017-01-01",
-#'                end_date         = "2020-01-01"
-#'            )
-#' monthly_div
-#'
-#' # plot monthly diversions
-#' plot(monthly_div$value, type = "s")
 get_structure_divrecmonth<- function(
     wdid            = NULL,
     wc_identifier   = "diversion",

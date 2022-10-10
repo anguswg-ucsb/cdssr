@@ -10,19 +10,6 @@
 #' @importFrom dplyr bind_rows rename mutate relocate
 #' @importFrom janitor clean_names
 #' @return dataframe with diversion or flow data for CDSS structure of interest
-#' @export
-#' @examples
-#' # Retrieve daily diversion records for given period
-#' daily_div <- get_structure_divrecday(
-#'                wdid             = "2302917",
-#'                wc_identifier    = "diversion",
-#'                start_date       = "1988-01-01",
-#'                end_date         = "1992-01-01"
-#'            )
-#' daily_div
-#'
-#' # plot daily diversions
-#' plot(daily_div$value~daily_div$datetime, type = "s")
 get_structure_divrecday <- function(
     wdid            = NULL,
     wc_identifier   = "diversion",

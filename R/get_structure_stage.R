@@ -9,21 +9,6 @@
 #' @importFrom dplyr bind_rows rename mutate relocate
 #' @importFrom janitor clean_names
 #' @return dataframe with stage/volume data for CDSS structure of interest
-#' @export
-#' @examples
-#' # Retrieve daily diversion records for given period
-#' stage_vol <- get_structure_stage(
-#'                wdid             = "0303732",
-#'                start_date       = "2000-01-01",
-#'                end_date         = "2015-01-01"
-#'            )
-#' stage_vol
-#'
-#' # plot stage
-#' plot(stage_vol$stage~stage_vol$datetime, type = "s")
-#'
-#' # plot volume
-#' plot(stage_vol$volume~stage_vol$datetime, type = "s")
 get_structure_stage <- function(
     wdid            = NULL,
     start_date      = "1900-01-01",
