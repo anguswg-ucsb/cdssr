@@ -16,5 +16,6 @@ Imports:
     rvest,
     httr,
     janitor, 
-    jsonlite
+    jsonlite,
+    sf
 URL: https://anguswg-ucsb.github.io/cdssr/

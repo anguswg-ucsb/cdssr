@@ -9,32 +9,32 @@ get_groundwater(
   wellid = NULL,
   start_date = "1950-01-01",
   end_date = Sys.Date(),
-  division = NULL,
   county = NULL,
   designated_basin = NULL,
-  water_district = NULL,
+  division = NULL,
   management_district = NULL,
+  water_district = NULL,
   api_key = NULL
 )
 }
 \arguments{
 \item{type}{character indicating the type of data to search for. Either "wellmeasurements", "waterlevels", or "geophysicallogs". Default is "wellmeasurements".}
 
-\item{wellid}{numeric, indicating the Well ID to query}
+\item{wellid}{character, indicating the Well ID to query}
 
 \item{start_date}{character date to request data start point YYYY-MM-DD.}
 
 \item{end_date}{character date to request data end point YYYY-MM-DD. Default is set to the current date function is run.}
 
-\item{division}{numeric, indicating the water division to query}
-
 \item{county}{character, indicating the county to query}
 
 \item{designated_basin}{character, indicating the  designated basin to query}
 
-\item{water_district}{numeric, indicating the water district to query}
+\item{division}{numeric, indicating the water division to query}
 
 \item{management_district}{character, indicating the management district to query}
+
+\item{water_district}{numeric, indicating the water district to query}
 
 \item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
@@ -48,7 +48,7 @@ Make a request to CDSS API /groundwater endpoints to get well measurement data o
 # Request endpoint: api/v2/groundwater/waterlevels/wellmeasurements
 well_measure <- get_groundwater(
 type   = "wellmeasurements",
- wellid = 1274
+  wellid = 1274
  )
 
 # plot depth to water
@@ -56,8 +56,8 @@ plot(well_measure$depth_to_water~well_measure$datetime, type = "l")
 
 # Request endpoint: api/v2/groundwater/waterlevels/wells
 water_levels <- get_groundwater(
- type     = "waterlevels",
- division = 2
+  type     = "waterlevels",
+  division = 2
  )
 
 # number of unique well IDs from query
@@ -65,8 +65,8 @@ length(unique(water_levels$well_id))
 
 # Request endpoint: api/v2/groundwater/geophysicallogs/wells
 geophysicallogs <- get_groundwater(
-type     = "geophysicallogs",
-division = 2
+  type     = "geophysicallogs",
+  division = 2
 )
 
 # number of unique well IDs from query

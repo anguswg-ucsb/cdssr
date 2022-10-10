@@ -12,7 +12,7 @@ get_groundwater_well_measure(
 )
 }
 \arguments{
-\item{wellid}{numeric, indicating the Well ID to query}
+\item{wellid}{character, indicating the Well ID to query}
 
 \item{start_date}{character date to request data start point YYYY-MM-DD.}
 

@@ -6,11 +6,11 @@
 \usage{
 get_groundwater_well_search(
   search = "waterlevels",
-  division = NULL,
   county = NULL,
   designated_basin = NULL,
-  water_district = NULL,
+  division = NULL,
   management_district = NULL,
+  water_district = NULL,
   wellid = NULL,
   api_key = NULL
 )
@@ -18,17 +18,17 @@ get_groundwater_well_search(
 \arguments{
 \item{search}{character indicating which endpoint to use for search. Either "waterlevels" or "geophysicallogs". Default is "waterlevels".}
 
-\item{division}{numeric, indicating the water division to query}
-
 \item{county}{character, indicating the county to query}
 
 \item{designated_basin}{character, indicating the  designated basin to query}
 
-\item{water_district}{numeric, indicating the water district to query}
+\item{division}{numeric, indicating the water division to query}
 
 \item{management_district}{character, indicating the management district to query}
 
-\item{wellid}{numeric, indicating the Well ID to query}
+\item{water_district}{numeric, indicating the water district to query}
+
+\item{wellid}{character, indicating the Well ID to query}
 
 \item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
