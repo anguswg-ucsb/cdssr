@@ -62,7 +62,7 @@ get_structures <- function(
       }
     }
 
-    # aoi  <- data.frame(x = -105.4607, y = 40.66618)
+    # given a type of dataframe
     if(is.data.frame(aoi) == TRUE) {
 
       # given a SF point or polygon
@@ -117,20 +117,6 @@ get_structures <- function(
       lat <- NULL
 
     }
-
-  # division            = 1
-  # county              = "LARIMER"
-  # gnis_id             = "00205018"
-  # wdid                = "00205018"
-  # water_district      = 3
-  # api_key             = NULL
-
-  # division            = NULL
-  # county              = NULL
-  # water_district      = NULL
-  # gnis_id             = NULL
-  # wdid                = NULL
-  # api_key             = NULL
 
   # Base API URL
   base <- paste0("https://dwr.state.co.us/Rest/GET/api/v2/structures/?")
@@ -261,26 +247,7 @@ get_structures <- function(
 
 }
 
-structs <- get_structures(county = "LARIMER")
 
-pts <-
-  structs %>%
-  dplyr::tibble() %>%
-  dplyr::filter(!is.na(longdecdeg) & !is.na(latdecdeg)) %>%
-  sf::st_as_sf(coords = c("longdecdeg", "latdecdeg"), crs = 4326)
-
-aoi <- AOI::aoi_get(county = "Larimer", state = "CO")
-aoi <- AOI::aoi_get(county = "Larimer", state = "CO") %>%
-  sf::st_centroid() %>%
-  sf::st_coordinates()
-class(aoi)
-class(aoi)
-struct_aoi <- get_structures(aoi = aoi, radius = 10)
-aoi %>%
-  sf::st_centroid() %>%
-  sf::st_coordinates()
-mapview::mapview(pts) + aoi
-plot(structs$utm_x~structs$utm_y)
 
 
 
