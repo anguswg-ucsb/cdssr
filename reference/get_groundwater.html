@@ -53,11 +53,11 @@
 <span>  wellid <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  start_date <span class="op">=</span> <span class="st">"1950-01-01"</span>,</span>
 <span>  end_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  division <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  county <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  designated_basin <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  water_district <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  division <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  management_district <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  water_district <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  api_key <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -69,7 +69,7 @@
 
 
 <dt>wellid</dt>
-<dd><p>numeric, indicating the Well ID to query</p></dd>
+<dd><p>character, indicating the Well ID to query</p></dd>
 
 
 <dt>start_date</dt>
@@ -80,10 +80,6 @@
 <dd><p>character date to request data end point YYYY-MM-DD. Default is set to the current date function is run.</p></dd>
 
 
-<dt>division</dt>
-<dd><p>numeric, indicating the water division to query</p></dd>
-
-
 <dt>county</dt>
 <dd><p>character, indicating the county to query</p></dd>
 
@@ -92,12 +88,16 @@
 <dd><p>character, indicating the  designated basin to query</p></dd>
 
 
-<dt>water_district</dt>
-<dd><p>numeric, indicating the water district to query</p></dd>
+<dt>division</dt>
+<dd><p>numeric, indicating the water division to query</p></dd>
 
 
 <dt>management_district</dt>
 <dd><p>character, indicating the management district to query</p></dd>
+
+
+<dt>water_district</dt>
+<dd><p>numeric, indicating the water district to query</p></dd>
 
 
 <dt>api_key</dt>
@@ -116,7 +116,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Request endpoint: api/v2/groundwater/waterlevels/wellmeasurements</span></span></span>
 <span class="r-in"><span><span class="va">well_measure</span> <span class="op">&lt;-</span> <span class="fu">get_groundwater</span><span class="op">(</span></span></span>
 <span class="r-in"><span>type   <span class="op">=</span> <span class="st">"wellmeasurements"</span>,</span></span>
-<span class="r-in"><span> wellid <span class="op">=</span> <span class="fl">1274</span></span></span>
+<span class="r-in"><span>  wellid <span class="op">=</span> <span class="fl">1274</span></span></span>
 <span class="r-in"><span> <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Downloading data from CDSS API...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Groundwater well measurements</span>
@@ -127,8 +127,8 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Request endpoint: api/v2/groundwater/waterlevels/wells</span></span></span>
 <span class="r-in"><span><span class="va">water_levels</span> <span class="op">&lt;-</span> <span class="fu">get_groundwater</span><span class="op">(</span></span></span>
-<span class="r-in"><span> type     <span class="op">=</span> <span class="st">"waterlevels"</span>,</span></span>
-<span class="r-in"><span> division <span class="op">=</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span>  type     <span class="op">=</span> <span class="st">"waterlevels"</span>,</span></span>
+<span class="r-in"><span>  division <span class="op">=</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span> <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Downloading data from CDSS API...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Searching groundwater wells (waterlevels)</span>
@@ -139,8 +139,8 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Request endpoint: api/v2/groundwater/geophysicallogs/wells</span></span></span>
 <span class="r-in"><span><span class="va">geophysicallogs</span> <span class="op">&lt;-</span> <span class="fu">get_groundwater</span><span class="op">(</span></span></span>
-<span class="r-in"><span>type     <span class="op">=</span> <span class="st">"geophysicallogs"</span>,</span></span>
-<span class="r-in"><span>division <span class="op">=</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span>  type     <span class="op">=</span> <span class="st">"geophysicallogs"</span>,</span></span>
+<span class="r-in"><span>  division <span class="op">=</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Downloading data from CDSS API...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Searching groundwater wells (geophysicallogs)</span>
