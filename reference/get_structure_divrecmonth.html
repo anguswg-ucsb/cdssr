@@ -86,49 +86,6 @@
 <p>dataframe with monthly structure data for the CDSS structure of interest</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Retrieve monthly diversion records for given period</span></span></span>
-<span class="r-in"><span><span class="va">monthly_div</span> <span class="op">&lt;-</span> <span class="fu">get_structure_divrecmonth</span><span class="op">(</span></span></span>
-<span class="r-in"><span>               wdid             <span class="op">=</span> <span class="st">"2302917"</span>,</span></span>
-<span class="r-in"><span>               wc_identifier    <span class="op">=</span> <span class="st">"diversion"</span>,</span></span>
-<span class="r-in"><span>               start_date       <span class="op">=</span> <span class="st">"2017-01-01"</span>,</span></span>
-<span class="r-in"><span>               end_date         <span class="op">=</span> <span class="st">"2020-01-01"</span></span></span>
-<span class="r-in"><span>           <span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Downloading data from CDSS API...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Monthly diversion records</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> WDID: 2302917</span>
-<span class="r-in"><span><span class="va">monthly_div</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       wdid water_class_num             wc_identifier interval       date</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  2302917        12302917 2302917 Total (Diversion)    Daily 2017-05-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  2302917        12302917 2302917 Total (Diversion)    Daily 2017-06-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  2302917        12302917 2302917 Total (Diversion)    Daily 2017-07-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  2302917        12302917 2302917 Total (Diversion)    Daily 2017-08-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  2302917        12302917 2302917 Total (Diversion)    Daily 2018-05-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  2302917        12302917 2302917 Total (Diversion)    Daily 2018-06-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  2302917        12302917 2302917 Total (Diversion)    Daily 2018-07-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2302917        12302917 2302917 Total (Diversion)    Daily 2019-05-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2302917        12302917 2302917 Total (Diversion)    Daily 2019-06-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 2302917        12302917 2302917 Total (Diversion)    Daily 2019-07-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 2302917        12302917 2302917 Total (Diversion)    Daily 2019-08-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       value unit obs_code approval_status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   47.3263 ACFT        *        Approved</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   69.8787 ACFT        *        Approved</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   60.6554 ACFT        *        Approved</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    0.0000 ACFT        *        Approved</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   83.5450 ACFT        *        Approved</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   71.5845 ACFT        *        Approved</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    4.0463 ACFT        *        Approved</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  138.2301 ACFT        *        Approved</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   20.2317 ACFT        *        Approved</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  91.1022 ACFT        *        Approved</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11   0.0000 ACFT        *        Approved</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># plot monthly diversions</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">monthly_div</span><span class="op">$</span><span class="va">value</span>, type <span class="op">=</span> <span class="st">"s"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="get_structure_divrecmonth-1.png" alt="" width="700" height="433"></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
