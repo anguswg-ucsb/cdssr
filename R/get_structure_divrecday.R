@@ -49,9 +49,6 @@ get_structure_divrecday <- function(
       # initialize empty dataframe to store data from multiple pages
       data_df = data.frame()
 
-      # # initialize empty list to store data from multiple pages
-      # data_lst   <-  list()
-
       # initialize first page index
       page_index <- 1
 
@@ -64,37 +61,24 @@ get_structure_divrecday <- function(
       # while more pages are avaliable, send get requests to CDSS API
       while (more_pages) {
 
+        # Construct query URL w/o API key
+        url <- paste0(
+          base,
+          "format=json&dateFormat=spaceSepToSeconds",
+          "&fields=wdid%2CwaterClassNum%2CwcIdentifier%2CmeasInterval%2CdataMeasDate%2CdataValue%2CmeasUnits%2CobsCode%2CapprovalStatus",
+          "&wcIdentifier=*", wc_identifier,
+          "*&min-dataMeasDate=", start,
+          "&max-dataMeasDate=", end,
+          "&wdid=", wdid,
+          "&pageSize=", page_size,
+          "&pageIndex=", page_index
+        )
+
         # check whether to use API key or not
         if(!is.null(api_key)) {
 
           # construct query URL w/ API key
-          url <- paste0(
-            base,
-            "format=json&dateFormat=spaceSepToSeconds",
-            "&fields=wdid%2CwaterClassNum%2CwcIdentifier%2CmeasInterval%2CdataMeasDate%2CdataValue%2CmeasUnits%2CobsCode%2CapprovalStatus",
-            "&wcIdentifier=*", wc_identifier,
-            "*&min-dataMeasDate=", start,
-            "&max-dataMeasDate=", end,
-            "&wdid=", wdid,
-            "&pageSize=", page_size,
-            "&pageIndex=", page_index,
-            "&apiKey=", api_key
-          )
-
-        } else {
-
-          # Construct query URL w/o API key
-          url <- paste0(
-            base,
-            "format=json&dateFormat=spaceSepToSeconds",
-            "&fields=wdid%2CwaterClassNum%2CwcIdentifier%2CmeasInterval%2CdataMeasDate%2CdataValue%2CmeasUnits%2CobsCode%2CapprovalStatus",
-            "&wcIdentifier=*", wc_identifier,
-            "*&min-dataMeasDate=", start,
-            "&max-dataMeasDate=", end,
-            "&wdid=", wdid,
-            "&pageSize=", page_size,
-            "&pageIndex=", page_index
-          )
+          url <- paste0(url, "&apiKey=", api_key)
 
         }
 
@@ -139,9 +123,7 @@ get_structure_divrecday <- function(
             "unit"     = "measUnits"
           ) %>%
           dplyr::mutate(
-            datetime   = as.POSIXct(date, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
-            page_index = page_index,
-            source     = 'CDSS'
+            datetime   = as.POSIXct(date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
           ) %>%
           janitor::clean_names() %>%
           dplyr::relocate(wdid, water_class_num, wc_identifier, interval, date, datetime, value, unit)

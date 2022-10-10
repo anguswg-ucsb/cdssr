@@ -1,6 +1,6 @@
 #' Request groundwater well measurements
 #' @description Given query specifications, this function makes a request to this endpoint of the CDSS API: api/v2/groundwater/waterlevels/wellmeasurements
-#' @param wellid numeric, indicating the Well ID to query
+#' @param wellid character, indicating the Well ID to query
 #' @param start_date character date to request data start point YYYY-MM-DD.
 #' @param end_date character date to request data end point YYYY-MM-DD. Default is set to the current date function is run.
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
@@ -103,8 +103,7 @@ get_groundwater_well_measure <- function(
       cdss_data %>%
       janitor::clean_names() %>%
       dplyr::mutate(
-        datetime       = as.POSIXct(measurement_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
-        page_index     = page_index
+        datetime       = as.POSIXct(measurement_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
       )
 
     # bind data from this page
@@ -130,12 +129,12 @@ get_groundwater_well_measure <- function(
 #' Search groundwater wells (water levels or geo physical logs)
 #' @description Given the "search" parameter, a request is made to these endpoints api/v2/groundwater/waterlevels/wells or  api/v2/groundwater/geophysicallogs/wells, and a dataframe of groundwater wells is returned matching the specified query
 #' @param search character indicating which endpoint to use for search. Either "waterlevels" or "geophysicallogs". Default is "waterlevels".
-#' @param division numeric, indicating the water division to query
 #' @param county character, indicating the county to query
 #' @param designated_basin character, indicating the  designated basin to query
-#' @param water_district numeric, indicating the water district to query
+#' @param division numeric, indicating the water division to query
 #' @param management_district character, indicating the management district to query
-#' @param wellid numeric, indicating the Well ID to query
+#' @param water_district numeric, indicating the water district to query
+#' @param wellid character, indicating the Well ID to query
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
@@ -144,11 +143,11 @@ get_groundwater_well_measure <- function(
 #' @return dataframe of groundwater wells within the given query specifications
 get_groundwater_well_search <- function(
     search              = "waterlevels",
-    division            = NULL,
     county              = NULL,
     designated_basin    = NULL,
-    water_district      = NULL,
+    division            = NULL,
     management_district = NULL,
+    water_district      = NULL,
     wellid              = NULL,
     api_key             = NULL
 ) {
@@ -164,7 +163,7 @@ get_groundwater_well_search <- function(
 
   # if no inputs given, stop function
   if(all(is.null(division), is.null(county), is.null(designated_basin), is.null(water_district), is.null(management_district), is.null(wellid))) {
-    stop(paste0("Please enter one of:\nDivision\nCounty\nDesignated Basin\nWater DIstrict\nManagement District\nWell ID"))
+    stop(paste0("Please enter one of:\nDivision\nCounty\nDesignated Basin\nWater District\nManagement District\nWell ID"))
   }
 
   # format county name
@@ -270,8 +269,7 @@ get_groundwater_well_search <- function(
         cdss_data %>%
         janitor::clean_names() %>%
         dplyr::mutate(
-          datetime       = as.POSIXct(measurement_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
-          page_index     = page_index
+          datetime       = as.POSIXct(measurement_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
         )
     }
 
@@ -283,8 +281,7 @@ get_groundwater_well_search <- function(
         cdss_data %>%
         janitor::clean_names() %>%
         dplyr::mutate(
-          datetime       = as.POSIXct(log_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
-          page_index     = page_index
+          datetime       = as.POSIXct(log_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
         )
     }
 
@@ -311,14 +308,14 @@ get_groundwater_well_search <- function(
 #' Request groundwater well measurements or search well water levels/geophysical logs
 #' @description Make a request to CDSS API /groundwater endpoints to get well measurement data or to search for groundwater wells (water level wells or geo physical log records)
 #' @param type character indicating the type of data to search for. Either "wellmeasurements", "waterlevels", or "geophysicallogs". Default is "wellmeasurements".
-#' @param wellid numeric, indicating the Well ID to query
+#' @param wellid character, indicating the Well ID to query
 #' @param start_date character date to request data start point YYYY-MM-DD.
 #' @param end_date character date to request data end point YYYY-MM-DD. Default is set to the current date function is run.
-#' @param division numeric, indicating the water division to query
 #' @param county character, indicating the county to query
 #' @param designated_basin character, indicating the  designated basin to query
-#' @param water_district numeric, indicating the water district to query
+#' @param division numeric, indicating the water division to query
 #' @param management_district character, indicating the management district to query
+#' @param water_district numeric, indicating the water district to query
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
@@ -331,7 +328,7 @@ get_groundwater_well_search <- function(
 #' # Request endpoint: api/v2/groundwater/waterlevels/wellmeasurements
 #' well_measure <- get_groundwater(
 #' type   = "wellmeasurements",
-#'  wellid = 1274
+#'   wellid = 1274
 #'  )
 #'
 #' # plot depth to water
@@ -339,8 +336,8 @@ get_groundwater_well_search <- function(
 #'
 #' # Request endpoint: api/v2/groundwater/waterlevels/wells
 #' water_levels <- get_groundwater(
-#'  type     = "waterlevels",
-#'  division = 2
+#'   type     = "waterlevels",
+#'   division = 2
 #'  )
 #'
 #' # number of unique well IDs from query
@@ -348,8 +345,8 @@ get_groundwater_well_search <- function(
 #'
 #' # Request endpoint: api/v2/groundwater/geophysicallogs/wells
 #' geophysicallogs <- get_groundwater(
-#' type     = "geophysicallogs",
-#' division = 2
+#'   type     = "geophysicallogs",
+#'   division = 2
 #' )
 #'
 #' # number of unique well IDs from query
@@ -359,11 +356,11 @@ get_groundwater <- function(
     wellid              = NULL,
     start_date          = "1950-01-01",
     end_date            = Sys.Date(),
-    division            = NULL,
     county              = NULL,
     designated_basin    = NULL,
-    water_district      = NULL,
+    division            = NULL,
     management_district = NULL,
+    water_district      = NULL,
     api_key             = NULL
 ) {
 

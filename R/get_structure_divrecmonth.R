@@ -66,37 +66,24 @@ get_structure_divrecmonth<- function(
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
 
+    # Construct query URL w/o API key
+    url <- paste0(
+      base,
+      "format=json&dateFormat=spaceSepToSeconds",
+      "&fields=wdid%2CwaterClassNum%2CwcIdentifier%2CmeasInterval%2CdataMeasDate%2CdataValue%2CmeasUnits%2CobsCode%2CapprovalStatus",
+      "&min-dataMeasDate=", start,
+      "&max-dataMeasDate=", end,
+      "&wcIdentifier=*", wc_identifier,
+      "*&wdid=", wdid,
+      "&pageSize=", page_size,
+      "&pageIndex=", page_index
+    )
+
     # check whether to use API key or not
     if(!is.null(api_key)) {
 
       # construct query URL w/ API key
-      url <- paste0(
-        base,
-        "format=json&dateFormat=spaceSepToSeconds",
-        "&fields=wdid%2CwaterClassNum%2CwcIdentifier%2CmeasInterval%2CdataMeasDate%2CdataValue%2CmeasUnits%2CobsCode%2CapprovalStatus",
-        "&min-dataMeasDate=", start,
-        "&max-dataMeasDate=", end,
-        "&wcIdentifier=*", wc_identifier,
-        "*&wdid=", wdid,
-        "&pageSize=", page_size,
-        "&pageIndex=", page_index,
-        "&apiKey=", api_key
-      )
-
-    } else {
-
-      # Construct query URL w/o API key
-      url <- paste0(
-        base,
-        "format=json&dateFormat=spaceSepToSeconds",
-        "&fields=wdid%2CwaterClassNum%2CwcIdentifier%2CmeasInterval%2CdataMeasDate%2CdataValue%2CmeasUnits%2CobsCode%2CapprovalStatus",
-        "&min-dataMeasDate=", start,
-        "&max-dataMeasDate=", end,
-        "&wcIdentifier=*", wc_identifier,
-        "*&wdid=", wdid,
-        "&pageSize=", page_size,
-        "&pageIndex=", page_index
-      )
+      url <- paste0(url, "&apiKey=", api_key)
 
     }
 
@@ -140,11 +127,10 @@ get_structure_divrecmonth<- function(
         "value"    = "dataValue",
         "unit"     = "measUnits"
       ) %>%
-      dplyr::mutate(
-        page_index = page_index,
-        source     = 'CDSS'
-      ) %>%
       janitor::clean_names() %>%
+      dplyr::mutate(
+        date = as.Date(paste0(date, "-01"))
+        ) %>%
       dplyr::relocate(wdid, water_class_num, wc_identifier, interval, date, value, unit)
 
     # bind data from this page

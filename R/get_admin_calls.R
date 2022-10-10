@@ -237,16 +237,11 @@ get_admin_calls <- function(
         dplyr::mutate(
           active         = active,
           datetime       = as.POSIXct(date_time_set, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
-          priority_date  = as.POSIXct(priority_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
-          page_index     = page_index,
-          source         = 'CDSS'
+          priority_date  = as.POSIXct(priority_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
         )
 
       # bind data from this page
       data_df <- dplyr::bind_rows(data_df, cdss_data)
-
-      # add data from this page to list
-      # data_lst[[page_index]] <- cdss_data
 
       # Check if more pages to get to continue/stop while loop
       if (nrow(cdss_data) < page_size) {

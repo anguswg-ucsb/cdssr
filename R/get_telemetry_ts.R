@@ -87,39 +87,25 @@ get_telemetry_ts <- function(
 
     }
 
+    # Construct query URL w/o API key
+    url <- paste0(
+      base,
+      "format=json&dateFormat=spaceSepToSeconds",
+      "&fields=abbrev%2Cparameter%2C", date_field, "%2CmeasValue%2CmeasUnit",
+      "&abbrev=", abbrev,
+      "&endDate=", end,
+      "&startDate=", start,
+      "&includeThirdParty=", tolower(as.character(include_third_party)),
+      "&parameter=", parameter,
+      "&pageSize=", page_size,
+      "&pageIndex=", page_index
+    )
+
     # check whether to use API key or not
     if(!is.null(api_key)) {
 
       # Construct query URL w/ API key
-      url <- paste0(
-        base,
-        "format=json&dateFormat=spaceSepToSeconds",
-        "&fields=abbrev%2Cparameter%2C", date_field, "%2CmeasValue%2CmeasUnit",
-        "&abbrev=", abbrev,
-        "&endDate=", end,
-        "&startDate=", start,
-        "&includeThirdParty=", tolower(as.character(include_third_party)),
-        "&parameter=", parameter,
-        "&pageSize=", page_size,
-        "&pageIndex=", page_index,
-        "&apiKey=", api_key
-      )
-
-    } else {
-
-      # Construct query URL w/o API key
-      url <- paste0(
-        base,
-        "format=json&dateFormat=spaceSepToSeconds",
-        "&fields=abbrev%2Cparameter%2C", date_field, "%2CmeasValue%2CmeasUnit",
-        "&abbrev=", abbrev,
-        "&endDate=", end,
-        "&startDate=", start,
-        "&includeThirdParty=", tolower(as.character(include_third_party)),
-        "&parameter=", parameter,
-        "&pageSize=", page_size,
-        "&pageIndex=", page_index
-      )
+      url <- paste0(url, "&apiKey=", api_key)
 
     }
 
@@ -185,9 +171,7 @@ get_telemetry_ts <- function(
       dplyr::mutate(
         # datetime   = lubridate::as_datetime(date),
         datetime   = as.POSIXct(date, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
-        timescale  = timescale,
-        page_index = page_index,
-        source     = 'CDSS'
+        timescale  = timescale
       ) %>%
       janitor::clean_names()
 
