@@ -140,7 +140,7 @@ get_admin_calls <- function(
     page_size  <- 50000
 
     # initialize empty dataframe to store data from multiple pages
-    data_df = data.frame()
+    data_df <- data.frame()
 
     # initialize empty list to store data from multiple pages
     # data_lst   <-  list()

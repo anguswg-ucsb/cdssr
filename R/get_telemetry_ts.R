@@ -54,10 +54,7 @@ get_telemetry_ts <- function(
   page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
-  data_df = data.frame()
-
-  # initialize empty list to store data from multiple pages
-  # data_lst   <-  list()
+  data_df    <- data.frame()
 
   # initialize first page index
   page_index <- 1
@@ -169,7 +166,6 @@ get_telemetry_ts <- function(
     cdss_data <-
       cdss_data %>%
       dplyr::mutate(
-        # datetime   = lubridate::as_datetime(date),
         datetime   = as.POSIXct(date, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
         timescale  = timescale
       ) %>%

@@ -32,7 +32,7 @@ get_structure_stage <- function(
   page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
-  data_df = data.frame()
+  data_df <- data.frame()
 
   # initialize first page index
   page_index <- 1

@@ -8,7 +8,7 @@
 #' @param water_district numeric, indicating the water district to query
 #' @param wdid character indicating WDID code of structure
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
-#' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
+#' @importFrom sf st_coordinates st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr bind_rows `%>%`
@@ -26,100 +26,34 @@ get_structures <- function(
     api_key             = NULL
 ) {
 
-  # if spatial data is provided, check type and try to extract XY coordinates
-  if(!is.null(aoi)) {
-
-    # if radius is not NULL, and is larger than 150, set to max of 150. if NULL radius is provided with spatial data, default to 150 miles
-    if(!is.null(radius)) {
-
-      # if radius value is over max, set to 150
-      if(radius > 150) {
-        radius = 150
-      }
-
-      # if radius value is under min, set to 1
-      if(radius <= 0) {
-        radius = 1
-      }
-
-      # if no radius given, set to 20 miles
-    } else {
-
-      radius = 20
-
-    }
-
-    # given a 2 column mateix of XY coords
-    if(any(is.matrix(aoi) == TRUE)) {
-
-      lng <- aoi[1]
-      lat <- aoi[2]
-
-      if(any(is.null(lat), is.null(lng))) {
-
-        stop(paste0("List must be of length 2 and ordered latitude, longitude"))
-
-      }
-    }
-
-    # given a type of dataframe
-    if(is.data.frame(aoi) == TRUE) {
-
-      # given a SF point or polygon
-      if(any(class(aoi) == "sf")) {
-
-        # if SF object is a point, extract coordinates
-        if(sf::st_geometry_type(aoi) == "POINT" | sf::st_geometry_type(aoi) == "MULTIPOINT") {
-
-          coords <-
-            aoi %>%
-            sf::st_coordinates()
-
-          lng <- coords[1]
-          lat <- coords[2]
-
-        }
-
-        # if SF object is a polygon, find centroid and extract coordinates
-        if(sf::st_geometry_type(aoi) == "POLYGON" | sf::st_geometry_type(aoi) == "MULTIPOLYGON") {
-
-          coords <-
-            aoi %>%
-            sf::st_centroid() %>%
-            sf::st_coordinates()
-
-          lng <- coords[1]
-          lat <- coords[2]
-
-        }
-
-        if(any(is.null(lat), is.null(lng))) {
-
-          stop(paste0("SF object must be of geometry type POINT or POLYGON"))
-        }
-      } else {
-
-        names(aoi) <- toupper(names(aoi))
-
-        lng <- aoi$X
-        lat <- aoi$Y
-
-        if(any(is.null(lat), is.null(lng))) {
-
-          stop(paste0("Must be two column dataframe of XY coordinate"))
-          }
-        }
-    }
-
-    } else {
-
-      lng <- NULL
-      lat <- NULL
-
-    }
-
   # Base API URL
   base <- paste0("https://dwr.state.co.us/Rest/GET/api/v2/structures/?")
+
+  # extract lat/long coords for query
+  if(!is.null(aoi)) {
+
+    # extract coordinates from matrix/dataframe/sf object
+    coord_df <- extract_coords(aoi = aoi)
+
+    # check radius is valid and fix if necessary
+    radius   <- check_radius(
+      aoi    = aoi,
+      radius = radius
+      )
+
+    # lat/long coords
+    lat <- coord_df$lat
+    lng <- coord_df$lng
+
+  } else {
+
+
+    # if NULL aoi given, set coords and radius to NULL
+    lat    <- NULL
+    lng    <- NULL
+    radius <- NULL
+
+  }
 
   # if no inputs given, stop function
   if(all(is.null(county), is.null(division), is.null(water_district), is.null(gnis_id), is.null(wdid), is.null(lat), is.null(lng))) {
@@ -137,7 +71,7 @@ get_structures <- function(
   page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
-  data_df = data.frame()
+  data_df    <- data.frame()
 
   # initialize first page index
   page_index <- 1
@@ -246,9 +180,3 @@ get_structures <- function(
   return(data_df)
 
 }
-
-
-
-
-
-
