@@ -19,6 +19,12 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/browse_api.html</loc>
   </url>
   <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/check_radius.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/extract_coords.html</loc>
+  </url>
+  <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_admin_calls.html</loc>
   </url>
   <url>
@@ -44,6 +50,21 @@
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_structures.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_sw_stations.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_sw_ts.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_sw_ts_day.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_sw_ts_month.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_sw_ts_wyear.html</loc>
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_telemetry_ts.html</loc>
