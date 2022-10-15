@@ -140,12 +140,10 @@ head(telemetry_params, 10)
 Use `get_` function to make requests to the CDSS API and return the
 results in a tidy dataframe.
 
-First, we specify the telemetry site **(abbrev = “CLAFTCCO”)** we want
-data for. We can then select one of the **parameters** found in the
-**telemetry_params** reference table created above to specify which
-parameter we want to retrieve **(DISCHRG)**. Lastly, enter a **date
-range** and the **temporal resolution** of the desired data (“day”,
-“hour”, or “raw”).
+First, we specify the **telemetry site** we want data for. We can then
+select one of the **parameters** from the reference table created above.
+Lastly, enter a **date range** and the **temporal resolution** for the
+desired data (“day”, “hour”, or “raw”).
 
 ``` r
 # Daily discharge at "CLAFTCCO" telemetry station
