@@ -3,8 +3,8 @@
 #' @param parameter character indicating which parameter should be retrieved. Default is "DISCHRG" (discharge), all parameters are not avaliable at all telemetry stations.
 #' @param start_date character date to request data start point YYYY-MM-DD
 #' @param end_date character date to request data end point YYYY-MM-DD
-#' @param include_third_party logical, Whether to retrieve data from other third party sources if necessary. Default is TRUE
 #' @param timescale character indicating data type to return, either "raw", "hour", or "day". Default is "day"
+#' @param include_third_party logical, Whether to retrieve data from other third party sources if necessary. Default is TRUE
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
@@ -31,8 +31,8 @@ get_telemetry_ts <- function(
     parameter           = "DISCHRG",
     start_date          = "1900-01-01",
     end_date            = Sys.Date(),
-    include_third_party = TRUE,
     timescale           = "day",
+    include_third_party = TRUE,
     api_key             = NULL
 ) {
 

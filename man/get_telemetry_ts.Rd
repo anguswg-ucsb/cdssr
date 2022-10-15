@@ -9,8 +9,8 @@ get_telemetry_ts(
   parameter = "DISCHRG",
   start_date = "1900-01-01",
   end_date = Sys.Date(),
-  include_third_party = TRUE,
   timescale = "day",
+  include_third_party = TRUE,
   api_key = NULL
 )
 }
@@ -23,9 +23,9 @@ get_telemetry_ts(
 
 \item{end_date}{character date to request data end point YYYY-MM-DD}
 
-\item{include_third_party}{logical, Whether to retrieve data from other third party sources if necessary. Default is TRUE}
-
 \item{timescale}{character indicating data type to return, either "raw", "hour", or "day". Default is "day"}
+
+\item{include_third_party}{logical, Whether to retrieve data from other third party sources if necessary. Default is TRUE}
 
 \item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }

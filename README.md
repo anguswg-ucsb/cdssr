@@ -103,16 +103,55 @@ return_fields
 
 <br>
 
+## Retrieve Reference Tables to help generate queries
+
+The `get_reference_tbl()` function will return information that makes it
+easier to know what information should be supplied to the data retrieval
+functions in `cdssr`. For more information on the exact reference tables
+click
+[here](https://dwr.state.co.us/rest/get/help#Datasets&#ReferenceTablesController&#gettingstarted&#jsonxml).
+
+Let’s locate the possible telemetry station parameter names that we can
+use in a query.
+
+``` r
+# # Daily discharge at "CLAFTCCO" telemetry station
+telemetry_params <- cdssr::get_reference_tbl(
+  table_name = "telemetryparams"
+  )
+#> Retrieving telemetry parameter reference table from CDSS API...
+
+head(telemetry_params, 10)
+#>    parameter
+#> 1    AIRTEMP
+#> 2      BAR_P
+#> 3    BATTERY
+#> 4       COND
+#> 5         D1
+#> 6         D2
+#> 7    DISCHRG
+#> 8   DISCHRG1
+#> 9   DISCHRG2
+#> 10  DISCHRG3
+```
+
 ## Retrieve Telemetry station timeseries data
 
 Use `get_` function to make requests to the CDSS API and return the
-results in a tidy dataframe
+results in a tidy dataframe.
+
+First, we specify the telemetry site **(abbrev = “CLAFTCCO”)** we want
+data for. We can then select one of the **parameters** found in the
+**telemetry_params** reference table created above to specify which
+parameter we want to retrieve **(DISCHRG)**. Lastly, enter a **date
+range** and the **temporal resolution** of the desired data (“day”,
+“hour”, or “raw”).
 
 ``` r
 # Daily discharge at "CLAFTCCO" telemetry station
 discharge_ts <- cdssr::get_telemetry_ts(
                       abbrev              = "CLAFTCCO",
-                      parameter           = "DISCHRG",
+                      parameter           = telemetry_params$parameter[7],
                       start_date          = "2015-01-01",
                       end_date            = "2022-01-01",
                       timescale           = "day",
@@ -135,17 +174,6 @@ head(discharge_ts, 10)
 #> 8  CLAFTCCO   DISCHRG 2015-01-08 00:00:00     0  cfs 2015-01-08       day
 #> 9  CLAFTCCO   DISCHRG 2015-01-09 00:00:00     0  cfs 2015-01-09       day
 #> 10 CLAFTCCO   DISCHRG 2015-01-10 00:00:00     0  cfs 2015-01-10       day
-#>    page_index source
-#> 1           1   CDSS
-#> 2           1   CDSS
-#> 3           1   CDSS
-#> 4           1   CDSS
-#> 5           1   CDSS
-#> 6           1   CDSS
-#> 7           1   CDSS
-#> 8           1   CDSS
-#> 9           1   CDSS
-#> 10          1   CDSS
 ```
 
 And a plot of the daily discharge…
@@ -224,17 +252,17 @@ head(well_measure, 10)
 #> 8                           22.71            4786.65  0.09         DWR
 #> 9                           22.69            4786.67 -0.02         DWR
 #> 10                          22.62            4786.74 -0.07         DWR
-#>    published            modified   datetime page_index
-#> 1        Yes 2015-12-17 11:22:16 1989-05-11          1
-#> 2        Yes 2015-12-17 11:22:16 1989-10-16          1
-#> 3        Yes 2015-12-17 11:22:16 1990-03-26          1
-#> 4        Yes 2015-12-17 11:22:16 1990-10-10          1
-#> 5        Yes 2015-12-17 11:22:16 1991-04-01          1
-#> 6        Yes 2015-12-17 11:22:16 1991-10-18          1
-#> 7         No 2015-12-17 11:22:16 1992-03-16          1
-#> 8         No 2015-12-17 11:22:16 1992-03-23          1
-#> 9         No 2015-12-17 11:22:16 1992-11-17          1
-#> 10       Yes 2015-12-17 11:22:16 1993-03-16          1
+#>    published            modified   datetime
+#> 1        Yes 2015-12-17 11:22:16 1989-05-11
+#> 2        Yes 2015-12-17 11:22:16 1989-10-16
+#> 3        Yes 2015-12-17 11:22:16 1990-03-26
+#> 4        Yes 2015-12-17 11:22:16 1990-10-10
+#> 5        Yes 2015-12-17 11:22:16 1991-04-01
+#> 6        Yes 2015-12-17 11:22:16 1991-10-18
+#> 7         No 2015-12-17 11:22:16 1992-03-16
+#> 8         No 2015-12-17 11:22:16 1992-03-23
+#> 9         No 2015-12-17 11:22:16 1992-11-17
+#> 10       Yes 2015-12-17 11:22:16 1993-03-16
 ```
 
 And a plot of the depth to water over time…

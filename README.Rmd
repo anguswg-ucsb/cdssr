@@ -80,27 +80,26 @@ return_fields
 
 ## Retrieve Reference Tables to help generate queries
 The `get_reference_tbl()` function will return information that makes it easier to know what information should be supplied to the data retrieval functions in `cdssr`. For more information on the exact reference tables click [here](https://dwr.state.co.us/rest/get/help#Datasets&#ReferenceTablesController&#gettingstarted&#jsonxml).
-```{r get_ts, eval=TRUE, echo=TRUE}
+
+Let's locate the possible telemetry station parameter names that we can use in a query.
+```{r get_tele_params, eval=TRUE, echo=TRUE}
 # # Daily discharge at "CLAFTCCO" telemetry station
-# discharge_ts <- cdssr::get_telemetry_ts(
-#                       abbrev              = "CLAFTCCO",
-#                       parameter           = "DISCHRG",
-#                       start_date          = "2015-01-01",
-#                       end_date            = "2022-01-01",
-#                       timescale           = "day",
-#                       include_third_party = TRUE
-#                                )
-# 
-# head(discharge_ts, 10)
+telemetry_params <- cdssr::get_reference_tbl(
+  table_name = "telemetryparams"
+  )
+
+head(telemetry_params, 10)
 ```
 
 ## Retrieve Telemetry station timeseries data 
-Use `get_` function to make requests to the CDSS API and return the results in a tidy dataframe
+Use `get_` function to make requests to the CDSS API and return the results in a tidy dataframe.
+
+First, we specify the telemetry site **(abbrev = "CLAFTCCO")** we want data for. We can then select one of the **parameters** found in the **telemetry_params** reference table created above to specify which parameter we want to retrieve **(DISCHRG)**. Lastly, enter a **date range** and the **temporal resolution** of the desired data ("day", "hour", or "raw").
 ```{r get_ts, eval=TRUE, echo=TRUE}
 # Daily discharge at "CLAFTCCO" telemetry station
 discharge_ts <- cdssr::get_telemetry_ts(
                       abbrev              = "CLAFTCCO",
-                      parameter           = "DISCHRG",
+                      parameter           = telemetry_params$parameter[7],
                       start_date          = "2015-01-01",
                       end_date            = "2022-01-01",
                       timescale           = "day",
