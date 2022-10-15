@@ -125,14 +125,40 @@
 <p><br></p>
 </div>
 <div class="section level2">
+<h2 id="retrieve-reference-tables-to-help-generate-queries">Retrieve Reference Tables to help generate queries<a class="anchor" aria-label="anchor" href="#retrieve-reference-tables-to-help-generate-queries"></a>
+</h2>
+<p>The <code><a href="reference/get_reference_tbl.html">get_reference_tbl()</a></code> function will return information that makes it easier to know what information should be supplied to the data retrieval functions in <code>cdssr</code>. For more information on the exact reference tables click <a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#ReferenceTablesController&amp;#gettingstarted&amp;#jsonxml" class="external-link">here</a>.</p>
+<p>Let’s locate the possible telemetry station parameter names that we can use in a query.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># # Daily discharge at "CLAFTCCO" telemetry station</span></span>
+<span><span class="va">telemetry_params</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_reference_tbl.html">get_reference_tbl</a></span><span class="op">(</span></span>
+<span>  table_name <span class="op">=</span> <span class="st">"telemetryparams"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Retrieving telemetry parameter reference table from CDSS API...</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">telemetry_params</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    parameter</span></span>
+<span><span class="co">#&gt; 1    AIRTEMP</span></span>
+<span><span class="co">#&gt; 2      BAR_P</span></span>
+<span><span class="co">#&gt; 3    BATTERY</span></span>
+<span><span class="co">#&gt; 4       COND</span></span>
+<span><span class="co">#&gt; 5         D1</span></span>
+<span><span class="co">#&gt; 6         D2</span></span>
+<span><span class="co">#&gt; 7    DISCHRG</span></span>
+<span><span class="co">#&gt; 8   DISCHRG1</span></span>
+<span><span class="co">#&gt; 9   DISCHRG2</span></span>
+<span><span class="co">#&gt; 10  DISCHRG3</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="retrieve-telemetry-station-timeseries-data">Retrieve Telemetry station timeseries data<a class="anchor" aria-label="anchor" href="#retrieve-telemetry-station-timeseries-data"></a>
 </h2>
-<p>Use <code>get_</code> function to make requests to the CDSS API and return the results in a tidy dataframe</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<p>Use <code>get_</code> function to make requests to the CDSS API and return the results in a tidy dataframe.</p>
+<p>First, we specify the telemetry site <strong>(abbrev = “CLAFTCCO”)</strong> we want data for. We can then select one of the <strong>parameters</strong> found in the <strong>telemetry_params</strong> reference table created above to specify which parameter we want to retrieve <strong>(DISCHRG)</strong>. Lastly, enter a <strong>date range</strong> and the <strong>temporal resolution</strong> of the desired data (“day”, “hour”, or “raw”).</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Daily discharge at "CLAFTCCO" telemetry station</span></span>
 <span><span class="va">discharge_ts</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_telemetry_ts.html">get_telemetry_ts</a></span><span class="op">(</span></span>
 <span>                      abbrev              <span class="op">=</span> <span class="st">"CLAFTCCO"</span>,</span>
-<span>                      parameter           <span class="op">=</span> <span class="st">"DISCHRG"</span>,</span>
+<span>                      parameter           <span class="op">=</span> <span class="va">telemetry_params</span><span class="op">$</span><span class="va">parameter</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span>,</span>
 <span>                      start_date          <span class="op">=</span> <span class="st">"2015-01-01"</span>,</span>
 <span>                      end_date            <span class="op">=</span> <span class="st">"2022-01-01"</span>,</span>
 <span>                      timescale           <span class="op">=</span> <span class="st">"day"</span>,</span>
@@ -154,20 +180,9 @@
 <span><span class="co">#&gt; 7  CLAFTCCO   DISCHRG 2015-01-07 00:00:00     0  cfs 2015-01-07       day</span></span>
 <span><span class="co">#&gt; 8  CLAFTCCO   DISCHRG 2015-01-08 00:00:00     0  cfs 2015-01-08       day</span></span>
 <span><span class="co">#&gt; 9  CLAFTCCO   DISCHRG 2015-01-09 00:00:00     0  cfs 2015-01-09       day</span></span>
-<span><span class="co">#&gt; 10 CLAFTCCO   DISCHRG 2015-01-10 00:00:00     0  cfs 2015-01-10       day</span></span>
-<span><span class="co">#&gt;    page_index source</span></span>
-<span><span class="co">#&gt; 1           1   CDSS</span></span>
-<span><span class="co">#&gt; 2           1   CDSS</span></span>
-<span><span class="co">#&gt; 3           1   CDSS</span></span>
-<span><span class="co">#&gt; 4           1   CDSS</span></span>
-<span><span class="co">#&gt; 5           1   CDSS</span></span>
-<span><span class="co">#&gt; 6           1   CDSS</span></span>
-<span><span class="co">#&gt; 7           1   CDSS</span></span>
-<span><span class="co">#&gt; 8           1   CDSS</span></span>
-<span><span class="co">#&gt; 9           1   CDSS</span></span>
-<span><span class="co">#&gt; 10          1   CDSS</span></span></code></pre></div>
+<span><span class="co">#&gt; 10 CLAFTCCO   DISCHRG 2015-01-10 00:00:00     0  cfs 2015-01-10       day</span></span></code></pre></div>
 <p>And a plot of the daily discharge…</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot daily discharge at "CLAFTCCO"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">discharge_ts</span><span class="op">$</span><span class="va">value</span><span class="op">~</span><span class="va">discharge_ts</span><span class="op">$</span><span class="va">datetime</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot_ts-1.png" width="100%" style="display: block; margin: auto;"></p>
@@ -183,7 +198,7 @@
 <li><a href="https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-waterlevels-wells" class="external-link">api/v2/groundwater/waterlevels/wells</a></li>
 <li><a href="https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-geophysicallogs-wells" class="external-link">api/v2/groundwater/geophysicallogs/wells</a></li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Use type = "wellmeasurements" to request wellmeasurements endpoint (api/v2/groundwater/waterlevels/wellmeasurements)</span></span>
 <span><span class="va">well_measure</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_groundwater.html">get_groundwater</a></span><span class="op">(</span></span>
 <span>  type    <span class="op">=</span> <span class="st">"wellmeasurements"</span>,</span>
@@ -237,19 +252,19 @@
 <span><span class="co">#&gt; 8                           22.71            4786.65  0.09         DWR</span></span>
 <span><span class="co">#&gt; 9                           22.69            4786.67 -0.02         DWR</span></span>
 <span><span class="co">#&gt; 10                          22.62            4786.74 -0.07         DWR</span></span>
-<span><span class="co">#&gt;    published            modified   datetime page_index</span></span>
-<span><span class="co">#&gt; 1        Yes 2015-12-17 11:22:16 1989-05-11          1</span></span>
-<span><span class="co">#&gt; 2        Yes 2015-12-17 11:22:16 1989-10-16          1</span></span>
-<span><span class="co">#&gt; 3        Yes 2015-12-17 11:22:16 1990-03-26          1</span></span>
-<span><span class="co">#&gt; 4        Yes 2015-12-17 11:22:16 1990-10-10          1</span></span>
-<span><span class="co">#&gt; 5        Yes 2015-12-17 11:22:16 1991-04-01          1</span></span>
-<span><span class="co">#&gt; 6        Yes 2015-12-17 11:22:16 1991-10-18          1</span></span>
-<span><span class="co">#&gt; 7         No 2015-12-17 11:22:16 1992-03-16          1</span></span>
-<span><span class="co">#&gt; 8         No 2015-12-17 11:22:16 1992-03-23          1</span></span>
-<span><span class="co">#&gt; 9         No 2015-12-17 11:22:16 1992-11-17          1</span></span>
-<span><span class="co">#&gt; 10       Yes 2015-12-17 11:22:16 1993-03-16          1</span></span></code></pre></div>
+<span><span class="co">#&gt;    published            modified   datetime</span></span>
+<span><span class="co">#&gt; 1        Yes 2015-12-17 11:22:16 1989-05-11</span></span>
+<span><span class="co">#&gt; 2        Yes 2015-12-17 11:22:16 1989-10-16</span></span>
+<span><span class="co">#&gt; 3        Yes 2015-12-17 11:22:16 1990-03-26</span></span>
+<span><span class="co">#&gt; 4        Yes 2015-12-17 11:22:16 1990-10-10</span></span>
+<span><span class="co">#&gt; 5        Yes 2015-12-17 11:22:16 1991-04-01</span></span>
+<span><span class="co">#&gt; 6        Yes 2015-12-17 11:22:16 1991-10-18</span></span>
+<span><span class="co">#&gt; 7         No 2015-12-17 11:22:16 1992-03-16</span></span>
+<span><span class="co">#&gt; 8         No 2015-12-17 11:22:16 1992-03-23</span></span>
+<span><span class="co">#&gt; 9         No 2015-12-17 11:22:16 1992-11-17</span></span>
+<span><span class="co">#&gt; 10       Yes 2015-12-17 11:22:16 1993-03-16</span></span></code></pre></div>
 <p>And a plot of the depth to water over time…</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot depth to water</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">well_measure</span><span class="op">$</span><span class="va">depth_to_water</span><span class="op">~</span><span class="va">well_measure</span><span class="op">$</span><span class="va">datetime</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot_gw-1.png" width="100%" style="display: block; margin: auto;"></p>
