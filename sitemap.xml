@@ -31,6 +31,15 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_climate_stations.html</loc>
   </url>
   <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_climate_ts.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_climate_ts_day.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_climate_ts_month.html</loc>
+  </url>
+  <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_divrec.html</loc>
   </url>
   <url>
@@ -41,6 +50,36 @@
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_groundwater_well_search.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_ref_climate_params.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_ref_county.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_ref_designatedbasins.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_ref_divrectypes.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_ref_managementdistricts.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_ref_stationflags.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_ref_telemetry_params.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_ref_waterdistricts.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_ref_waterdivisions.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_reference_tbl.html</loc>
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_structure_divrecday.html</loc>
