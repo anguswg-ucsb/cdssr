@@ -153,7 +153,7 @@
 <h2 id="retrieve-telemetry-station-timeseries-data">Retrieve Telemetry station timeseries data<a class="anchor" aria-label="anchor" href="#retrieve-telemetry-station-timeseries-data"></a>
 </h2>
 <p>Use <code>get_</code> function to make requests to the CDSS API and return the results in a tidy dataframe.</p>
-<p>First, we specify the telemetry site <strong>(abbrev = “CLAFTCCO”)</strong> we want data for. We can then select one of the <strong>parameters</strong> found in the <strong>telemetry_params</strong> reference table created above to specify which parameter we want to retrieve <strong>(DISCHRG)</strong>. Lastly, enter a <strong>date range</strong> and the <strong>temporal resolution</strong> of the desired data (“day”, “hour”, or “raw”).</p>
+<p>First, we specify the <strong>telemetry site</strong> we want data for. We can then select one of the <strong>parameters</strong> from the reference table created above. Lastly, enter a <strong>date range</strong> and the <strong>temporal resolution</strong> for the desired data (“day”, “hour”, or “raw”).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Daily discharge at "CLAFTCCO" telemetry station</span></span>
 <span><span class="va">discharge_ts</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_telemetry_ts.html">get_telemetry_ts</a></span><span class="op">(</span></span>
