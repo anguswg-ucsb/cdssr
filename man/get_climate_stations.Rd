@@ -26,7 +26,7 @@ get_climate_stations(
 
 \item{station_name}{character, surface water station name}
 
-\item{site_id}{character vector or list of characters of USGS Site IDs}
+\item{site_id}{character vector or list of characters of climate station site IDs}
 
 \item{water_district}{numeric, indicating the water district to query}
 

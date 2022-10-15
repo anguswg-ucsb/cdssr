@@ -5,7 +5,7 @@
 #' @param county character, indicating the county to query
 #' @param division numeric, indicating the water division to query
 #' @param station_name character, surface water station name
-#' @param site_id character vector or list of characters of USGS Site IDs
+#' @param site_id character vector or list of characters of climate station site IDs
 #' @param water_district numeric, indicating the water district to query
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type

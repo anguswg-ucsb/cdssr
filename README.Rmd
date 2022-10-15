@@ -78,6 +78,22 @@ return_fields
 
 <br>
 
+## Retrieve Reference Tables to help generate queries
+The `get_reference_tbl()` function will return information that makes it easier to know what information should be supplied to the data retrieval functions in `cdssr`. For more information on the exact reference tables click [here](https://dwr.state.co.us/rest/get/help#Datasets&#ReferenceTablesController&#gettingstarted&#jsonxml).
+```{r get_ts, eval=TRUE, echo=TRUE}
+# # Daily discharge at "CLAFTCCO" telemetry station
+# discharge_ts <- cdssr::get_telemetry_ts(
+#                       abbrev              = "CLAFTCCO",
+#                       parameter           = "DISCHRG",
+#                       start_date          = "2015-01-01",
+#                       end_date            = "2022-01-01",
+#                       timescale           = "day",
+#                       include_third_party = TRUE
+#                                )
+# 
+# head(discharge_ts, 10)
+```
+
 ## Retrieve Telemetry station timeseries data 
 Use `get_` function to make requests to the CDSS API and return the results in a tidy dataframe
 ```{r get_ts, eval=TRUE, echo=TRUE}
