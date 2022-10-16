@@ -59,7 +59,8 @@ library(cdssr)
 # View the catalog of avaliable endpoints
 catalog <- cdssr::browse_api()
 
-catalog
+# catalog
+dplyr::tibble(catalog)
 #> # A tibble: 61 × 5
 #>    resource                                      descrip…¹ endpo…² url   endpo…³
 #>    <chr>                                         <chr>     <chr>   <chr> <chr>  
@@ -89,7 +90,7 @@ given endpoint by entering a `endpoint_url` (a column in the
 # Return expected data fields for a given endpoint
 return_fields <- cdssr::preview_endpoint(endpoint_url = catalog$endpoint_url[3])
 
-return_fields
+dplyr::tibble(return_fields)
 #> # A tibble: 6 × 3
 #>   name          description                     type          
 #>   <chr>         <chr>                           <chr>         
@@ -107,10 +108,11 @@ return_fields
 
 ## Identify station locations and information
 
-We can use the `_stations` functions to identify what stations are
+We can use the `_stations()` functions to identify what stations are
 within a given AOI, water district, division, or county.
 
 ``` r
+# identify telemetry stations in water district 6
 stations <- cdssr::get_telemetry_stations(
   water_district = 6
   )
@@ -139,19 +141,28 @@ dplyr::tibble(stations)
 #> #   more_information <chr>, station_por_start <dttm>, station_por_end <dttm>, …
 ```
 
+<br>
+
+``` r
+plot(stations$latitude~stations$longitude)
+```
+
+<img src="man/figures/README-plot_tele_stations-1.png" width="100%" style="display: block; margin: auto;" />
+
+<br>
+
 ## Retrieve Reference Tables to help generate queries
 
-The `get_reference_tbl()` function will return information that makes it
+The `get_reference_tbl()` function will return tables that makes it
 easier to know what information should be supplied to the data retrieval
 functions in `cdssr`. For more information on the exact reference tables
 click
 [here](https://dwr.state.co.us/rest/get/help#Datasets&#ReferenceTablesController&#gettingstarted&#jsonxml).
 
-Let’s locate the possible telemetry station parameter names that we can
-use in a query.
+Let’s locate the parameters available at telemetry stations.
 
 ``` r
-# # Daily discharge at "CLAFTCCO" telemetry station
+# available parameters for telemetry stations
 telemetry_params <- cdssr::get_reference_tbl(
   table_name = "telemetryparams"
   )
@@ -174,17 +185,19 @@ dplyr::tibble(telemetry_params)
 #> # … with 35 more rows
 ```
 
+<br>
+
 ## Retrieve Telemetry station timeseries data
 
 Use `get_` function to make requests to the CDSS API and return the
 results in a tidy dataframe.
 
-We’ll use the station abbreviations from the `get_telemetry_stations`
+We’ll use the station abbreviations from the `get_telemetry_stations()`
 call, a parameter from the `get_reference_tbl()` call, select a starting
 and ending date and a temporal resolution.
 
 ``` r
-# Daily discharge at "CLAFTCCO" telemetry station
+# Daily discharge at "ANDDITCO" telemetry station
 discharge_ts <- cdssr::get_telemetry_ts(
                       abbrev              = stations$abbrev[1],
                       parameter           = telemetry_params$parameter[7],
@@ -217,13 +230,136 @@ dplyr::tibble(discharge_ts)
 And a plot of the daily discharge…
 
 ``` r
-# Plot daily discharge at "CLAFTCCO"
+# Plot daily discharge at "ANDDITCO"
 plot(discharge_ts$value~discharge_ts$datetime, type = "l")
 ```
 
 <img src="man/figures/README-plot_ts-1.png" width="100%" style="display: block; margin: auto;" />
 
 <br>
+
+# Example: Spatial search
+
+## Find structures/stations from coordinates
+
+A spatial search for structures/stations can be made by supplying an SF
+point/polygon to the `aoi` argument and a numeric value for the desired
+`radius` to search within./
+
+``` r
+library(sf)
+#> Linking to GEOS 3.9.1, GDAL 3.4.3, PROJ 7.2.1; sf_use_s2() is TRUE
+
+# create a spatial point
+pt <- sf::st_as_sf(
+            data.frame(
+              lng = -105.549  , 
+              lat = 40.672
+            ),
+            coords = c("lng", "lat"),
+            crs = 4326
+            )
+
+# locate structures within 10 miles of point
+structures <- cdssr::get_structures(
+  aoi    = pt,
+  radius = 10
+  )
+#> Retreiving administrative structures from CDSS API...
+#> Location search: 
+#> Latitude: 40.672
+#> Longitude: -105.549
+#> Radius (miles): 10
+
+dplyr::tibble(structures)
+#> # A tibble: 528 × 37
+#>    wdid  struc…¹ assoc…² ciu_c…³ struc…⁴ water…⁵ gnis_id strea…⁶ assoc…⁷ assoc…⁸
+#>    <chr> <chr>   <chr>   <chr>   <chr>   <chr>   <chr>     <dbl> <chr>   <chr>  
+#>  1 0300… POUDRE… <NA>    U       DITCH   CACHE … 002050…   96.6  04CW03… <NA>   
+#>  2 0300… POUDRE… <NA>    U       DITCH   CACHE … 002050…   96.6  04CW03… <NA>   
+#>  3 0300… MUCKLO… <NA>    U       PIPELI… FALL C… 001773…    0.45 95CW02… <NA>   
+#>  4 0300… BRINKH… <NA>    U       PIPELI… MANHAT… 001771…    3.69 88CW00… <NA>   
+#>  5 0300… NORGRE… <NA>    U       SPRING  CACHE … 002050…   NA    W3906   <NA>   
+#>  6 0300… BEN DE… <NA>    U       DITCH   ELKHOR… 001702…    8.75 89CW02… <NA>   
+#>  7 0300… MANHAT… <NA>    U       DITCH   MANHAT… 001771…    1.48 89CW02… <NA>   
+#>  8 0300… FRY HA… <NA>    U       PUMP    CACHE … 002050…   89.5  97CW02… <NA>   
+#>  9 0300… HOME D… <NA>    U       DITCH   CACHE … 002050…   94.8  CA2031  <NA>   
+#> 10 0300… FRY HA… <NA>    A       DITCH   CACHE … 002050…   89.0  93CW00… <NA>   
+#> # … with 518 more rows, 27 more variables: associated_meters <lgl>,
+#> #   associated_contacts <chr>, por_start <chr>, por_end <chr>, division <int>,
+#> #   water_district <int>, subdistrict <lgl>, county <chr>,
+#> #   designated_basin_name <lgl>, management_district_name <lgl>, pm <chr>,
+#> #   township <chr>, range <chr>, section <chr>, q10 <chr>, q40 <chr>,
+#> #   q160 <chr>, coordsew <int>, coordsew_dir <chr>, coordsns <int>,
+#> #   coordsns_dir <chr>, utm_x <dbl>, utm_y <dbl>, latdecdeg <dbl>, …
+```
+
+<br>
+
+``` r
+plot(structures$latdecdeg~structures$longdecdeg)
+```
+
+<img src="man/figures/README-plot_spatial_search-1.png" width="100%" style="display: block; margin: auto;" />
+<br>
+
+## Retrieve Diversion records for multiple structures
+
+We can then use the WDID’s found from the spatial search to retrieve
+diversion/release/stage/volume data from multiple structures using
+`get_structures_divrec`.
+
+``` r
+# create a character vector of WDID's for all active ditch structures
+ditch_wdids <- 
+  structures %>% 
+    dplyr::filter(ciu_code == "A", structure_type == "DITCH") %>% 
+  .$wdid
+
+# get diversion records
+diversion_rec <- 
+  cdssr::get_structures_divrec(
+                        wdid           = ditch_wdids,
+                        wc_identifier  = "diversion",
+                        type           = "month"
+                        )
+#> Retrieving monthly diversion data from CDSS API...
+
+dplyr::tibble(diversion_rec)
+#> # A tibble: 123 × 10
+#>    wdid    water_class…¹ wc_id…² meas_…³ data_…⁴ data_…⁵ meas_…⁶ obs_c…⁷ appro…⁸
+#>    <chr>           <int> <chr>   <chr>   <chr>     <dbl> <chr>   <chr>   <chr>  
+#>  1 0300949      10300949 030094… Daily   2010-05  195.   ACFT    *       Approv…
+#>  2 0300949      10300949 030094… Daily   2010-06  137.   ACFT    *       Approv…
+#>  3 0300949      10300949 030094… Daily   2010-07    0    ACFT    *       Approv…
+#>  4 0300949      10300949 030094… Daily   2011-05   43.6  ACFT    *       Approv…
+#>  5 0300949      10300949 030094… Daily   2011-06   93.2  ACFT    *       Approv…
+#>  6 0300949      10300949 030094… Daily   2011-07   77.4  ACFT    *       Approv…
+#>  7 0300949      10300949 030094… Daily   2011-08    8.93 ACFT    *       Approv…
+#>  8 0300949      10300949 030094… Daily   2012-04   46.6  ACFT    *       Approv…
+#>  9 0300949      10300949 030094… Daily   2012-05   66.4  ACFT    *       Approv…
+#> 10 0300949      10300949 030094… Daily   2014-06   28.3  ACFT    *       Approv…
+#> # … with 113 more rows, 1 more variable: datetime <date>, and abbreviated
+#> #   variable names ¹​water_class_num, ²​wc_identifier, ³​meas_interval,
+#> #   ⁴​data_meas_date, ⁵​data_value, ⁶​meas_units, ⁷​obs_code, ⁸​approval_status
+```
+
+<br>
+
+``` r
+library(ggplot2)
+
+diversion_rec %>% 
+  ggplot2::ggplot() +
+  ggplot2::geom_col(ggplot2::aes(x = datetime, y = data_value, fill = wdid)) +
+  ggplot2::facet_wrap(~wdid, nrow = 3)
+```
+
+<img src="man/figures/README-plot_divrec-1.png" width="100%" style="display: block; margin: auto;" />
+
+<br>
+
+# Example: Groundwater well data
 
 ## Retrieve groundwater well data
 
