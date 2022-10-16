@@ -5,24 +5,24 @@
 \title{Return monthly surface water timeseries data}
 \usage{
 get_sw_ts_month(
-  start_date = "1900-01-01",
-  end_date = Sys.Date(),
   abbrev = NULL,
   station_number = NULL,
   usgs_id = NULL,
+  start_date = "1900-01-01",
+  end_date = Sys.Date(),
   api_key = NULL
 )
 }
 \arguments{
-\item{start_date}{character date to request data start point YYYY-MM-DD}
-
-\item{end_date}{character date to request data end point YYYY-MM-DD}
-
 \item{abbrev}{character vector or list of characters of station abbreviation}
 
 \item{station_number}{character, surface water station number}
 
 \item{usgs_id}{character vector or list of characters of USGS Site IDs}
+
+\item{start_date}{character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".}
+
+\item{end_date}{character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.}
 
 \item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }

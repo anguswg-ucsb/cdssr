@@ -13,13 +13,13 @@ get_structure_divrecmonth(
 )
 }
 \arguments{
-\item{wdid}{character or numeric indicating WDID code of structure}
+\item{wdid}{character vector or list of characters indicating WDID code of structure}
 
 \item{wc_identifier}{character indicating whether "diversion" or "release" should be returned. Defaults to "diversion"}
 
-\item{start_date}{character date to request data start point YYYY-MM-DD}
+\item{start_date}{character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".}
 
-\item{end_date}{character date to request data end point YYYY-MM-DD}
+\item{end_date}{character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.}
 
 \item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }

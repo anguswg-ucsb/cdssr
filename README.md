@@ -275,3 +275,38 @@ plot(well_measure$depth_to_water~well_measure$datetime, type = "l")
 <br> <br>
 
 > **More functions for more endpoints coming soon!**
+
+Identify station information and locations
+
+``` r
+# stations <- cdssr::get_structures(
+#   water_district = 6
+#   )
+# stations
+```
+
+``` r
+# abbrevs <-
+#   stations %>% 
+#   dplyr::filter(county == "BOULDER") %>% 
+#   na.omit() %>% 
+#   .$abbrev
+```
+
+``` r
+# 
+# sw_ts <- cdssr::get_sw_ts(
+#   timescale           = "day",
+#   start_date          = "2015-01-01",
+#   end_date            = "2022-01-01",
+#   abbrev = abbrevs
+#   )
+# discharge_ts <- cdssr::get_telemetry_ts(
+#                       abbrev              = abbrevs[1:4],
+#                       parameter           = telemetry_params$parameter[7],
+#                       start_date          = "2015-01-01",
+#                       end_date            = "2022-01-01",
+#                       timescale           = "day",
+#                       include_third_party = TRUE
+#                                )
+```

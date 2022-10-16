@@ -17,9 +17,9 @@ get_climate_ts(
 \arguments{
 \item{timescale}{character indicating data type to return, either "day" or "month". Default is "day".}
 
-\item{start_date}{character date to request data start point YYYY-MM-DD}
+\item{start_date}{character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".}
 
-\item{end_date}{character date to request data end point YYYY-MM-DD}
+\item{end_date}{character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.}
 
 \item{station_number}{character, surface water station number}
 
@@ -38,11 +38,11 @@ Make a request to the /climatedata/climatestationts  endpoints (climatestationts
 \examples{
 # Retrieve daily maximum temperatures
 daily_maxtemp <- get_climate_ts(
-  timescale   = "day",
+  site_id     = "USC00055984",
+  param       = "MaxTemp",
   start_date  = "2017-01-01",
   end_date    = "2020-01-01",
-  site_id     = "USC00055984",
-  param       = "MaxTemp"
+  timescale   = "day"
   )
 
 # plot daily maximum temp at climate station
@@ -50,11 +50,11 @@ plot(daily_maxtemp$value~daily_maxtemp$datetime, type = "l")
 
 # Retrieve monthly precipitation
 monthly_precip <- get_climate_ts(
-  timescale   = "month",
+  site_id     = "USC00055984",
+  param       = "Precip",
   start_date  = "2000-01-01",
   end_date    = "2022-01-01",
-  site_id     = "USC00055984",
-  param       = "Precip"
+  timescale   = "month"
    )
 
  # plot daily max temp at climate station

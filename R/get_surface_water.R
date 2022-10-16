@@ -106,6 +106,15 @@ get_sw_stations <- function(
   # print message
   message(paste0("Retrieving surface water station data from CDSS API..."))
 
+  # if location based search
+  if(all(!is.null(lng), !is.null(lat))) {
+
+    # location search print message
+    message(paste0("Location search: \nLatitude: ", lat,
+                   "\nLongitude: ", lng,
+                   "\nRadius (miles): ", radius))
+  }
+
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
 
@@ -203,11 +212,11 @@ get_sw_stations <- function(
 }
 #' Return daily surface water timeseries data
 #' @description Make a request to the /surfacewater/surfacewatertsday endpoint to retrieve surface water stations daily timeseries data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
-#' @param start_date character date to request data start point YYYY-MM-DD
-#' @param end_date character date to request data end point YYYY-MM-DD
 #' @param abbrev character vector or list of characters of station abbreviation
 #' @param station_number character, surface water station number
 #' @param usgs_id character vector or list of characters of USGS Site IDs
+#' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
+#' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
@@ -216,11 +225,11 @@ get_sw_stations <- function(
 #' @importFrom janitor clean_names
 #' @return dataframe of surface water station daily timeseries data
 get_sw_ts_day <- function(
-    start_date          = "1900-01-01",
-    end_date            = Sys.Date(),
     abbrev              = NULL,
     station_number      = NULL,
     usgs_id             = NULL,
+    start_date          = "1900-01-01",
+    end_date            = Sys.Date(),
     api_key             = NULL
 ) {
 
@@ -363,11 +372,11 @@ get_sw_ts_day <- function(
 }
 #' Return monthly surface water timeseries data
 #' @description Make a request to the /surfacewater/surfacewatertsmonth endpoint to retrieve surface water stations monthly timeseries data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
-#' @param start_date character date to request data start point YYYY-MM-DD
-#' @param end_date character date to request data end point YYYY-MM-DD
 #' @param abbrev character vector or list of characters of station abbreviation
 #' @param station_number character, surface water station number
 #' @param usgs_id character vector or list of characters of USGS Site IDs
+#' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
+#' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
@@ -376,11 +385,11 @@ get_sw_ts_day <- function(
 #' @importFrom janitor clean_names
 #' @return dataframe of surface water station monthly timeseries data
 get_sw_ts_month <- function(
-    start_date          = "1900-01-01",
-    end_date            = Sys.Date(),
     abbrev              = NULL,
     station_number      = NULL,
     usgs_id             = NULL,
+    start_date          = "1900-01-01",
+    end_date            = Sys.Date(),
     api_key             = NULL
 ) {
 
@@ -527,11 +536,11 @@ get_sw_ts_month <- function(
 
 #' Return water year surface water timeseries data
 #' @description Make a request to the /surfacewater/surfacewatertswateryear endpoint to retrieve surface water stations water year timeseries data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
-#' @param start_date character date (YYYY-MM-DD) of starting year to request data for
-#' @param end_date character date (YYYY-MM-DD) of ending year to request data for
 #' @param abbrev character vector or list of characters of station abbreviation
 #' @param station_number character, surface water station number
 #' @param usgs_id character vector or list of characters of USGS Site IDs
+#' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
+#' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
@@ -540,11 +549,11 @@ get_sw_ts_month <- function(
 #' @importFrom janitor clean_names
 #' @return dataframe of surface water station monthly timeseries data
 get_sw_ts_wyear <- function(
-    start_date          = "1900-01-01",
-    end_date            = Sys.Date(),
     abbrev              = NULL,
     station_number      = NULL,
     usgs_id             = NULL,
+    start_date          = "1900-01-01",
+    end_date            = Sys.Date(),
     api_key             = NULL
 ) {
 
@@ -685,12 +694,12 @@ get_sw_ts_wyear <- function(
 
 #' Return Surface water timeseries data
 #' @description Make a request to the /surfacewater/surfacewaterts/ endpoints (surfacewatertsday, surfacewatertsmonth, surfacewatertswateryear) to retrieve surface water station timeseries data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
-#' @param timescale character indicating data type to return, either "day", "month", or "wateryear". Default is "day".
-#' @param start_date character date to request data start point YYYY-MM-DD
-#' @param end_date character date to request data end point YYYY-MM-DD
 #' @param abbrev character,	station abbreviation
 #' @param station_number character, surface water station number
 #' @param usgs_id character, USGS Site ID
+#' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
+#' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
+#' @param timescale character indicating data type to return, either "day", "month", or "wateryear". Default is "day".
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
@@ -702,10 +711,10 @@ get_sw_ts_wyear <- function(
 #' # Retrieve surface water daily timeseries
 #' sw_ts_day <-
 #'  get_sw_ts(
-#'   timescale  = "day",
+#'   abbrev     = "CLAFTCCO",
 #'   start_date = "2000-01-01",
 #'   end_date   = "2022-01-01",
-#'   abbrev     = "CLAFTCCO"
+#'   timescale  = "day"
 #'   )
 #'
 #' # plot daily flow
@@ -714,10 +723,10 @@ get_sw_ts_wyear <- function(
 #' # Retrieve surface water monthly timeseries
 #' sw_ts_month <-
 #'  get_sw_ts(
-#'   timescale  = "month",
+#'   abbrev     = "CLAFTCCO",
 #'   start_date = "2000-01-01",
 #'   end_date   = "2022-01-01",
-#'   abbrev     = "CLAFTCCO"
+#'   timescale  = "month"
 #'   )
 #' # plot average monthly flow
 #' plot(sw_ts_month$avg_q_cfs~sw_ts_month$datetime, type = "s")
@@ -725,22 +734,22 @@ get_sw_ts_wyear <- function(
 #' # Retrieve surface water water year timeseries
 #' sw_ts_year <-
 #'  get_sw_ts(
-#'   timescale  = "wateryear",
+#'   abbrev     = "CLAFTCCO",
 #'   start_date = "2000-01-01",
 #'   end_date   = "2022-01-01",
-#'   abbrev     = "CLAFTCCO"
+#'   timescale  = "wateryear"
 #'   )
 #'
 #' # plot average water year flow
 #' plot(sw_ts_year$avg_q_cfs~sw_ts_year$water_year, type = "s")
 #' @export
 get_sw_ts <- function(
-    timescale           = "day",
-    start_date          = "1900-01-01",
-    end_date            = Sys.Date(),
     abbrev              = NULL,
     station_number      = NULL,
     usgs_id             = NULL,
+    start_date          = "1900-01-01",
+    end_date            = Sys.Date(),
+    timescale           = "day",
     api_key             = NULL
 ) {
 
@@ -751,11 +760,11 @@ get_sw_ts <- function(
 
     sw_ts <-
       get_sw_ts_day(
-          start_date     = start_date,
-          end_date       = end_date,
           abbrev         = abbrev,
           station_number = station_number,
           usgs_id        = usgs_id,
+          start_date     = start_date,
+          end_date       = end_date,
           api_key        = api_key
           )
 
@@ -766,11 +775,11 @@ get_sw_ts <- function(
 
     sw_ts <-
       get_sw_ts_month(
-          start_date     = start_date,
-          end_date       = end_date,
           abbrev         = abbrev,
           station_number = station_number,
           usgs_id        = usgs_id,
+          start_date     = start_date,
+          end_date       = end_date,
           api_key        = api_key
           )
 
@@ -781,11 +790,11 @@ get_sw_ts <- function(
 
     sw_ts <-
       get_sw_ts_wyear(
-          start_date     = start_date,
-          end_date       = end_date,
           abbrev         = abbrev,
           station_number = station_number,
           usgs_id        = usgs_id,
+          start_date     = start_date,
+          end_date       = end_date,
           api_key        = api_key
           )
 

@@ -5,24 +5,24 @@
 \title{Return daily climate data}
 \usage{
 get_climate_ts_day(
-  start_date = "1900-01-01",
-  end_date = Sys.Date(),
   station_number = NULL,
   site_id = NULL,
   param = NULL,
+  start_date = "1900-01-01",
+  end_date = Sys.Date(),
   api_key = NULL
 )
 }
 \arguments{
-\item{start_date}{character date to request data start point YYYY-MM-DD}
-
-\item{end_date}{character date to request data end point YYYY-MM-DD}
-
 \item{station_number}{character, climate data station number}
 
 \item{site_id}{character vector or list of characters of climate station site IDs}
 
 \item{param}{character climate variable. One of: "Evap", "FrostDate",  "MaxTemp", "MeanTemp", "MinTemp", "Precip", "Snow", "SnowDepth", "SnowSWE", "Solar","VP", "Wind"}
+
+\item{start_date}{character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".}
+
+\item{end_date}{character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.}
 
 \item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }

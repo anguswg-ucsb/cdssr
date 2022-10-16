@@ -1,13 +1,13 @@
 #' Request Structure Monthly Diversion/Release Records
 #'
-#' @param wdid character or numeric indicating WDID code of structure
+#' @param wdid character vector or list of characters indicating WDID code of structure
 #' @param wc_identifier character indicating whether "diversion" or "release" should be returned. Defaults to "diversion"
-#' @param start_date character date to request data start point YYYY-MM-DD
-#' @param end_date character date to request data end point YYYY-MM-DD
+#' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
+#' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows rename mutate relocate
+#' @importFrom dplyr bind_rows mutate
 #' @importFrom janitor clean_names
 #' @return dataframe with monthly structure data for the CDSS structure of interest
 get_structure_divrecmonth<- function(
@@ -18,6 +18,12 @@ get_structure_divrecmonth<- function(
     api_key         = NULL
 ) {
 
+  # check if parameter is valid
+  if(!wc_identifier %in% c("diversion", "release")) {
+
+    stop(paste0("Invalid `wc_identifier` argument \nMust be one of: \n'diversion' or 'release'"))
+  }
+
   # check if valid WDID was entered
   if(is.null(wdid)) {
 
@@ -27,6 +33,20 @@ get_structure_divrecmonth<- function(
 
   # Base API URL for Monthly Diversion Records
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/divrecmonth/?"
+
+  # format multiple WDID query
+  if(!is.null(wdid)) {
+
+    # if abbreviations are in a list, unlist to a character vector
+    if(is.list(wdid) == TRUE) {
+
+      wdid <- unlist(wdid)
+
+    }
+
+    wdid <- paste0(unlist(strsplit(wdid, " ")), collapse = "%2C+")
+
+  }
 
   # reformat MM-DD-YYYY dates to MM-YYYY format for API query
   start <- gsub("-", "%2F",   format(as.Date(start_date, '%Y-%m-%d'), "%m-%Y"))
@@ -48,7 +68,7 @@ get_structure_divrecmonth<- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Downloading data from CDSS API...\nMonthly ", wc_identifier, " records\nWDID: ", wdid))
+  message(paste0("Retrieving monthly ", wc_identifier, " data from CDSS API..."))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -108,17 +128,16 @@ get_structure_divrecmonth<- function(
     # Tidy data
     cdss_data <-
       cdss_data %>%
-      dplyr::rename(
-        "interval" = "measInterval",
-        "date"     = "dataMeasDate",
-        "value"    = "dataValue",
-        "unit"     = "measUnits"
-      ) %>%
+      # dplyr::rename(
+      #   "interval" = "measInterval",
+      #   "date"     = "dataMeasDate",
+      #   "value"    = "dataValue",
+      #   "unit"     = "measUnits"
+      # ) %>%
       janitor::clean_names() %>%
       dplyr::mutate(
-        date = as.Date(paste0(date, "-01"))
-        ) %>%
-      dplyr::relocate(wdid, water_class_num, wc_identifier, interval, date, value, unit)
+        datetime = as.Date(paste0(data_meas_date, "-01"))
+        )
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)

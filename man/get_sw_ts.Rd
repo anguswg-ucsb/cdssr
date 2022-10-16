@@ -5,27 +5,27 @@
 \title{Return Surface water timeseries data}
 \usage{
 get_sw_ts(
-  timescale = "day",
-  start_date = "1900-01-01",
-  end_date = Sys.Date(),
   abbrev = NULL,
   station_number = NULL,
   usgs_id = NULL,
+  start_date = "1900-01-01",
+  end_date = Sys.Date(),
+  timescale = "day",
   api_key = NULL
 )
 }
 \arguments{
-\item{timescale}{character indicating data type to return, either "day", "month", or "wateryear". Default is "day".}
-
-\item{start_date}{character date to request data start point YYYY-MM-DD}
-
-\item{end_date}{character date to request data end point YYYY-MM-DD}
-
 \item{abbrev}{character,    station abbreviation}
 
 \item{station_number}{character, surface water station number}
 
 \item{usgs_id}{character, USGS Site ID}
+
+\item{start_date}{character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".}
+
+\item{end_date}{character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.}
+
+\item{timescale}{character indicating data type to return, either "day", "month", or "wateryear". Default is "day".}
 
 \item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
@@ -39,10 +39,10 @@ Make a request to the /surfacewater/surfacewaterts/ endpoints (surfacewatertsday
 # Retrieve surface water daily timeseries
 sw_ts_day <-
  get_sw_ts(
-  timescale  = "day",
+  abbrev     = "CLAFTCCO",
   start_date = "2000-01-01",
   end_date   = "2022-01-01",
-  abbrev     = "CLAFTCCO"
+  timescale  = "day"
   )
 
 # plot daily flow
@@ -51,10 +51,10 @@ plot(sw_ts_day$value~sw_ts_day$datetime, type = "s")
 # Retrieve surface water monthly timeseries
 sw_ts_month <-
  get_sw_ts(
-  timescale  = "month",
+  abbrev     = "CLAFTCCO",
   start_date = "2000-01-01",
   end_date   = "2022-01-01",
-  abbrev     = "CLAFTCCO"
+  timescale  = "month"
   )
 # plot average monthly flow
 plot(sw_ts_month$avg_q_cfs~sw_ts_month$datetime, type = "s")
@@ -62,10 +62,10 @@ plot(sw_ts_month$avg_q_cfs~sw_ts_month$datetime, type = "s")
 # Retrieve surface water water year timeseries
 sw_ts_year <-
  get_sw_ts(
-  timescale  = "wateryear",
+  abbrev     = "CLAFTCCO",
   start_date = "2000-01-01",
   end_date   = "2022-01-01",
-  abbrev     = "CLAFTCCO"
+  timescale  = "wateryear"
   )
 
 # plot average water year flow

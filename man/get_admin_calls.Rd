@@ -5,22 +5,17 @@
 \title{Request active/historic administrative calls data}
 \usage{
 get_admin_calls(
-  active = TRUE,
-  min_division = NULL,
-  max_division = NULL,
+  division = NULL,
   location_wdid = NULL,
   call_number = NULL,
   start_date = "1900-01-01",
   end_date = Sys.Date(),
+  active = TRUE,
   api_key = NULL
 )
 }
 \arguments{
-\item{active}{logical, whether to get active or historical administrative calls. Default iS TRUE and will retrieve active administrative calls.}
-
-\item{min_division}{numeric, minimum division number to get administrative calls for. Default is 1.}
-
-\item{max_division}{numeric, maximum division number to get administrative calls for. Default is 7.}
+\item{division}{numeric, indicating the water division to query}
 
 \item{location_wdid}{numeric, call location structure WDID}
 
@@ -30,29 +25,30 @@ get_admin_calls(
 
 \item{end_date}{character date to request data end point YYYY-MM-DD}
 
+\item{active}{logical, whether to get active or historical administrative calls. Default iS TRUE and will retrieve active administrative calls.}
+
 \item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
 \value{
-dataframe of administrative calls
+dataframe of administrative calls data
 }
 \description{
-Request active/historic administrative calls data
+Request active/historic administrative calls data from the CDSS API. For more information go here https://dwr.state.co.us/rest/get/help#Datasets&#AdministrativeCallsController&https://dnrweblink.state.co.us/dwr/ElectronicFile.aspx?docid=3600964&dbid=0&#gettingstarted&#jsonxml
 }
 \examples{
 # Retrieve ACTIVE administrative calls
 active_calls <- get_admin_calls(
-               active        = TRUE,
-               min_division  = 1,
+               division     = 1,
+               active       = TRUE
            )
 active_calls
 
 # Retrieve HISTORICAL administrative calls
 historic_calls <- get_admin_calls(
-               active         = FALSE,
-               min_division = 1,
-               max_division = 7,
+               division     = 1,
                start_date   = "2000-01-01",
-               end_date     = "2005-01-01"
+               end_date     = "2005-01-01",
+               active       = FALSE
                )
 historic_calls
 }

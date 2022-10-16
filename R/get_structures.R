@@ -6,7 +6,7 @@
 #' @param division numeric, indicating the water division to query
 #' @param gnis_id character, water source - Geographic Name Information System ID
 #' @param water_district numeric, indicating the water district to query
-#' @param wdid character indicating WDID code of structure
+#' @param wdid character vector or list of characters indicating WDID code of structure
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom sf st_coordinates st_centroid st_geometry_type
 #' @importFrom httr GET content
@@ -28,6 +28,20 @@ get_structures <- function(
 
   # Base API URL
   base <- paste0("https://dwr.state.co.us/Rest/GET/api/v2/structures/?")
+
+  # format multiple USGS ID query string
+  if(!is.null(wdid)) {
+
+    # if USGS IDs are in a list, unlist to a character vector
+    if(is.list(wdid) == TRUE) {
+
+      wdid <- unlist(wdid)
+
+    }
+
+    wdid <- paste0(unlist(strsplit(wdid, " ")), collapse = "%2C+")
+
+  }
 
   # extract lat/long coords for query
   if(!is.null(aoi)) {

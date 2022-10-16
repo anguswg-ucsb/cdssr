@@ -1,10 +1,10 @@
 #' Return daily climate data
 #' @description Make a request to the /climatedata/climatestationtsday endpoint to retrieve climate stations daily timeseries data by station number, or Site IDs within a given date range (start and end dates)
-#' @param start_date character date to request data start point YYYY-MM-DD
-#' @param end_date character date to request data end point YYYY-MM-DD
 #' @param station_number character, climate data station number
 #' @param site_id character vector or list of characters of climate station site IDs
 #' @param param character climate variable. One of: "Evap", "FrostDate",  "MaxTemp", "MeanTemp", "MinTemp", "Precip", "Snow", "SnowDepth", "SnowSWE", "Solar","VP", "Wind"
+#' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
+#' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
@@ -13,11 +13,11 @@
 #' @importFrom janitor clean_names
 #' @return dataframe of climate data station daily timeseries data
 get_climate_ts_day <- function(
-    start_date          = "1900-01-01",
-    end_date            = Sys.Date(),
     station_number      = NULL,
     site_id             = NULL,
     param               = NULL,
+    start_date          = "1900-01-01",
+    end_date            = Sys.Date(),
     api_key             = NULL
 ) {
 
@@ -156,11 +156,11 @@ get_climate_ts_day <- function(
 
 #' Return monthly climate data
 #' @description Make a request to the /climatedata/climatestationtsmonth endpoint to retrieve climate stations monthly timeseries data by station number, or Site IDs within a given date range (start and end dates)
-#' @param start_date character date to request data start point YYYY-MM-DD
-#' @param end_date character date to request data end point YYYY-MM-DD
 #' @param station_number character, climate data station number
 #' @param site_id character vector or list of characters of climate station site IDs
 #' @param param character climate variable. One of: "Evap", "FrostDate",  "MaxTemp", "MeanTemp", "MinTemp", "Precip", "Snow", "SnowDepth", "SnowSWE", "Solar","VP", "Wind"
+#' @param start_date character date to request data start point YYYY-MM-DD
+#' @param end_date character date to request data end point YYYY-MM-DD
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
@@ -169,11 +169,11 @@ get_climate_ts_day <- function(
 #' @importFrom janitor clean_names
 #' @return dataframe of climate data station monthly timeseries data
 get_climate_ts_month <- function(
-    start_date          = "1900-01-01",
-    end_date            = Sys.Date(),
     station_number      = NULL,
     site_id             = NULL,
     param               = NULL,
+    start_date          = "1900-01-01",
+    end_date            = Sys.Date(),
     api_key             = NULL
 ) {
 
@@ -314,12 +314,12 @@ get_climate_ts_month <- function(
 
 #' Return climate station timeseries data
 #' @description Make a request to the /climatedata/climatestationts  endpoints (climatestationtsday, climatestationtsmonth) to retrieve climate station timeseries data by station number or Site IDs within a given date range (start and end dates)
-#' @param timescale character indicating data type to return, either "day" or "month". Default is "day".
-#' @param start_date character date to request data start point YYYY-MM-DD
-#' @param end_date character date to request data end point YYYY-MM-DD
 #' @param station_number character, surface water station number
 #' @param site_id character vector or list of characters of climate station site IDs
 #' @param param character climate variable. One of: "Evap", "FrostDate",  "MaxTemp", "MeanTemp", "MinTemp", "Precip", "Snow", "SnowDepth", "SnowSWE", "Solar","VP", "Wind"
+#' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
+#' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
+#' @param timescale character indicating data type to return, either "day" or "month". Default is "day".
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
@@ -329,11 +329,11 @@ get_climate_ts_month <- function(
 #' @examples
 #' # Retrieve daily maximum temperatures
 #' daily_maxtemp <- get_climate_ts(
-#'   timescale   = "day",
+#'   site_id     = "USC00055984",
+#'   param       = "MaxTemp",
 #'   start_date  = "2017-01-01",
 #'   end_date    = "2020-01-01",
-#'   site_id     = "USC00055984",
-#'   param       = "MaxTemp"
+#'   timescale   = "day"
 #'   )
 #'
 #' # plot daily maximum temp at climate station
@@ -341,11 +341,11 @@ get_climate_ts_month <- function(
 #'
 #' # Retrieve monthly precipitation
 #' monthly_precip <- get_climate_ts(
-#'   timescale   = "month",
+#'   site_id     = "USC00055984",
+#'   param       = "Precip",
 #'   start_date  = "2000-01-01",
 #'   end_date    = "2022-01-01",
-#'   site_id     = "USC00055984",
-#'   param       = "Precip"
+#'   timescale   = "month"
 #'    )
 #'
 #'  # plot daily max temp at climate station
@@ -368,11 +368,11 @@ get_climate_ts <- function(
 
     climate_ts <-
       get_climate_ts_day(
-        start_date     = start_date,
-        end_date       = end_date,
         station_number = station_number,
         site_id        = site_id,
         param          = param,
+        start_date     = start_date,
+        end_date       = end_date,
         api_key        = api_key
       )
 
@@ -383,11 +383,11 @@ get_climate_ts <- function(
 
     climate_ts <-
       get_climate_ts_month(
-        start_date     = start_date,
-        end_date       = end_date,
         station_number = station_number,
         site_id        = site_id,
         param          = param,
+        start_date     = start_date,
+        end_date       = end_date,
         api_key        = api_key
       )
 

@@ -19,9 +19,9 @@ get_telemetry_ts(
 
 \item{parameter}{character indicating which parameter should be retrieved. Default is "DISCHRG" (discharge), all parameters are not avaliable at all telemetry stations.}
 
-\item{start_date}{character date to request data start point YYYY-MM-DD}
+\item{start_date}{character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".}
 
-\item{end_date}{character date to request data end point YYYY-MM-DD}
+\item{end_date}{character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.}
 
 \item{timescale}{character indicating data type to return, either "raw", "hour", or "day". Default is "day"}
 

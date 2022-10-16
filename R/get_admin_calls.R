@@ -1,44 +1,41 @@
 #' Request active/historic administrative calls data
-#' @param active logical, whether to get active or historical administrative calls. Default iS TRUE and will retrieve active administrative calls.
-#' @param min_division numeric, minimum division number to get administrative calls for. Default is 1.
-#' @param max_division numeric, maximum division number to get administrative calls for. Default is 7.
+#' @description Request active/historic administrative calls data from the CDSS API. For more information go here https://dwr.state.co.us/rest/get/help#Datasets&#AdministrativeCallsController&https://dnrweblink.state.co.us/dwr/ElectronicFile.aspx?docid=3600964&dbid=0&#gettingstarted&#jsonxml
+#' @param division numeric, indicating the water division to query
 #' @param location_wdid numeric, call location structure WDID
 #' @param call_number numeric, unique call identifier
 #' @param start_date character date to request data start point YYYY-MM-DD
 #' @param end_date character date to request data end point YYYY-MM-DD
+#' @param active logical, whether to get active or historical administrative calls. Default iS TRUE and will retrieve active administrative calls.
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr bind_rows rename mutate relocate
 #' @importFrom janitor clean_names
-#' @return dataframe of administrative calls
+#' @return dataframe of administrative calls data
 #' @export
 #' @examples
 #' # Retrieve ACTIVE administrative calls
 #' active_calls <- get_admin_calls(
-#'                active        = TRUE,
-#'                min_division  = 1,
-#                 max_division  = 7
+#'                division     = 1,
+#'                active       = TRUE
 #'            )
 #' active_calls
 #'
 #' # Retrieve HISTORICAL administrative calls
 #' historic_calls <- get_admin_calls(
-#'                active         = FALSE,
-#'                min_division = 1,
-#'                max_division = 7,
+#'                division     = 1,
 #'                start_date   = "2000-01-01",
-#'                end_date     = "2005-01-01"
+#'                end_date     = "2005-01-01",
+#'                active       = FALSE
 #'                )
 #' historic_calls
 get_admin_calls <- function(
-  active              = TRUE,
-  min_division        = NULL,
-  max_division        = NULL,
+  division            = NULL,
   location_wdid       = NULL,
   call_number         = NULL,
   start_date          = "1900-01-01",
   end_date            = Sys.Date(),
+  active              = TRUE,
   api_key             = NULL
   ) {
 
@@ -55,50 +52,64 @@ get_admin_calls <- function(
 
   }
 
-  # format location wdids if given
+  # format multiple location WDID query string
   if(!is.null(location_wdid)) {
 
-    location_wdid <- paste0(location_wdid, collapse = "%2C+")
+    # if location WDIDs are in a list, unlist to a character vector
+    if(is.list(location_wdid) == TRUE) {
+
+      location_wdid <- unlist(location_wdid)
+
+    }
+
+    location_wdid <- paste0(unlist(strsplit(location_wdid, " ")), collapse = "%2C+")
 
   }
+
+  # format location wdids if given
+  # if(!is.null(location_wdid)) {
+  #
+  #   location_wdid <- paste0(location_wdid, collapse = "%2C+")
+  #
+  # }
 
   # if no min division given
-  if(is.null(min_division)) {
-
-    min_division <- 1
-
-  }
-
-  # if no max division given
-  if(is.null(max_division)) {
-
-    max_division <- 7
-
-  }
-
-  # if min division is greater than maximum division
-  if(min_division > max_division) {
-
-    division <- c(min_division, max_division)
-
-    max_division <- division[which.max(division)]
-    min_division <- division[which.min(division)]
-
-  }
-
-  # if min division outside range of divisions, set to the min
-  if(min_division > 7 | min_division < 1) {
-
-    min_division <- 1
-
-  }
-
-  # if max division outside range of divisions, set to the max
-  if(max_division > 7 | max_division < 1) {
-
-    max_division <- 7
-
-  }
+  # if(is.null(min_division)) {
+  #
+  #   min_division <- 1
+  #
+  # }
+  #
+  # # if no max division given
+  # if(is.null(max_division)) {
+  #
+  #   max_division <- 7
+  #
+  # }
+  #
+  # # if min division is greater than maximum division
+  # if(min_division > max_division) {
+  #
+  #   division <- c(min_division, max_division)
+  #
+  #   max_division <- division[which.max(division)]
+  #   min_division <- division[which.min(division)]
+  #
+  # }
+  #
+  # # if min division outside range of divisions, set to the min
+  # if(min_division > 7 | min_division < 1) {
+  #
+  #   min_division <- 1
+  #
+  # }
+  #
+  # # if max division outside range of divisions, set to the max
+  # if(max_division > 7 | max_division < 1) {
+  #
+  #   max_division <- 7
+  #
+  # }
 
   # # if single division given
   # if(length(divisions) > 1) {
@@ -142,9 +153,6 @@ get_admin_calls <- function(
     # initialize empty dataframe to store data from multiple pages
     data_df <- data.frame()
 
-    # initialize empty list to store data from multiple pages
-    # data_lst   <-  list()
-
     # initialize first page index
     page_index <- 1
 
@@ -152,7 +160,7 @@ get_admin_calls <- function(
     more_pages <- TRUE
 
     # print message
-    message(paste0("Downloading data from CDSS API...\nAdministrative calls (", ifelse(active, "ACTIVE", "HISTORICAL"), ")"))
+    message(paste0("Retrieving Administrative calls (", ifelse(active, "ACTIVE", "HISTORICAL"), ")", " data from CDSS API..."))
 
     # while more pages are avaliable, send get requests to CDSS API
     while (more_pages) {
@@ -163,8 +171,7 @@ get_admin_calls <- function(
         "format=json&dateFormat=spaceSepToSeconds",
         "&min-dateTimeSet=", start,
         "&max-dateTimeSet=", end,
-        "&min-division=", min_division,
-        "&max-division=", max_division,
+        "&division=", division,
         "&callNumber=", call_number,
         "&pageSize=", page_size,
         "&pageIndex=", page_index
@@ -186,15 +193,6 @@ get_admin_calls <- function(
 
         url <- paste0(url, "&apiKey=", api_key)
 
-      }
-
-      message(paste0("Downloading data from CDSS API..."))
-      message(paste0("Administrative calls"))
-
-      if(active == TRUE) {
-        message(paste0("ACTIVE"))
-      } else {
-        message(paste0("HISTORICAL"))
       }
 
       # GET request to CDSS API
@@ -259,3 +257,4 @@ get_admin_calls <- function(
     # return final binded dataframe
     return(data_df)
 }
+

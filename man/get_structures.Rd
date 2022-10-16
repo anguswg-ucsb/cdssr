@@ -28,7 +28,7 @@ get_structures(
 
 \item{water_district}{numeric, indicating the water district to query}
 
-\item{wdid}{character indicating WDID code of structure}
+\item{wdid}{character vector or list of characters indicating WDID code of structure}
 
 \item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
