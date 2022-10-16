@@ -86,7 +86,8 @@
 <code class="sourceCode R"><span><span class="co"># View the catalog of avaliable endpoints</span></span>
 <span><span class="va">catalog</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/browse_api.html">browse_api</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">catalog</span></span>
+<span><span class="co"># catalog</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="va">catalog</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 61 × 5</span></span>
 <span><span class="co">#&gt;    resource                                      descrip…¹ endpo…² url   endpo…³</span></span>
 <span><span class="co">#&gt;    &lt;chr&gt;                                         &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;  </span></span>
@@ -112,7 +113,7 @@
 <code class="sourceCode R"><span><span class="co"># Return expected data fields for a given endpoint</span></span>
 <span><span class="va">return_fields</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/preview_endpoint.html">preview_endpoint</a></span><span class="op">(</span>endpoint_url <span class="op">=</span> <span class="va">catalog</span><span class="op">$</span><span class="va">endpoint_url</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">return_fields</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="va">return_fields</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
 <span><span class="co">#&gt;   name          description                     type          </span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;                           &lt;chr&gt;         </span></span>
@@ -131,9 +132,10 @@
 <div class="section level2">
 <h2 id="identify-station-locations-and-information">Identify station locations and information<a class="anchor" aria-label="anchor" href="#identify-station-locations-and-information"></a>
 </h2>
-<p>We can use the <code>_stations</code> functions to identify what stations are within a given AOI, water district, division, or county.</p>
+<p>We can use the <code>_stations()</code> functions to identify what stations are within a given AOI, water district, division, or county.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">stations</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_telemetry_stations.html">get_telemetry_stations</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="co"># identify telemetry stations in water district 6</span></span>
+<span><span class="va">stations</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_telemetry_stations.html">get_telemetry_stations</a></span><span class="op">(</span></span>
 <span>  water_district <span class="op">=</span> <span class="fl">6</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Retrieving telemetry station data from CDSS API...</span></span>
@@ -159,14 +161,19 @@
 <span><span class="co">#&gt; #   drain_area &lt;dbl&gt;, huc10 &lt;chr&gt;, utm_x &lt;dbl&gt;, utm_y &lt;dbl&gt;, latitude &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   longitude &lt;dbl&gt;, location_accuracy &lt;chr&gt;, wdid &lt;chr&gt;, modified &lt;chr&gt;,</span></span>
 <span><span class="co">#&gt; #   more_information &lt;chr&gt;, station_por_start &lt;dttm&gt;, station_por_end &lt;dttm&gt;, …</span></span></code></pre></div>
+<p><br></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stations</span><span class="op">$</span><span class="va">latitude</span><span class="op">~</span><span class="va">stations</span><span class="op">$</span><span class="va">longitude</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-plot_tele_stations-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><br></p>
 </div>
 <div class="section level2">
 <h2 id="retrieve-reference-tables-to-help-generate-queries">Retrieve Reference Tables to help generate queries<a class="anchor" aria-label="anchor" href="#retrieve-reference-tables-to-help-generate-queries"></a>
 </h2>
-<p>The <code><a href="reference/get_reference_tbl.html">get_reference_tbl()</a></code> function will return information that makes it easier to know what information should be supplied to the data retrieval functions in <code>cdssr</code>. For more information on the exact reference tables click <a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#ReferenceTablesController&amp;#gettingstarted&amp;#jsonxml" class="external-link">here</a>.</p>
-<p>Let’s locate the possible telemetry station parameter names that we can use in a query.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># # Daily discharge at "CLAFTCCO" telemetry station</span></span>
+<p>The <code><a href="reference/get_reference_tbl.html">get_reference_tbl()</a></code> function will return tables that makes it easier to know what information should be supplied to the data retrieval functions in <code>cdssr</code>. For more information on the exact reference tables click <a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#ReferenceTablesController&amp;#gettingstarted&amp;#jsonxml" class="external-link">here</a>.</p>
+<p>Let’s locate the parameters available at telemetry stations.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># available parameters for telemetry stations</span></span>
 <span><span class="va">telemetry_params</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_reference_tbl.html">get_reference_tbl</a></span><span class="op">(</span></span>
 <span>  table_name <span class="op">=</span> <span class="st">"telemetryparams"</span></span>
 <span>  <span class="op">)</span></span>
@@ -187,14 +194,15 @@
 <span><span class="co">#&gt;  9 DISCHRG2 </span></span>
 <span><span class="co">#&gt; 10 DISCHRG3 </span></span>
 <span><span class="co">#&gt; # … with 35 more rows</span></span></code></pre></div>
+<p><br></p>
 </div>
 <div class="section level2">
 <h2 id="retrieve-telemetry-station-timeseries-data">Retrieve Telemetry station timeseries data<a class="anchor" aria-label="anchor" href="#retrieve-telemetry-station-timeseries-data"></a>
 </h2>
 <p>Use <code>get_</code> function to make requests to the CDSS API and return the results in a tidy dataframe.</p>
-<p>We’ll use the station abbreviations from the <code>get_telemetry_stations</code> call, a parameter from the <code><a href="reference/get_reference_tbl.html">get_reference_tbl()</a></code> call, select a starting and ending date and a temporal resolution.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Daily discharge at "CLAFTCCO" telemetry station</span></span>
+<p>We’ll use the station abbreviations from the <code><a href="reference/get_telemetry_stations.html">get_telemetry_stations()</a></code> call, a parameter from the <code><a href="reference/get_reference_tbl.html">get_reference_tbl()</a></code> call, select a starting and ending date and a temporal resolution.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Daily discharge at "ANDDITCO" telemetry station</span></span>
 <span><span class="va">discharge_ts</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_telemetry_ts.html">get_telemetry_ts</a></span><span class="op">(</span></span>
 <span>                      abbrev              <span class="op">=</span> <span class="va">stations</span><span class="op">$</span><span class="va">abbrev</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
 <span>                      parameter           <span class="op">=</span> <span class="va">telemetry_params</span><span class="op">$</span><span class="va">parameter</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span>,</span>
@@ -223,12 +231,123 @@
 <span><span class="co">#&gt; 10 ANDDITCO DISCHRG   2020-05-16 00:00:…  2.95 cfs   2020-05-16 00:00:00 day    </span></span>
 <span><span class="co">#&gt; # … with 562 more rows, and abbreviated variable name ¹​timescale</span></span></code></pre></div>
 <p>And a plot of the daily discharge…</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Plot daily discharge at "CLAFTCCO"</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Plot daily discharge at "ANDDITCO"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">discharge_ts</span><span class="op">$</span><span class="va">value</span><span class="op">~</span><span class="va">discharge_ts</span><span class="op">$</span><span class="va">datetime</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot_ts-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p><br></p>
 </div>
+</div>
+<div class="section level1">
+<h1 id="example-spatial-search">Example: Spatial search<a class="anchor" aria-label="anchor" href="#example-spatial-search"></a>
+</h1>
+<div class="section level2">
+<h2 id="find-structuresstations-from-coordinates">Find structures/stations from coordinates<a class="anchor" aria-label="anchor" href="#find-structuresstations-from-coordinates"></a>
+</h2>
+<p>A spatial search for structures/stations can be made by supplying an SF point/polygon to the <code>aoi</code> argument and a numeric value for the desired <code>radius</code> to search within./</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Linking to GEOS 3.9.1, GDAL 3.4.3, PROJ 7.2.1; sf_use_s2() is TRUE</span></span>
+<span></span>
+<span><span class="co"># create a spatial point</span></span>
+<span><span class="va">pt</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span></span>
+<span>            <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>              lng <span class="op">=</span> <span class="op">-</span><span class="fl">105.549</span>  , </span>
+<span>              lat <span class="op">=</span> <span class="fl">40.672</span></span>
+<span>            <span class="op">)</span>,</span>
+<span>            coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lng"</span>, <span class="st">"lat"</span><span class="op">)</span>,</span>
+<span>            crs <span class="op">=</span> <span class="fl">4326</span></span>
+<span>            <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># locate structures within 10 miles of point</span></span>
+<span><span class="va">structures</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_structures.html">get_structures</a></span><span class="op">(</span></span>
+<span>  aoi    <span class="op">=</span> <span class="va">pt</span>,</span>
+<span>  radius <span class="op">=</span> <span class="fl">10</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Retreiving administrative structures from CDSS API...</span></span>
+<span><span class="co">#&gt; Location search: </span></span>
+<span><span class="co">#&gt; Latitude: 40.672</span></span>
+<span><span class="co">#&gt; Longitude: -105.549</span></span>
+<span><span class="co">#&gt; Radius (miles): 10</span></span>
+<span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="va">structures</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 528 × 37</span></span>
+<span><span class="co">#&gt;    wdid  struc…¹ assoc…² ciu_c…³ struc…⁴ water…⁵ gnis_id strea…⁶ assoc…⁷ assoc…⁸</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt;  1 0300… POUDRE… &lt;NA&gt;    U       DITCH   CACHE … 002050…   96.6  04CW03… &lt;NA&gt;   </span></span>
+<span><span class="co">#&gt;  2 0300… POUDRE… &lt;NA&gt;    U       DITCH   CACHE … 002050…   96.6  04CW03… &lt;NA&gt;   </span></span>
+<span><span class="co">#&gt;  3 0300… MUCKLO… &lt;NA&gt;    U       PIPELI… FALL C… 001773…    0.45 95CW02… &lt;NA&gt;   </span></span>
+<span><span class="co">#&gt;  4 0300… BRINKH… &lt;NA&gt;    U       PIPELI… MANHAT… 001771…    3.69 88CW00… &lt;NA&gt;   </span></span>
+<span><span class="co">#&gt;  5 0300… NORGRE… &lt;NA&gt;    U       SPRING  CACHE … 002050…   NA    W3906   &lt;NA&gt;   </span></span>
+<span><span class="co">#&gt;  6 0300… BEN DE… &lt;NA&gt;    U       DITCH   ELKHOR… 001702…    8.75 89CW02… &lt;NA&gt;   </span></span>
+<span><span class="co">#&gt;  7 0300… MANHAT… &lt;NA&gt;    U       DITCH   MANHAT… 001771…    1.48 89CW02… &lt;NA&gt;   </span></span>
+<span><span class="co">#&gt;  8 0300… FRY HA… &lt;NA&gt;    U       PUMP    CACHE … 002050…   89.5  97CW02… &lt;NA&gt;   </span></span>
+<span><span class="co">#&gt;  9 0300… HOME D… &lt;NA&gt;    U       DITCH   CACHE … 002050…   94.8  CA2031  &lt;NA&gt;   </span></span>
+<span><span class="co">#&gt; 10 0300… FRY HA… &lt;NA&gt;    A       DITCH   CACHE … 002050…   89.0  93CW00… &lt;NA&gt;   </span></span>
+<span><span class="co">#&gt; # … with 518 more rows, 27 more variables: associated_meters &lt;lgl&gt;,</span></span>
+<span><span class="co">#&gt; #   associated_contacts &lt;chr&gt;, por_start &lt;chr&gt;, por_end &lt;chr&gt;, division &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   water_district &lt;int&gt;, subdistrict &lt;lgl&gt;, county &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   designated_basin_name &lt;lgl&gt;, management_district_name &lt;lgl&gt;, pm &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   township &lt;chr&gt;, range &lt;chr&gt;, section &lt;chr&gt;, q10 &lt;chr&gt;, q40 &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   q160 &lt;chr&gt;, coordsew &lt;int&gt;, coordsew_dir &lt;chr&gt;, coordsns &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   coordsns_dir &lt;chr&gt;, utm_x &lt;dbl&gt;, utm_y &lt;dbl&gt;, latdecdeg &lt;dbl&gt;, …</span></span></code></pre></div>
+<p><br></p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">structures</span><span class="op">$</span><span class="va">latdecdeg</span><span class="op">~</span><span class="va">structures</span><span class="op">$</span><span class="va">longdecdeg</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-plot_spatial_search-1.png" width="100%" style="display: block; margin: auto;"><br></p>
+</div>
+<div class="section level2">
+<h2 id="retrieve-diversion-records-for-multiple-structures">Retrieve Diversion records for multiple structures<a class="anchor" aria-label="anchor" href="#retrieve-diversion-records-for-multiple-structures"></a>
+</h2>
+<p>We can then use the WDID’s found from the spatial search to retrieve diversion/release/stage/volume data from multiple structures using <code>get_structures_divrec</code>.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># create a character vector of WDID's for all active ditch structures</span></span>
+<span><span class="va">ditch_wdids</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">structures</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ciu_code</span> <span class="op">==</span> <span class="st">"A"</span>, <span class="va">structure_type</span> <span class="op">==</span> <span class="st">"DITCH"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="va">.</span><span class="op">$</span><span class="va">wdid</span></span>
+<span></span>
+<span><span class="co"># get diversion records</span></span>
+<span><span class="va">diversion_rec</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_structures_divrec.html">get_structures_divrec</a></span><span class="op">(</span></span>
+<span>                        wdid           <span class="op">=</span> <span class="va">ditch_wdids</span>,</span>
+<span>                        wc_identifier  <span class="op">=</span> <span class="st">"diversion"</span>,</span>
+<span>                        type           <span class="op">=</span> <span class="st">"month"</span></span>
+<span>                        <span class="op">)</span></span>
+<span><span class="co">#&gt; Retrieving monthly diversion data from CDSS API...</span></span>
+<span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="va">diversion_rec</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 123 × 10</span></span>
+<span><span class="co">#&gt;    wdid    water_class…¹ wc_id…² meas_…³ data_…⁴ data_…⁵ meas_…⁶ obs_c…⁷ appro…⁸</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt;  1 0300949      10300949 030094… Daily   2010-05  195.   ACFT    *       Approv…</span></span>
+<span><span class="co">#&gt;  2 0300949      10300949 030094… Daily   2010-06  137.   ACFT    *       Approv…</span></span>
+<span><span class="co">#&gt;  3 0300949      10300949 030094… Daily   2010-07    0    ACFT    *       Approv…</span></span>
+<span><span class="co">#&gt;  4 0300949      10300949 030094… Daily   2011-05   43.6  ACFT    *       Approv…</span></span>
+<span><span class="co">#&gt;  5 0300949      10300949 030094… Daily   2011-06   93.2  ACFT    *       Approv…</span></span>
+<span><span class="co">#&gt;  6 0300949      10300949 030094… Daily   2011-07   77.4  ACFT    *       Approv…</span></span>
+<span><span class="co">#&gt;  7 0300949      10300949 030094… Daily   2011-08    8.93 ACFT    *       Approv…</span></span>
+<span><span class="co">#&gt;  8 0300949      10300949 030094… Daily   2012-04   46.6  ACFT    *       Approv…</span></span>
+<span><span class="co">#&gt;  9 0300949      10300949 030094… Daily   2012-05   66.4  ACFT    *       Approv…</span></span>
+<span><span class="co">#&gt; 10 0300949      10300949 030094… Daily   2014-06   28.3  ACFT    *       Approv…</span></span>
+<span><span class="co">#&gt; # … with 113 more rows, 1 more variable: datetime &lt;date&gt;, and abbreviated</span></span>
+<span><span class="co">#&gt; #   variable names ¹​water_class_num, ²​wc_identifier, ³​meas_interval,</span></span>
+<span><span class="co">#&gt; #   ⁴​data_meas_date, ⁵​data_value, ⁶​meas_units, ⁷​obs_code, ⁸​approval_status</span></span></code></pre></div>
+<p><br></p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">diversion_rec</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">geom_col</span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">datetime</span>, y <span class="op">=</span> <span class="va">data_value</span>, fill <span class="op">=</span> <span class="va">wdid</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">wdid</span>, nrow <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-plot_divrec-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><br></p>
+</div>
+</div>
+<div class="section level1">
+<h1 id="example-groundwater-well-data">Example: Groundwater well data<a class="anchor" aria-label="anchor" href="#example-groundwater-well-data"></a>
+</h1>
 <div class="section level2">
 <h2 id="retrieve-groundwater-well-data">Retrieve groundwater well data<a class="anchor" aria-label="anchor" href="#retrieve-groundwater-well-data"></a>
 </h2>
@@ -239,7 +358,7 @@
 <li><a href="https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-waterlevels-wells" class="external-link">api/v2/groundwater/waterlevels/wells</a></li>
 <li><a href="https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-geophysicallogs-wells" class="external-link">api/v2/groundwater/geophysicallogs/wells</a></li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Use type = "wellmeasurements" to request wellmeasurements endpoint (api/v2/groundwater/waterlevels/wellmeasurements)</span></span>
 <span><span class="va">well_measure</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_groundwater.html">get_groundwater</a></span><span class="op">(</span></span>
 <span>  type    <span class="op">=</span> <span class="st">"wellmeasurements"</span>,</span>
@@ -269,7 +388,7 @@
 <span><span class="co">#&gt; #   datetime &lt;dttm&gt;, and abbreviated variable names ¹​division, ²​water_district,</span></span>
 <span><span class="co">#&gt; #   ³​management_district, ⁴​designated_basin, ⁵​publication, ⁶​measurement_date</span></span></code></pre></div>
 <p>And a plot of the depth to water over time…</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot depth to water</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">well_measure</span><span class="op">$</span><span class="va">depth_to_water</span><span class="op">~</span><span class="va">well_measure</span><span class="op">$</span><span class="va">datetime</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot_gw-1.png" width="100%" style="display: block; margin: auto;"></p>
