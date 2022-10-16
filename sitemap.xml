@@ -40,9 +40,6 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_climate_ts_month.html</loc>
   </url>
   <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_divrec.html</loc>
-  </url>
-  <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_groundwater.html</loc>
   </url>
   <url>
@@ -88,10 +85,16 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_structure_divrecmonth.html</loc>
   </url>
   <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_structure_divrecyear.html</loc>
+  </url>
+  <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_structure_stage.html</loc>
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_structures.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_structures_divrec.html</loc>
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_sw_stations.html</loc>

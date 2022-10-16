@@ -270,6 +270,34 @@
 <p><img src="reference/figures/README-plot_gw-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p><br><br></p>
 <blockquote><p><strong>More functions for more endpoints coming soon!</strong></p></blockquote>
+<p>Identify station information and locations</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># stations &lt;- cdssr::get_structures(</span></span>
+<span><span class="co">#   water_district = 6</span></span>
+<span><span class="co">#   )</span></span>
+<span><span class="co"># stations</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># abbrevs &lt;-</span></span>
+<span><span class="co">#   stations %&gt;% </span></span>
+<span><span class="co">#   dplyr::filter(county == "BOULDER") %&gt;% </span></span>
+<span><span class="co">#   na.omit() %&gt;% </span></span>
+<span><span class="co">#   .$abbrev</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># </span></span>
+<span><span class="co"># sw_ts &lt;- cdssr::get_sw_ts(</span></span>
+<span><span class="co">#   timescale           = "day",</span></span>
+<span><span class="co">#   start_date          = "2015-01-01",</span></span>
+<span><span class="co">#   end_date            = "2022-01-01",</span></span>
+<span><span class="co">#   abbrev = abbrevs</span></span>
+<span><span class="co">#   )</span></span>
+<span><span class="co"># discharge_ts &lt;- cdssr::get_telemetry_ts(</span></span>
+<span><span class="co">#                       abbrev              = abbrevs[1:4],</span></span>
+<span><span class="co">#                       parameter           = telemetry_params$parameter[7],</span></span>
+<span><span class="co">#                       start_date          = "2015-01-01",</span></span>
+<span><span class="co">#                       end_date            = "2022-01-01",</span></span>
+<span><span class="co">#                       timescale           = "day",</span></span>
+<span><span class="co">#                       include_third_party = TRUE</span></span>
+<span><span class="co">#                                )</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
