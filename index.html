@@ -124,65 +124,106 @@
 <span><span class="co">#&gt; 6 wdid          DWR unique structure identifier string</span></span></code></pre></div>
 <p><br></p>
 </div>
+</div>
+<div class="section level1">
+<h1 id="example-telemetry-site-data">Example: Telemetry site data<a class="anchor" aria-label="anchor" href="#example-telemetry-site-data"></a>
+</h1>
+<div class="section level2">
+<h2 id="identify-station-locations-and-information">Identify station locations and information<a class="anchor" aria-label="anchor" href="#identify-station-locations-and-information"></a>
+</h2>
+<p>We can use the <code>_stations</code> functions to identify what stations are within a given AOI, water district, division, or county.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">stations</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_telemetry_stations.html">get_telemetry_stations</a></span><span class="op">(</span></span>
+<span>  water_district <span class="op">=</span> <span class="fl">6</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Retrieving telemetry station data from CDSS API...</span></span>
+<span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="va">stations</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 70 × 35</span></span>
+<span><span class="co">#&gt;    divis…¹ water…² county stati…³ data_…⁴ data_…⁵ water…⁶ gnis_id strea…⁷ abbrev</span></span>
+<span><span class="co">#&gt;      &lt;int&gt;   &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt; </span></span>
+<span><span class="co">#&gt;  1       1       6 BOULD… "ANDER… DWR     Co. Di… BOULDE… 001783…   23.6  ANDDI…</span></span>
+<span><span class="co">#&gt;  2       1       6 BOULD… "BASEL… DWR     Co. Di… BOULDE… 001783…   19.2  BASOU…</span></span>
+<span><span class="co">#&gt;  3       1       6 BOULD… "BOULD… NCWCD   Northe… BOULDE… 001783…   15.5  BCSCB…</span></span>
+<span><span class="co">#&gt;  4       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BLDLH…</span></span>
+<span><span class="co">#&gt;  5       1       6 BOULD… "BUTTE… DWR     Co. Di… BOULDE… 001783…   18.6  BMLDI…</span></span>
+<span><span class="co">#&gt;  6       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…    9.52 BOC10…</span></span>
+<span><span class="co">#&gt;  7       1       6 BOULD… "MIDDL… DWR     Co. Di… MIDDLE… 001785…    5.92 BOCBB…</span></span>
+<span><span class="co">#&gt;  8       1       6 BOULD… "SOUTH… DWR     Co. Di… SOUTH … 001809…   16.5  BOCBG…</span></span>
+<span><span class="co">#&gt;  9       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BOCBR…</span></span>
+<span><span class="co">#&gt; 10       1       6 BOULD… "SOUTH… DWR     Co. Di… SOUTH … 001809…   12.1  BOCEL…</span></span>
+<span><span class="co">#&gt; # … with 60 more rows, 25 more variables: usgs_station_id &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   station_status &lt;chr&gt;, station_type &lt;chr&gt;, structure_type &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   meas_date_time &lt;dttm&gt;, parameter &lt;chr&gt;, stage &lt;dbl&gt;, meas_value &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   units &lt;chr&gt;, flag_a &lt;chr&gt;, flag_b &lt;chr&gt;, contr_area &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   drain_area &lt;dbl&gt;, huc10 &lt;chr&gt;, utm_x &lt;dbl&gt;, utm_y &lt;dbl&gt;, latitude &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   longitude &lt;dbl&gt;, location_accuracy &lt;chr&gt;, wdid &lt;chr&gt;, modified &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   more_information &lt;chr&gt;, station_por_start &lt;dttm&gt;, station_por_end &lt;dttm&gt;, …</span></span></code></pre></div>
+</div>
 <div class="section level2">
 <h2 id="retrieve-reference-tables-to-help-generate-queries">Retrieve Reference Tables to help generate queries<a class="anchor" aria-label="anchor" href="#retrieve-reference-tables-to-help-generate-queries"></a>
 </h2>
 <p>The <code><a href="reference/get_reference_tbl.html">get_reference_tbl()</a></code> function will return information that makes it easier to know what information should be supplied to the data retrieval functions in <code>cdssr</code>. For more information on the exact reference tables click <a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#ReferenceTablesController&amp;#gettingstarted&amp;#jsonxml" class="external-link">here</a>.</p>
 <p>Let’s locate the possible telemetry station parameter names that we can use in a query.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># # Daily discharge at "CLAFTCCO" telemetry station</span></span>
 <span><span class="va">telemetry_params</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_reference_tbl.html">get_reference_tbl</a></span><span class="op">(</span></span>
 <span>  table_name <span class="op">=</span> <span class="st">"telemetryparams"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Retrieving telemetry parameter reference table from CDSS API...</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">telemetry_params</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="va">telemetry_params</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 45 × 1</span></span>
 <span><span class="co">#&gt;    parameter</span></span>
-<span><span class="co">#&gt; 1    AIRTEMP</span></span>
-<span><span class="co">#&gt; 2      BAR_P</span></span>
-<span><span class="co">#&gt; 3    BATTERY</span></span>
-<span><span class="co">#&gt; 4       COND</span></span>
-<span><span class="co">#&gt; 5         D1</span></span>
-<span><span class="co">#&gt; 6         D2</span></span>
-<span><span class="co">#&gt; 7    DISCHRG</span></span>
-<span><span class="co">#&gt; 8   DISCHRG1</span></span>
-<span><span class="co">#&gt; 9   DISCHRG2</span></span>
-<span><span class="co">#&gt; 10  DISCHRG3</span></span></code></pre></div>
+<span><span class="co">#&gt;    &lt;chr&gt;    </span></span>
+<span><span class="co">#&gt;  1 AIRTEMP  </span></span>
+<span><span class="co">#&gt;  2 BAR_P    </span></span>
+<span><span class="co">#&gt;  3 BATTERY  </span></span>
+<span><span class="co">#&gt;  4 COND     </span></span>
+<span><span class="co">#&gt;  5 D1       </span></span>
+<span><span class="co">#&gt;  6 D2       </span></span>
+<span><span class="co">#&gt;  7 DISCHRG  </span></span>
+<span><span class="co">#&gt;  8 DISCHRG1 </span></span>
+<span><span class="co">#&gt;  9 DISCHRG2 </span></span>
+<span><span class="co">#&gt; 10 DISCHRG3 </span></span>
+<span><span class="co">#&gt; # … with 35 more rows</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="retrieve-telemetry-station-timeseries-data">Retrieve Telemetry station timeseries data<a class="anchor" aria-label="anchor" href="#retrieve-telemetry-station-timeseries-data"></a>
 </h2>
 <p>Use <code>get_</code> function to make requests to the CDSS API and return the results in a tidy dataframe.</p>
-<p>First, we specify the <strong>telemetry site</strong> we want data for. We can then select one of the <strong>parameters</strong> from the reference table created above. Lastly, enter a <strong>date range</strong> and the <strong>temporal resolution</strong> for the desired data (“day”, “hour”, or “raw”).</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p>We’ll use the station abbreviations from the <code>get_telemetry_stations</code> call, a parameter from the <code><a href="reference/get_reference_tbl.html">get_reference_tbl()</a></code> call, select a starting and ending date and a temporal resolution.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Daily discharge at "CLAFTCCO" telemetry station</span></span>
 <span><span class="va">discharge_ts</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_telemetry_ts.html">get_telemetry_ts</a></span><span class="op">(</span></span>
-<span>                      abbrev              <span class="op">=</span> <span class="st">"CLAFTCCO"</span>,</span>
+<span>                      abbrev              <span class="op">=</span> <span class="va">stations</span><span class="op">$</span><span class="va">abbrev</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
 <span>                      parameter           <span class="op">=</span> <span class="va">telemetry_params</span><span class="op">$</span><span class="va">parameter</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span>,</span>
 <span>                      start_date          <span class="op">=</span> <span class="st">"2015-01-01"</span>,</span>
 <span>                      end_date            <span class="op">=</span> <span class="st">"2022-01-01"</span>,</span>
-<span>                      timescale           <span class="op">=</span> <span class="st">"day"</span>,</span>
-<span>                      include_third_party <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>                      timescale           <span class="op">=</span> <span class="st">"day"</span></span>
 <span>                               <span class="op">)</span></span>
 <span><span class="co">#&gt; Downloading data from CDSS API...</span></span>
-<span><span class="co">#&gt; Telemetry station abbreviation: CLAFTCCO</span></span>
+<span><span class="co">#&gt; Telemetry station abbreviation: ANDDITCO</span></span>
 <span><span class="co">#&gt; Parameter: DISCHRG</span></span>
 <span><span class="co">#&gt; Timescale: day</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">discharge_ts</span>, <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      abbrev parameter                date value unit   datetime timescale</span></span>
-<span><span class="co">#&gt; 1  CLAFTCCO   DISCHRG 2015-01-01 00:00:00     0  cfs 2015-01-01       day</span></span>
-<span><span class="co">#&gt; 2  CLAFTCCO   DISCHRG 2015-01-02 00:00:00     0  cfs 2015-01-02       day</span></span>
-<span><span class="co">#&gt; 3  CLAFTCCO   DISCHRG 2015-01-03 00:00:00     0  cfs 2015-01-03       day</span></span>
-<span><span class="co">#&gt; 4  CLAFTCCO   DISCHRG 2015-01-04 00:00:00     0  cfs 2015-01-04       day</span></span>
-<span><span class="co">#&gt; 5  CLAFTCCO   DISCHRG 2015-01-05 00:00:00     0  cfs 2015-01-05       day</span></span>
-<span><span class="co">#&gt; 6  CLAFTCCO   DISCHRG 2015-01-06 00:00:00     0  cfs 2015-01-06       day</span></span>
-<span><span class="co">#&gt; 7  CLAFTCCO   DISCHRG 2015-01-07 00:00:00     0  cfs 2015-01-07       day</span></span>
-<span><span class="co">#&gt; 8  CLAFTCCO   DISCHRG 2015-01-08 00:00:00     0  cfs 2015-01-08       day</span></span>
-<span><span class="co">#&gt; 9  CLAFTCCO   DISCHRG 2015-01-09 00:00:00     0  cfs 2015-01-09       day</span></span>
-<span><span class="co">#&gt; 10 CLAFTCCO   DISCHRG 2015-01-10 00:00:00     0  cfs 2015-01-10       day</span></span></code></pre></div>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="va">discharge_ts</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 572 × 7</span></span>
+<span><span class="co">#&gt;    abbrev   parameter date               value unit  datetime            times…¹</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt; &lt;dttm&gt;              &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt;  1 ANDDITCO DISCHRG   2020-05-07 00:00:…  3.05 cfs   2020-05-07 00:00:00 day    </span></span>
+<span><span class="co">#&gt;  2 ANDDITCO DISCHRG   2020-05-08 00:00:…  3.04 cfs   2020-05-08 00:00:00 day    </span></span>
+<span><span class="co">#&gt;  3 ANDDITCO DISCHRG   2020-05-09 00:00:…  2.98 cfs   2020-05-09 00:00:00 day    </span></span>
+<span><span class="co">#&gt;  4 ANDDITCO DISCHRG   2020-05-10 00:00:…  2.95 cfs   2020-05-10 00:00:00 day    </span></span>
+<span><span class="co">#&gt;  5 ANDDITCO DISCHRG   2020-05-11 00:00:…  2.95 cfs   2020-05-11 00:00:00 day    </span></span>
+<span><span class="co">#&gt;  6 ANDDITCO DISCHRG   2020-05-12 00:00:…  2.95 cfs   2020-05-12 00:00:00 day    </span></span>
+<span><span class="co">#&gt;  7 ANDDITCO DISCHRG   2020-05-13 00:00:…  2.95 cfs   2020-05-13 00:00:00 day    </span></span>
+<span><span class="co">#&gt;  8 ANDDITCO DISCHRG   2020-05-14 00:00:…  2.95 cfs   2020-05-14 00:00:00 day    </span></span>
+<span><span class="co">#&gt;  9 ANDDITCO DISCHRG   2020-05-15 00:00:…  2.95 cfs   2020-05-15 00:00:00 day    </span></span>
+<span><span class="co">#&gt; 10 ANDDITCO DISCHRG   2020-05-16 00:00:…  2.95 cfs   2020-05-16 00:00:00 day    </span></span>
+<span><span class="co">#&gt; # … with 562 more rows, and abbreviated variable name ¹​timescale</span></span></code></pre></div>
 <p>And a plot of the daily discharge…</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot daily discharge at "CLAFTCCO"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">discharge_ts</span><span class="op">$</span><span class="va">value</span><span class="op">~</span><span class="va">discharge_ts</span><span class="op">$</span><span class="va">datetime</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot_ts-1.png" width="100%" style="display: block; margin: auto;"></p>
@@ -198,7 +239,7 @@
 <li><a href="https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-waterlevels-wells" class="external-link">api/v2/groundwater/waterlevels/wells</a></li>
 <li><a href="https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-geophysicallogs-wells" class="external-link">api/v2/groundwater/geophysicallogs/wells</a></li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Use type = "wellmeasurements" to request wellmeasurements endpoint (api/v2/groundwater/waterlevels/wellmeasurements)</span></span>
 <span><span class="va">well_measure</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_groundwater.html">get_groundwater</a></span><span class="op">(</span></span>
 <span>  type    <span class="op">=</span> <span class="st">"wellmeasurements"</span>,</span>
@@ -207,99 +248,36 @@
 <span><span class="co">#&gt; Downloading data from CDSS API...</span></span>
 <span><span class="co">#&gt; Groundwater well measurements</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">well_measure</span>, <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    well_id            well_name division water_district county</span></span>
-<span><span class="co">#&gt; 1     1274 LSP-020  03N6618CAC2        1              2   WELD</span></span>
-<span><span class="co">#&gt; 2     1274 LSP-020  03N6618CAC2        1              2   WELD</span></span>
-<span><span class="co">#&gt; 3     1274 LSP-020  03N6618CAC2        1              2   WELD</span></span>
-<span><span class="co">#&gt; 4     1274 LSP-020  03N6618CAC2        1              2   WELD</span></span>
-<span><span class="co">#&gt; 5     1274 LSP-020  03N6618CAC2        1              2   WELD</span></span>
-<span><span class="co">#&gt; 6     1274 LSP-020  03N6618CAC2        1              2   WELD</span></span>
-<span><span class="co">#&gt; 7     1274 LSP-020  03N6618CAC2        1              2   WELD</span></span>
-<span><span class="co">#&gt; 8     1274 LSP-020  03N6618CAC2        1              2   WELD</span></span>
-<span><span class="co">#&gt; 9     1274 LSP-020  03N6618CAC2        1              2   WELD</span></span>
-<span><span class="co">#&gt; 10    1274 LSP-020  03N6618CAC2        1              2   WELD</span></span>
-<span><span class="co">#&gt;    management_district designated_basin                 publication</span></span>
-<span><span class="co">#&gt; 1                   NA               NA LOWER SOUTH PLATTE ALLUVIUM</span></span>
-<span><span class="co">#&gt; 2                   NA               NA LOWER SOUTH PLATTE ALLUVIUM</span></span>
-<span><span class="co">#&gt; 3                   NA               NA LOWER SOUTH PLATTE ALLUVIUM</span></span>
-<span><span class="co">#&gt; 4                   NA               NA LOWER SOUTH PLATTE ALLUVIUM</span></span>
-<span><span class="co">#&gt; 5                   NA               NA LOWER SOUTH PLATTE ALLUVIUM</span></span>
-<span><span class="co">#&gt; 6                   NA               NA LOWER SOUTH PLATTE ALLUVIUM</span></span>
-<span><span class="co">#&gt; 7                   NA               NA LOWER SOUTH PLATTE ALLUVIUM</span></span>
-<span><span class="co">#&gt; 8                   NA               NA LOWER SOUTH PLATTE ALLUVIUM</span></span>
-<span><span class="co">#&gt; 9                   NA               NA LOWER SOUTH PLATTE ALLUVIUM</span></span>
-<span><span class="co">#&gt; 10                  NA               NA LOWER SOUTH PLATTE ALLUVIUM</span></span>
-<span><span class="co">#&gt;       measurement_date depth_to_water measuring_point_above_land_surface</span></span>
-<span><span class="co">#&gt; 1  1989-05-11 00:00:00          23.30                                  0</span></span>
-<span><span class="co">#&gt; 2  1989-10-16 00:00:00          21.43                                  0</span></span>
-<span><span class="co">#&gt; 3  1990-03-26 00:00:00          22.64                                  0</span></span>
-<span><span class="co">#&gt; 4  1990-10-10 00:00:00          21.77                                  0</span></span>
-<span><span class="co">#&gt; 5  1991-04-01 00:00:00          23.25                                  0</span></span>
-<span><span class="co">#&gt; 6  1991-10-18 00:00:00          21.10                                  0</span></span>
-<span><span class="co">#&gt; 7  1992-03-16 00:00:00          22.62                                  0</span></span>
-<span><span class="co">#&gt; 8  1992-03-23 00:00:00          22.71                                  0</span></span>
-<span><span class="co">#&gt; 9  1992-11-17 00:00:00          22.69                                  0</span></span>
-<span><span class="co">#&gt; 10 1993-03-16 00:00:00          22.62                                  0</span></span>
-<span><span class="co">#&gt;    depth_water_below_land_surface elevation_of_water delta data_source</span></span>
-<span><span class="co">#&gt; 1                           23.30            4786.06    NA         DWR</span></span>
-<span><span class="co">#&gt; 2                           21.43            4787.93 -1.87         DWR</span></span>
-<span><span class="co">#&gt; 3                           22.64            4786.72  1.21         DWR</span></span>
-<span><span class="co">#&gt; 4                           21.77            4787.59 -0.87         DWR</span></span>
-<span><span class="co">#&gt; 5                           23.25            4786.11  1.48         DWR</span></span>
-<span><span class="co">#&gt; 6                           21.10            4788.26 -2.15         DWR</span></span>
-<span><span class="co">#&gt; 7                           22.62            4786.74  1.52         DWR</span></span>
-<span><span class="co">#&gt; 8                           22.71            4786.65  0.09         DWR</span></span>
-<span><span class="co">#&gt; 9                           22.69            4786.67 -0.02         DWR</span></span>
-<span><span class="co">#&gt; 10                          22.62            4786.74 -0.07         DWR</span></span>
-<span><span class="co">#&gt;    published            modified   datetime</span></span>
-<span><span class="co">#&gt; 1        Yes 2015-12-17 11:22:16 1989-05-11</span></span>
-<span><span class="co">#&gt; 2        Yes 2015-12-17 11:22:16 1989-10-16</span></span>
-<span><span class="co">#&gt; 3        Yes 2015-12-17 11:22:16 1990-03-26</span></span>
-<span><span class="co">#&gt; 4        Yes 2015-12-17 11:22:16 1990-10-10</span></span>
-<span><span class="co">#&gt; 5        Yes 2015-12-17 11:22:16 1991-04-01</span></span>
-<span><span class="co">#&gt; 6        Yes 2015-12-17 11:22:16 1991-10-18</span></span>
-<span><span class="co">#&gt; 7         No 2015-12-17 11:22:16 1992-03-16</span></span>
-<span><span class="co">#&gt; 8         No 2015-12-17 11:22:16 1992-03-23</span></span>
-<span><span class="co">#&gt; 9         No 2015-12-17 11:22:16 1992-11-17</span></span>
-<span><span class="co">#&gt; 10       Yes 2015-12-17 11:22:16 1993-03-16</span></span></code></pre></div>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="va">well_measure</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1,567 × 18</span></span>
+<span><span class="co">#&gt;    well_id well_name      divis…¹ water…² county manag…³ desig…⁴ publi…⁵ measu…⁶</span></span>
+<span><span class="co">#&gt;      &lt;int&gt; &lt;chr&gt;            &lt;int&gt;   &lt;int&gt; &lt;chr&gt;  &lt;lgl&gt;   &lt;lgl&gt;   &lt;chr&gt;   &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt;  1    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1989-0…</span></span>
+<span><span class="co">#&gt;  2    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1989-1…</span></span>
+<span><span class="co">#&gt;  3    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1990-0…</span></span>
+<span><span class="co">#&gt;  4    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1990-1…</span></span>
+<span><span class="co">#&gt;  5    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1991-0…</span></span>
+<span><span class="co">#&gt;  6    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1991-1…</span></span>
+<span><span class="co">#&gt;  7    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1992-0…</span></span>
+<span><span class="co">#&gt;  8    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1992-0…</span></span>
+<span><span class="co">#&gt;  9    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1992-1…</span></span>
+<span><span class="co">#&gt; 10    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1993-0…</span></span>
+<span><span class="co">#&gt; # … with 1,557 more rows, 9 more variables: depth_to_water &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   measuring_point_above_land_surface &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   depth_water_below_land_surface &lt;dbl&gt;, elevation_of_water &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   delta &lt;dbl&gt;, data_source &lt;chr&gt;, published &lt;chr&gt;, modified &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   datetime &lt;dttm&gt;, and abbreviated variable names ¹​division, ²​water_district,</span></span>
+<span><span class="co">#&gt; #   ³​management_district, ⁴​designated_basin, ⁵​publication, ⁶​measurement_date</span></span></code></pre></div>
 <p>And a plot of the depth to water over time…</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot depth to water</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">well_measure</span><span class="op">$</span><span class="va">depth_to_water</span><span class="op">~</span><span class="va">well_measure</span><span class="op">$</span><span class="va">datetime</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot_gw-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p><br><br></p>
 <blockquote><p><strong>More functions for more endpoints coming soon!</strong></p></blockquote>
-<p>Identify station information and locations</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># stations &lt;- cdssr::get_structures(</span></span>
-<span><span class="co">#   water_district = 6</span></span>
-<span><span class="co">#   )</span></span>
-<span><span class="co"># stations</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># abbrevs &lt;-</span></span>
-<span><span class="co">#   stations %&gt;% </span></span>
-<span><span class="co">#   dplyr::filter(county == "BOULDER") %&gt;% </span></span>
-<span><span class="co">#   na.omit() %&gt;% </span></span>
-<span><span class="co">#   .$abbrev</span></span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># </span></span>
-<span><span class="co"># sw_ts &lt;- cdssr::get_sw_ts(</span></span>
-<span><span class="co">#   timescale           = "day",</span></span>
-<span><span class="co">#   start_date          = "2015-01-01",</span></span>
-<span><span class="co">#   end_date            = "2022-01-01",</span></span>
-<span><span class="co">#   abbrev = abbrevs</span></span>
-<span><span class="co">#   )</span></span>
-<span><span class="co"># discharge_ts &lt;- cdssr::get_telemetry_ts(</span></span>
-<span><span class="co">#                       abbrev              = abbrevs[1:4],</span></span>
-<span><span class="co">#                       parameter           = telemetry_params$parameter[7],</span></span>
-<span><span class="co">#                       start_date          = "2015-01-01",</span></span>
-<span><span class="co">#                       end_date            = "2022-01-01",</span></span>
-<span><span class="co">#                       timescale           = "day",</span></span>
-<span><span class="co">#                       include_third_party = TRUE</span></span>
-<span><span class="co">#                                )</span></span></code></pre></div>
 </div>
 </div>
+
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
