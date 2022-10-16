@@ -103,6 +103,42 @@ return_fields
 
 <br>
 
+# Example: Telemetry site data
+
+## Identify station locations and information
+
+We can use the `_stations` functions to identify what stations are
+within a given AOI, water district, division, or county.
+
+``` r
+stations <- cdssr::get_telemetry_stations(
+  water_district = 6
+  )
+#> Retrieving telemetry station data from CDSS API...
+
+dplyr::tibble(stations)
+#> # A tibble: 70 × 35
+#>    divis…¹ water…² county stati…³ data_…⁴ data_…⁵ water…⁶ gnis_id strea…⁷ abbrev
+#>      <int>   <int> <chr>  <chr>   <chr>   <chr>   <chr>   <chr>     <dbl> <chr> 
+#>  1       1       6 BOULD… "ANDER… DWR     Co. Di… BOULDE… 001783…   23.6  ANDDI…
+#>  2       1       6 BOULD… "BASEL… DWR     Co. Di… BOULDE… 001783…   19.2  BASOU…
+#>  3       1       6 BOULD… "BOULD… NCWCD   Northe… BOULDE… 001783…   15.5  BCSCB…
+#>  4       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BLDLH…
+#>  5       1       6 BOULD… "BUTTE… DWR     Co. Di… BOULDE… 001783…   18.6  BMLDI…
+#>  6       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…    9.52 BOC10…
+#>  7       1       6 BOULD… "MIDDL… DWR     Co. Di… MIDDLE… 001785…    5.92 BOCBB…
+#>  8       1       6 BOULD… "SOUTH… DWR     Co. Di… SOUTH … 001809…   16.5  BOCBG…
+#>  9       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BOCBR…
+#> 10       1       6 BOULD… "SOUTH… DWR     Co. Di… SOUTH … 001809…   12.1  BOCEL…
+#> # … with 60 more rows, 25 more variables: usgs_station_id <chr>,
+#> #   station_status <chr>, station_type <chr>, structure_type <chr>,
+#> #   meas_date_time <dttm>, parameter <chr>, stage <dbl>, meas_value <dbl>,
+#> #   units <chr>, flag_a <chr>, flag_b <chr>, contr_area <dbl>,
+#> #   drain_area <dbl>, huc10 <chr>, utm_x <dbl>, utm_y <dbl>, latitude <dbl>,
+#> #   longitude <dbl>, location_accuracy <chr>, wdid <chr>, modified <chr>,
+#> #   more_information <chr>, station_por_start <dttm>, station_por_end <dttm>, …
+```
+
 ## Retrieve Reference Tables to help generate queries
 
 The `get_reference_tbl()` function will return information that makes it
@@ -121,18 +157,21 @@ telemetry_params <- cdssr::get_reference_tbl(
   )
 #> Retrieving telemetry parameter reference table from CDSS API...
 
-head(telemetry_params, 10)
+dplyr::tibble(telemetry_params)
+#> # A tibble: 45 × 1
 #>    parameter
-#> 1    AIRTEMP
-#> 2      BAR_P
-#> 3    BATTERY
-#> 4       COND
-#> 5         D1
-#> 6         D2
-#> 7    DISCHRG
-#> 8   DISCHRG1
-#> 9   DISCHRG2
-#> 10  DISCHRG3
+#>    <chr>    
+#>  1 AIRTEMP  
+#>  2 BAR_P    
+#>  3 BATTERY  
+#>  4 COND     
+#>  5 D1       
+#>  6 D2       
+#>  7 DISCHRG  
+#>  8 DISCHRG1 
+#>  9 DISCHRG2 
+#> 10 DISCHRG3 
+#> # … with 35 more rows
 ```
 
 ## Retrieve Telemetry station timeseries data
@@ -140,38 +179,39 @@ head(telemetry_params, 10)
 Use `get_` function to make requests to the CDSS API and return the
 results in a tidy dataframe.
 
-First, we specify the **telemetry site** we want data for. We can then
-select one of the **parameters** from the reference table created above.
-Lastly, enter a **date range** and the **temporal resolution** for the
-desired data (“day”, “hour”, or “raw”).
+We’ll use the station abbreviations from the `get_telemetry_stations`
+call, a parameter from the `get_reference_tbl()` call, select a starting
+and ending date and a temporal resolution.
 
 ``` r
 # Daily discharge at "CLAFTCCO" telemetry station
 discharge_ts <- cdssr::get_telemetry_ts(
-                      abbrev              = "CLAFTCCO",
+                      abbrev              = stations$abbrev[1],
                       parameter           = telemetry_params$parameter[7],
                       start_date          = "2015-01-01",
                       end_date            = "2022-01-01",
-                      timescale           = "day",
-                      include_third_party = TRUE
+                      timescale           = "day"
                                )
 #> Downloading data from CDSS API...
-#> Telemetry station abbreviation: CLAFTCCO
+#> Telemetry station abbreviation: ANDDITCO
 #> Parameter: DISCHRG
 #> Timescale: day
 
-head(discharge_ts, 10)
-#>      abbrev parameter                date value unit   datetime timescale
-#> 1  CLAFTCCO   DISCHRG 2015-01-01 00:00:00     0  cfs 2015-01-01       day
-#> 2  CLAFTCCO   DISCHRG 2015-01-02 00:00:00     0  cfs 2015-01-02       day
-#> 3  CLAFTCCO   DISCHRG 2015-01-03 00:00:00     0  cfs 2015-01-03       day
-#> 4  CLAFTCCO   DISCHRG 2015-01-04 00:00:00     0  cfs 2015-01-04       day
-#> 5  CLAFTCCO   DISCHRG 2015-01-05 00:00:00     0  cfs 2015-01-05       day
-#> 6  CLAFTCCO   DISCHRG 2015-01-06 00:00:00     0  cfs 2015-01-06       day
-#> 7  CLAFTCCO   DISCHRG 2015-01-07 00:00:00     0  cfs 2015-01-07       day
-#> 8  CLAFTCCO   DISCHRG 2015-01-08 00:00:00     0  cfs 2015-01-08       day
-#> 9  CLAFTCCO   DISCHRG 2015-01-09 00:00:00     0  cfs 2015-01-09       day
-#> 10 CLAFTCCO   DISCHRG 2015-01-10 00:00:00     0  cfs 2015-01-10       day
+dplyr::tibble(discharge_ts)
+#> # A tibble: 572 × 7
+#>    abbrev   parameter date               value unit  datetime            times…¹
+#>    <chr>    <chr>     <chr>              <dbl> <chr> <dttm>              <chr>  
+#>  1 ANDDITCO DISCHRG   2020-05-07 00:00:…  3.05 cfs   2020-05-07 00:00:00 day    
+#>  2 ANDDITCO DISCHRG   2020-05-08 00:00:…  3.04 cfs   2020-05-08 00:00:00 day    
+#>  3 ANDDITCO DISCHRG   2020-05-09 00:00:…  2.98 cfs   2020-05-09 00:00:00 day    
+#>  4 ANDDITCO DISCHRG   2020-05-10 00:00:…  2.95 cfs   2020-05-10 00:00:00 day    
+#>  5 ANDDITCO DISCHRG   2020-05-11 00:00:…  2.95 cfs   2020-05-11 00:00:00 day    
+#>  6 ANDDITCO DISCHRG   2020-05-12 00:00:…  2.95 cfs   2020-05-12 00:00:00 day    
+#>  7 ANDDITCO DISCHRG   2020-05-13 00:00:…  2.95 cfs   2020-05-13 00:00:00 day    
+#>  8 ANDDITCO DISCHRG   2020-05-14 00:00:…  2.95 cfs   2020-05-14 00:00:00 day    
+#>  9 ANDDITCO DISCHRG   2020-05-15 00:00:…  2.95 cfs   2020-05-15 00:00:00 day    
+#> 10 ANDDITCO DISCHRG   2020-05-16 00:00:…  2.95 cfs   2020-05-16 00:00:00 day    
+#> # … with 562 more rows, and abbreviated variable name ¹​timescale
 ```
 
 And a plot of the daily discharge…
@@ -205,62 +245,26 @@ well_measure <- cdssr::get_groundwater(
 #> Downloading data from CDSS API...
 #> Groundwater well measurements
 
-head(well_measure, 10)
-#>    well_id            well_name division water_district county
-#> 1     1274 LSP-020  03N6618CAC2        1              2   WELD
-#> 2     1274 LSP-020  03N6618CAC2        1              2   WELD
-#> 3     1274 LSP-020  03N6618CAC2        1              2   WELD
-#> 4     1274 LSP-020  03N6618CAC2        1              2   WELD
-#> 5     1274 LSP-020  03N6618CAC2        1              2   WELD
-#> 6     1274 LSP-020  03N6618CAC2        1              2   WELD
-#> 7     1274 LSP-020  03N6618CAC2        1              2   WELD
-#> 8     1274 LSP-020  03N6618CAC2        1              2   WELD
-#> 9     1274 LSP-020  03N6618CAC2        1              2   WELD
-#> 10    1274 LSP-020  03N6618CAC2        1              2   WELD
-#>    management_district designated_basin                 publication
-#> 1                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
-#> 2                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
-#> 3                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
-#> 4                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
-#> 5                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
-#> 6                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
-#> 7                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
-#> 8                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
-#> 9                   NA               NA LOWER SOUTH PLATTE ALLUVIUM
-#> 10                  NA               NA LOWER SOUTH PLATTE ALLUVIUM
-#>       measurement_date depth_to_water measuring_point_above_land_surface
-#> 1  1989-05-11 00:00:00          23.30                                  0
-#> 2  1989-10-16 00:00:00          21.43                                  0
-#> 3  1990-03-26 00:00:00          22.64                                  0
-#> 4  1990-10-10 00:00:00          21.77                                  0
-#> 5  1991-04-01 00:00:00          23.25                                  0
-#> 6  1991-10-18 00:00:00          21.10                                  0
-#> 7  1992-03-16 00:00:00          22.62                                  0
-#> 8  1992-03-23 00:00:00          22.71                                  0
-#> 9  1992-11-17 00:00:00          22.69                                  0
-#> 10 1993-03-16 00:00:00          22.62                                  0
-#>    depth_water_below_land_surface elevation_of_water delta data_source
-#> 1                           23.30            4786.06    NA         DWR
-#> 2                           21.43            4787.93 -1.87         DWR
-#> 3                           22.64            4786.72  1.21         DWR
-#> 4                           21.77            4787.59 -0.87         DWR
-#> 5                           23.25            4786.11  1.48         DWR
-#> 6                           21.10            4788.26 -2.15         DWR
-#> 7                           22.62            4786.74  1.52         DWR
-#> 8                           22.71            4786.65  0.09         DWR
-#> 9                           22.69            4786.67 -0.02         DWR
-#> 10                          22.62            4786.74 -0.07         DWR
-#>    published            modified   datetime
-#> 1        Yes 2015-12-17 11:22:16 1989-05-11
-#> 2        Yes 2015-12-17 11:22:16 1989-10-16
-#> 3        Yes 2015-12-17 11:22:16 1990-03-26
-#> 4        Yes 2015-12-17 11:22:16 1990-10-10
-#> 5        Yes 2015-12-17 11:22:16 1991-04-01
-#> 6        Yes 2015-12-17 11:22:16 1991-10-18
-#> 7         No 2015-12-17 11:22:16 1992-03-16
-#> 8         No 2015-12-17 11:22:16 1992-03-23
-#> 9         No 2015-12-17 11:22:16 1992-11-17
-#> 10       Yes 2015-12-17 11:22:16 1993-03-16
+dplyr::tibble(well_measure)
+#> # A tibble: 1,567 × 18
+#>    well_id well_name      divis…¹ water…² county manag…³ desig…⁴ publi…⁵ measu…⁶
+#>      <int> <chr>            <int>   <int> <chr>  <lgl>   <lgl>   <chr>   <chr>  
+#>  1    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1989-0…
+#>  2    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1989-1…
+#>  3    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1990-0…
+#>  4    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1990-1…
+#>  5    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1991-0…
+#>  6    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1991-1…
+#>  7    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1992-0…
+#>  8    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1992-0…
+#>  9    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1992-1…
+#> 10    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1993-0…
+#> # … with 1,557 more rows, 9 more variables: depth_to_water <dbl>,
+#> #   measuring_point_above_land_surface <dbl>,
+#> #   depth_water_below_land_surface <dbl>, elevation_of_water <dbl>,
+#> #   delta <dbl>, data_source <chr>, published <chr>, modified <chr>,
+#> #   datetime <dttm>, and abbreviated variable names ¹​division, ²​water_district,
+#> #   ³​management_district, ⁴​designated_basin, ⁵​publication, ⁶​measurement_date
 ```
 
 And a plot of the depth to water over time…
@@ -275,38 +279,3 @@ plot(well_measure$depth_to_water~well_measure$datetime, type = "l")
 <br> <br>
 
 > **More functions for more endpoints coming soon!**
-
-Identify station information and locations
-
-``` r
-# stations <- cdssr::get_structures(
-#   water_district = 6
-#   )
-# stations
-```
-
-``` r
-# abbrevs <-
-#   stations %>% 
-#   dplyr::filter(county == "BOULDER") %>% 
-#   na.omit() %>% 
-#   .$abbrev
-```
-
-``` r
-# 
-# sw_ts <- cdssr::get_sw_ts(
-#   timescale           = "day",
-#   start_date          = "2015-01-01",
-#   end_date            = "2022-01-01",
-#   abbrev = abbrevs
-#   )
-# discharge_ts <- cdssr::get_telemetry_ts(
-#                       abbrev              = abbrevs[1:4],
-#                       parameter           = telemetry_params$parameter[7],
-#                       start_date          = "2015-01-01",
-#                       end_date            = "2022-01-01",
-#                       timescale           = "day",
-#                       include_third_party = TRUE
-#                                )
-```

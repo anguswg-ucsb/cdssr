@@ -78,6 +78,18 @@ return_fields
 
 <br>
 
+# Example: Telemetry site data
+
+## Identify station locations and information 
+We can use the `_stations` functions to identify what stations are within a given AOI, water district, division, or county.
+```{r}
+stations <- cdssr::get_telemetry_stations(
+  water_district = 6
+  )
+
+dplyr::tibble(stations)
+```
+
 ## Retrieve Reference Tables to help generate queries
 The `get_reference_tbl()` function will return information that makes it easier to know what information should be supplied to the data retrieval functions in `cdssr`. For more information on the exact reference tables click [here](https://dwr.state.co.us/rest/get/help#Datasets&#ReferenceTablesController&#gettingstarted&#jsonxml).
 
@@ -88,25 +100,24 @@ telemetry_params <- cdssr::get_reference_tbl(
   table_name = "telemetryparams"
   )
 
-head(telemetry_params, 10)
+dplyr::tibble(telemetry_params)
 ```
 
 ## Retrieve Telemetry station timeseries data 
 Use `get_` function to make requests to the CDSS API and return the results in a tidy dataframe.
 
-First, we specify the **telemetry site** we want data for. We can then select one of the **parameters** from the reference table created above. Lastly, enter a **date range** and the **temporal resolution** for the desired data ("day", "hour", or "raw").
+We'll use the station abbreviations from the `get_telemetry_stations` call, a parameter from the `get_reference_tbl()` call, select a starting and ending date and a temporal resolution. 
 ```{r get_ts, eval=TRUE, echo=TRUE}
 # Daily discharge at "CLAFTCCO" telemetry station
 discharge_ts <- cdssr::get_telemetry_ts(
-                      abbrev              = "CLAFTCCO",
+                      abbrev              = stations$abbrev[1],
                       parameter           = telemetry_params$parameter[7],
                       start_date          = "2015-01-01",
                       end_date            = "2022-01-01",
-                      timescale           = "day",
-                      include_third_party = TRUE
+                      timescale           = "day"
                                )
 
-head(discharge_ts, 10)
+dplyr::tibble(discharge_ts)
 ```
 
 And a plot of the daily discharge...
@@ -134,7 +145,7 @@ well_measure <- cdssr::get_groundwater(
   wellid  = 1274
   )
 
-head(well_measure, 10)
+dplyr::tibble(well_measure)
 ```
 
 And a plot of the depth to water over time...
@@ -149,41 +160,10 @@ plot(well_measure$depth_to_water~well_measure$datetime, type = "l")
 > **More functions for more endpoints coming soon!**
 
 
-Identify station information and locations 
-```{r}
-# stations <- cdssr::get_structures(
-#   water_district = 6
-#   )
-# stations
-```
-
-```{r}
-# abbrevs <-
-#   stations %>% 
-#   dplyr::filter(county == "BOULDER") %>% 
-#   na.omit() %>% 
-#   .$abbrev
-```
 
 
-```{r}
-# 
-# sw_ts <- cdssr::get_sw_ts(
-#   timescale           = "day",
-#   start_date          = "2015-01-01",
-#   end_date            = "2022-01-01",
-#   abbrev = abbrevs
-#   )
-# discharge_ts <- cdssr::get_telemetry_ts(
-#                       abbrev              = abbrevs[1:4],
-#                       parameter           = telemetry_params$parameter[7],
-#                       start_date          = "2015-01-01",
-#                       end_date            = "2022-01-01",
-#                       timescale           = "day",
-#                       include_third_party = TRUE
-#                                )
 
-```
+
 
 
 
