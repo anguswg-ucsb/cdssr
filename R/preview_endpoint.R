@@ -16,8 +16,17 @@ preview_endpoint <- function(endpoint_url = NULL) {
 
   }
 
+  # Construct URL
+  endpoint_url  <- url(
+                    paste0(endpoint_url),
+                    "rb"
+                    )
+
   # read HTML from API Parameter Help page
   field_page <- rvest::read_html(endpoint_url)
+
+  # close URL connection
+  close(endpoint_url)
 
   # extract help table detailing endpoint parameters
   field_tbl <-

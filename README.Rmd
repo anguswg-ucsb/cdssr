@@ -1,5 +1,6 @@
 ---
 output: github_document
+always_allow_html: true
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -7,7 +8,7 @@ output: github_document
 ```{r, include = FALSE}
 library(knitr)
 library(kableExtra)
-library(DT)
+
 knitr::opts_chunk$set(
   collapse    = TRUE,
   comment     = "#>",
@@ -17,7 +18,19 @@ knitr::opts_chunk$set(
 )
 ```
 
-# cdssr <img src="man/figures/cdssr_logo.png" align="right" width="25%" />
+<style>
+code {
+    padding: 0;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    margin: 0;
+    font-size: 85%;
+    background-color: #e9f8f3;
+    border-radius: 3px;
+}
+</style>
+
+# **cdssr** <img src="man/figures/cdssr_logo.png" align="right" width="25%" />
 
 <!-- badges: start -->
 [![Dependencies](https://img.shields.io/badge/dependencies-9/02-orange?style=flat)](#)
@@ -35,7 +48,7 @@ knitr::opts_chunk$set(
 
 <hr>
 
-The goal of `cdssr` is to provide functions that help R users to navigate, explore, and make requests to the [CDSS REST API web service](https://dwr.state.co.us/Rest/GET/Help). 
+The goal of **`cdssr`** is to provide functions that help R users to navigate, explore, and make requests to the [CDSS REST API web service](https://dwr.state.co.us/Rest/GET/Help). 
 
 The Colorado's Decision Support Systems (CDSS) is a water management system created and developed by the [Colorado Water Conservation Board (CWCB)](https://cwcb.colorado.gov/) and the [Colorado Division of Water Resources (DWR)](https://dwr.colorado.gov/). 
 
@@ -45,66 +58,72 @@ Thank you to those at CWCB and DWR for providing an accessible and well document
 
 ## Installation
 
-You can install the development version of `cdssr` from [GitHub](https://github.com/) with:
+You can install the development version of **`cdssr`** from [GitHub](https://github.com/) with:
 
 ```{r, eval=FALSE, echo=TRUE}
 # install.packages("devtools")
 devtools::install_github("anguswg-ucsb/cdssr")
 ```
 
-## Browse avaliable endpoints
-
-To browse all the available endpoints shown [here](https://dwr.state.co.us/Rest/GET/Help) use `browse_api()`.
-
 ```{r, eval=TRUE, echo=TRUE}
 # Load package
 library(cdssr)
 ```
 
-```{r browse_api_ex, eval=TRUE, echo=TRUE}
-# View the catalog of avaliable endpoints
-catalog <- cdssr::browse_api()
+## **Avaliable endpoints**
+Below is a table of all of the CDSS API endpoints **`cdssr`** has functions for. 
 
-# catalog
-dplyr::tibble(catalog)
-```
+
+|**-** |**Function**                    | **Description**                                                    | **Endpoint**                                 |
+|------|--------------------------------| -------------------------------------------------------------------|----------------------------------------------|
+|1     | **get_admin_calls()**          | Returns list of active/historic administrative calls               | [administrativecalls/active](https://dwr.state.co.us/rest/get/help#Datasets&#AdministrativeCallsController&https://dnrweblink.state.co.us/dwr/ElectronicFile.aspx?docid=3600964&dbid=0&#gettingstarted&#jsonxml)            |
+|2     | **get_structures()**           | Returns list of administrative structures                          | [structures](https://dwr.state.co.us/rest/get/help#Datasets&#StructuresController&#gettingstarted&#jsonxml)                            |
+|3     | **get_structures_divrec()**    | Returns list of diversion/release/stage records based on WDID      | [structures/divrec/](https://dwr.state.co.us/rest/get/help#Datasets&#DiversionRecordsController&https://dnrweblink.state.co.us/dwr/ElectronicFile.aspx?docid=3600965&dbid=0&#gettingstarted&#jsonxml)              |
+|4     | **get_climate_stations()**     | Returns Climate Stations                                           | [climatedata/climatestations](https://dwr.state.co.us/rest/get/help#Datasets&#ClimateStationsController&https://www.ncdc.noaa.gov/cdo-web/webservices&https://www.northernwater.org/our-data/weather-data&#gettingstarted&#jsonxml)           |
+|5     | **get_climate_ts()**           | Returns Climate Station Time Series (day, month, year)             | [climatedata/climatestationts](https://dwr.state.co.us/rest/get/help#Datasets&#ClimateStationsController&https://www.ncdc.noaa.gov/cdo-web/webservices&https://www.northernwater.org/our-data/weather-data&#gettingstarted&#jsonxml)       |
+|6     | **get_groundwater()**          | Returns GeophysicalLogsWell from filters           | [groundwater/geophysicallogs/](https://dwr.state.co.us/rest/get/help#Datasets&#GroundwaterGeophysicalLogsController&#gettingstarted&#jsonxml)                          |
+|7     | **get_groundwater()**          | Returns WaterLevelsWell from filters           | [groundwater/waterlevels/](https://dwr.state.co.us/rest/get/help#Datasets&#GroundwaterLevelsController&#gettingstarted&#jsonxml)                          |
+|8     | **get_reference_tbl()**        | Returns reference tables list                                      | [referencetables/](https://dwr.state.co.us/rest/get/help#Datasets&#ReferenceTablesController&#gettingstarted&#jsonxml)                      |
+|9     | **get_sw_stations()**          | Returns Surface Water Station info                                 | [surfacewater/surfacewaterstations](https://dwr.state.co.us/rest/get/help#Datasets&#SurfaceWaterController&#gettingstarted&#jsonxml)     |
+|10    | **get_sw_ts()**                | Returns Surface Water Time Series                                  | [surfacewater/surfacewaterts](https://dwr.state.co.us/rest/get/help#Datasets&#SurfaceWaterController&#gettingstarted&#jsonxml)        |
+|11    | **get_telemetry_stations()**   | Returns telemetry stations and their most recent parameter reading | [telemetrystations/telemetrystation](https://dwr.state.co.us/rest/get/help#Datasets&#TelemetryStationsController&#gettingstarted&#jsonxml)    |
+|12    | **get_telemetry_ts()**         | Returns telemetry time series data (raw, hour, day) | [telemetrystations/telemetrytimeseries](https://dwr.state.co.us/rest/get/help#Datasets&#TelemetryStationsController&#gettingstarted&#jsonxml)|
+
 
 <br>
 
-## View the return fields
-Use `preview_endpoint()` Inspect what fields will be returned for a given endpoint by entering a `endpoint_url` (a column in the `browse_api()` output pointing to the endpoints help page)
+**Note:** Not all of the CDSS API endpoints have function in **`cdssr`**(yet), but if you want to *quickly view all* of the possible endpoints that the [CDSS REST API provides](https://dwr.state.co.us/Rest/GET/Help) use the **`browse_api()`** function.
+
+#### View the return fields
+
+Use **`preview_endpoint()`** to inspect what fields will be returned from a given endpoint, enter the [help page URL](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-referencetables-stationflags). This URL is also located as a column named **endpoint_url**  in the data frame output of **`browse_api()`**.
+
+Let's see what data will be returned from the referencetables/stationflags/ endpoint
 ```{r return_fields_ex, eval=TRUE, echo=TRUE}
+# URL to referencetables/stationflags endpoint
+url <- 
+  cdssr::browse_api() %>% 
+  dplyr::filter(endpoint == "api/v2/referencetables/stationflags") %>% 
+  .$endpoint_url
+
 # Return expected data fields for a given endpoint
-return_fields <- cdssr::preview_endpoint(endpoint_url = catalog$endpoint_url[3])
+return_fields <- cdssr::preview_endpoint(
+                      endpoint_url = url
+                      )
+```
 
-dplyr::tibble(return_fields)
+```{r, eval=TRUE, echo=FALSE}
+return_fields
 ```
 
 <br>
-
-# Example: Telemetry site data
-
-## Identify station locations and information 
-We can use the `_stations()` functions to identify what stations are within a given AOI, water district, division, or county.
-```{r get_tele_stations, eval=TRUE, echo=TRUE}
-# identify telemetry stations in water district 6
-stations <- cdssr::get_telemetry_stations(
-  water_district = 6
-  )
-
-dplyr::tibble(stations)
-```
-
+<br>
 <br>
 
-```{r plot_tele_stations, eval=TRUE, echo=TRUE, fig.align='center', out.width='100%'}
-plot(stations$latitude~stations$longitude)
-```
+## **Example: Telemetry site data**
 
-<br>
-
-## Retrieve Reference Tables to help generate queries
-The `get_reference_tbl()` function will return tables that makes it easier to know what information should be supplied to the data retrieval functions in `cdssr`. For more information on the exact reference tables click [here](https://dwr.state.co.us/rest/get/help#Datasets&#ReferenceTablesController&#gettingstarted&#jsonxml).
+#### Identify query inputs using reference tables
+The **`get_reference_tbl()`** function will return tables that makes it easier to know what information should be supplied to the data retrieval functions in **`cdssr`**. For more information on the exact reference tables click [here](https://dwr.state.co.us/rest/get/help#Datasets&#ReferenceTablesController&#gettingstarted&#jsonxml).
 
 Let's locate the parameters available at telemetry stations.
 ```{r get_tele_params, eval=TRUE, echo=TRUE}
@@ -112,18 +131,41 @@ Let's locate the parameters available at telemetry stations.
 telemetry_params <- cdssr::get_reference_tbl(
   table_name = "telemetryparams"
   )
+```
 
+```{r, eval=TRUE, echo=FALSE}
 dplyr::tibble(telemetry_params)
 ```
 
 <br>
 
-## Retrieve Telemetry station timeseries data 
-Use `get_` function to make requests to the CDSS API and return the results in a tidy dataframe.
+#### Locate stations  
+We can use the **`get_<endpoint>_stations()`** functions to identify the stations within a given spatial extent (point/polygon), water district, division, or county. Station data can also be retrieved by providing a specific station abbreviation, GNIS ID, USGS ID, or WDID.
+```{r get_tele_stations, eval=TRUE, echo=TRUE}
+# identify telemetry stations in water district 6
+stations <- cdssr::get_telemetry_stations(
+  water_district = 6
+  )
+```
 
-We'll use the station abbreviations from the `get_telemetry_stations()` call, a parameter from the `get_reference_tbl()` call, select a starting and ending date and a temporal resolution. 
+```{r, eval=TRUE, echo=FALSE}
+dplyr::tibble(stations)
+```
+
+```{r plot_tele_stations, eval=TRUE, echo=FALSE, fig.align='center', out.width='100%'}
+plot(stations$latitude~stations$longitude)
+```
+
+<br>
+
+#### Retrieve Telemetry station timeseries data 
+The **`get_<endpoint>_ts()`** functions retrieve timeseries data from the CDSS API.
+
+We can then take a station abbreviations from the **`get_telemetry_stations()`** call, a parameter from the **`get_reference_tbl()`** call, and use this information as inputs into the **`get_telemetry_ts()`** function. 
+
+The function call below with return a daily discharge timeseries for the ANDDITCO site between 2015-2022 
 ```{r get_ts, eval=TRUE, echo=TRUE}
-# Daily discharge at "ANDDITCO" telemetry station
+# # Daily discharge at "ANDDITCO" telemetry station
 discharge_ts <- cdssr::get_telemetry_ts(
                       abbrev              = stations$abbrev[1],
                       parameter           = telemetry_params$parameter[7],
@@ -131,23 +173,25 @@ discharge_ts <- cdssr::get_telemetry_ts(
                       end_date            = "2022-01-01",
                       timescale           = "day"
                                )
+```
 
+```{r, eval=TRUE, echo=FALSE}
 dplyr::tibble(discharge_ts)
 ```
 
-And a plot of the daily discharge...
-```{r plot_ts, eval=TRUE, echo=TRUE, fig.align='center', out.width='100%'}
+```{r plot_ts, eval=TRUE, echo=FALSE, fig.align='center', out.width='100%'}
 # Plot daily discharge at "ANDDITCO"
 plot(discharge_ts$value~discharge_ts$datetime, type = "l")
 ```
 
-
+<br>
+<br>
 <br>
 
-# Example: Spatial search
+## **Example: Spatial search**
 
-## Find structures/stations from coordinates
-A spatial search for structures/stations can be made by supplying an SF point/polygon to the `aoi` argument and a numeric value for the desired `radius` to search within./
+#### Find structures/stations from coordinates
+A spatial search for structures/stations can be made by supplying an SF point/polygon to the **aoi** argument and a numeric value for the search **radius** distance in miles.
 
 ```{r spatial_search, eval=TRUE, echo=TRUE}
 library(sf)
@@ -155,7 +199,7 @@ library(sf)
 # create a spatial point
 pt <- sf::st_as_sf(
             data.frame(
-              lng = -105.549  , 
+              lng = -105.549  ,
               lat = 40.672
             ),
             coords = c("lng", "lat"),
@@ -167,44 +211,43 @@ structures <- cdssr::get_structures(
   aoi    = pt,
   radius = 10
   )
-
+```
+```{r, eval=TRUE, echo=FALSE}
 dplyr::tibble(structures)
 ```
-
-<br>
-
-```{r plot_spatial_search, eval=TRUE, echo=TRUE, fig.align='center', out.width='100%'}
+```{r plot_spatial_search, eval=TRUE, echo=FALSE, fig.align='center', out.width='100%'}
 plot(structures$latdecdeg~structures$longdecdeg)
 ```
 <br>
 
-## Retrieve Diversion records for multiple structures
-We can then use the WDID's found from the spatial search to retrieve diversion/release/stage/volume data from multiple structures using `get_structures_divrec`.
+#### Retrieve Diversion records for multiple structures
+We can then use the WDID's found from the spatial search to retrieve diversion, release, stage, or volume data from multiple structures using **`get_structures_divrec()`**. 
+
+**Note:** Data availability can vary between structures (i.e. Missing data, not all structures not having a given data type/temporal resolution, etc.) 
 
 ```{r get_divrec, eval=TRUE, echo=TRUE}
 # create a character vector of WDID's for all active ditch structures
-ditch_wdids <- 
-  structures %>% 
-    dplyr::filter(ciu_code == "A", structure_type == "DITCH") %>% 
+ditch_wdids <-
+  structures %>%
+    dplyr::filter(ciu_code == "A", structure_type == "DITCH") %>%
   .$wdid
 
 # get diversion records
-diversion_rec <- 
+diversion_rec <-
   cdssr::get_structures_divrec(
                         wdid           = ditch_wdids,
                         wc_identifier  = "diversion",
                         type           = "month"
                         )
-
-dplyr::tibble(diversion_rec)
 ```
 
-<br>
-
-```{r plot_divrec, eval=TRUE, echo=TRUE, fig.align='center', out.width='100%'}
+```{r, eval=TRUE, echo=FALSE}
+dplyr::tibble(diversion_rec)
+```
+```{r plot_divrec, eval=TRUE, echo=FALSE, fig.align='center', out.width='100%'}
 library(ggplot2)
 
-diversion_rec %>% 
+diversion_rec %>%
   ggplot2::ggplot() +
   ggplot2::geom_col(ggplot2::aes(x = datetime, y = data_value, fill = wdid)) +
   ggplot2::facet_wrap(~wdid, nrow = 3)
@@ -213,30 +256,38 @@ diversion_rec %>%
 
 
 <br>
+<br>
+<br>
 
-# Example: Groundwater well data
+## **Example: Groundwater well data**
 
-## Retrieve groundwater well data
-The `get_groundwater()` function lets users make get requests to the various CDSS API groundwater endpoints using the **type** parameter.
+#### Retrieve groundwater well data
+The **`get_groundwater()`** function lets users make get requests to the various CDSS API groundwater endpoints by providing different values to the **type** argument in **`get_groundwater()`**.
 
 Groundwater endpoints:
 
-  - [api/v2/groundwater/waterlevels/wellmeasurements](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-waterlevels-wellmeasurements)
-  - [api/v2/groundwater/waterlevels/wells](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-waterlevels-wells)
-  - [api/v2/groundwater/geophysicallogs/wells](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-geophysicallogs-wells)
+|**-**|**Function**          |**Type argument**          |**Endpoint**                                       |          
+|-----|----------------------|---------------------------|---------------------------------------------------|
+|1    | **get_groundwater**  | type = "wellmeasurements" | [api/v2/groundwater/waterlevels/wellmeasurements](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-waterlevels-wellmeasurements)   |
+|2    | **get_groundwater**  | type = "waterlevels"      | [api/v2/groundwater/waterlevels/wells](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-waterlevels-wells)              |
+|3    | **get_groundwater**  | type = "geophysicallogs"  | [api/v2/groundwater/geophysicallogs/wells](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-geophysicallogs-wells)          |
 
+
+Here we will retrieve groundwater well measurement data for Well ID 1274 between 1990-2022.
 ```{r get_gw, eval=TRUE, echo=TRUE}
 # Use type = "wellmeasurements" to request wellmeasurements endpoint (api/v2/groundwater/waterlevels/wellmeasurements)
 well_measure <- cdssr::get_groundwater(
-  type    = "wellmeasurements",
-  wellid  = 1274
+  type       = "wellmeasurements",
+  wellid     = 1274,
+  start_date = "1990-01-01",
+  end_date   = "2022-01-01"
   )
-
-dplyr::tibble(well_measure)
 ```
 
-And a plot of the depth to water over time...
-```{r plot_gw, eval=TRUE, echo=TRUE, fig.align='center', out.width='100%'}
+```{r, eval=TRUE, echo=FALSE}
+dplyr::tibble(well_measure)
+```
+```{r plot_gw, eval=TRUE, echo=FALSE, fig.align='center', out.width='100%'}
 # plot depth to water
 plot(well_measure$depth_to_water~well_measure$datetime, type = "l")
 ```

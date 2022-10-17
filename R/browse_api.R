@@ -13,8 +13,17 @@ browse_api <- function() {
   # URL to endpoints
   catalog_url <- "https://dwr.state.co.us/rest/get/help"
 
+  # URL to endpoints
+  catalog_url  <- url(
+                    paste0("https://dwr.state.co.us/rest/get/help"),
+                    "rb"
+                  )
+
   # page with table of API endpoints
   page <- rvest::read_html(catalog_url)
+
+  # close URL connection
+  close(catalog_url)
 
   # extract endpoint tables
   tbl <-
