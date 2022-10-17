@@ -1,16 +1,5 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<style>
-code {
-    padding: 0;
-    padding-top: 0.2em;
-    padding-bottom: 0.2em;
-    margin: 0;
-    font-size: 85%;
-    background-color: #e9f8f3;
-    border-radius: 3px;
-}
-</style>
 
 # **cdssr** <img src="man/figures/cdssr_logo_custom2.png" align="right" width="25%" />
 
