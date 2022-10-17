@@ -12,7 +12,7 @@ code {
 }
 </style>
 
-# **cdssr** <img src="man/figures/cdssr_logo.png" align="right" width="25%" />
+# **cdssr** <img src="man/figures/cdssr_logo_custom2.png" align="right" width="25%" />
 
 <!-- badges: start -->
 
@@ -25,7 +25,8 @@ MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://choosealicens
 
 <p align="left">
 <a href="https://dwr.state.co.us/Tools"><strong>« CDSS »</strong></a>
-<br /> <a href="https://dwr.state.co.us/Rest/GET/Help">CDSS API</a>
+<br /> <a href="https://dwr.state.co.us/Rest/GET/Help">CDSS REST Web
+Services</a>
 </p>
 
 </div>

@@ -30,7 +30,7 @@ code {
 }
 </style>
 
-# **cdssr** <img src="man/figures/cdssr_logo.png" align="right" width="25%" />
+# **cdssr** <img src="man/figures/cdssr_logo_custom2.png" align="right" width="25%" />
 
 <!-- badges: start -->
 [![Dependencies](https://img.shields.io/badge/dependencies-9/02-orange?style=flat)](#)
@@ -42,7 +42,7 @@ code {
   <p align="left">
     <a href="https://dwr.state.co.us/Tools"><strong>« CDSS »</strong></a>
     <br />
-    <a href="https://dwr.state.co.us/Rest/GET/Help">CDSS API</a>
+    <a href="https://dwr.state.co.us/Rest/GET/Help">CDSS REST Web Services</a>
   </p>
 </div>
 
