@@ -250,34 +250,33 @@ diversion_rec %>%
 ## **Example: Groundwater well data**
 
 #### Retrieve groundwater well data
-The **`get_groundwater()`** function lets users make get requests to the various CDSS API groundwater endpoints by providing different values to the **type** argument in **`get_groundwater()`**.
-
+The **`get_gw_()`** functions lets users make get requests to the various CDSS API groundwater endpoints shown in the table below:
 Groundwater endpoints:
 
-|**-**|**Function**          |**Type argument**          |**Endpoint**                                       |          
-|-----|----------------------|---------------------------|---------------------------------------------------|
-|1    | **get_groundwater**  | type = "wellmeasurements" | [api/v2/groundwater/waterlevels/wellmeasurements](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-waterlevels-wellmeasurements)   |
-|2    | **get_groundwater**  | type = "waterlevels"      | [api/v2/groundwater/waterlevels/wells](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-waterlevels-wells)              |
-|3    | **get_groundwater**  | type = "geophysicallogs"  | [api/v2/groundwater/geophysicallogs/wells](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-geophysicallogs-wells)          |
-
+|**-**|**Function**          |**Endpoint**                                       |          
+|-----|----------------------|---------------------------------------------------|
+|1    | **get_gw_wl_wellmeasures**  |[api/v2/groundwater/waterlevels/wellmeasurements](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-waterlevels-wellmeasurements)|
+|2    | **get_gw_wl_wells**  |[api/v2/groundwater/waterlevels/wells](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-waterlevels-wells)|
+|3    | **get_gw_gplogs_wells**  |[api/v2/groundwater/geophysicallogs/wells](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-geophysicallogs-wells)|
+|4    | **get_gw_gplogs_geologpicks**  |[api/v2/groundwater/geophysicallogs/geoplogpicks](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-geophysicallogs-geoplogpicks)|
 
 Here we will retrieve groundwater well measurement data for Well ID 1274 between 1990-2022.
 ```{r get_gw, eval=TRUE, echo=TRUE}
 # Use type = "wellmeasurements" to request wellmeasurements endpoint (api/v2/groundwater/waterlevels/wellmeasurements)
-well_measure <- cdssr::get_groundwater(
-  type       = "wellmeasurements",
-  wellid     = 1274,
-  start_date = "1990-01-01",
-  end_date   = "2022-01-01"
-  )
+# well_measure <- cdssr::get_groundwater(
+#   type       = "wellmeasurements",
+#   wellid     = 1274,
+#   start_date = "1990-01-01",
+#   end_date   = "2022-01-01"
+#   )
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dplyr::tibble(well_measure)
+# dplyr::tibble(well_measure)
 ```
 ```{r plot_gw, eval=TRUE, echo=FALSE, fig.align='center', out.width='100%'}
 # plot depth to water
-plot(well_measure$depth_to_water~well_measure$datetime, type = "l")
+# plot(well_measure$depth_to_water~well_measure$datetime, type = "l")
 ```
 
 <br>
