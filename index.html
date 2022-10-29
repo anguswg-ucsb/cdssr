@@ -62,7 +62,12 @@
 <strong>cdssr</strong> <img src="reference/figures/cdssr_logo_custom2.png" align="right" width="25%"><a class="anchor" aria-label="anchor" href="#cdssr-"></a>
 </h1></div>
 <!-- badges: start -->
-<div align="left"><p align="left"><a href="https://dwr.state.co.us/Tools" class="external-link"><strong>« CDSS »</strong></a> <br><a href="https://dwr.state.co.us/Rest/GET/Help" class="external-link">CDSS REST Web Services</a></p></div>
+
+<div align="left">
+<p align="left">
+<a href="https://dwr.state.co.us/Tools" class="external-link"><strong>« CDSS »</strong></a> <br><a href="https://dwr.state.co.us/Rest/GET/Help" class="external-link">CDSS REST Web Services</a>
+</p>
+</div>
 <hr>
 <p>The goal of <strong><code>cdssr</code></strong> is to provide functions that help R users to navigate, explore, and make requests to the <a href="https://dwr.state.co.us/Rest/GET/Help" class="external-link">CDSS REST API web service</a>.</p>
 <p>The Colorado’s Decision Support Systems (CDSS) is a water management system created and developed by the <a href="https://cwcb.colorado.gov/" class="external-link">Colorado Water Conservation Board (CWCB)</a> and the <a href="https://dwr.colorado.gov/" class="external-link">Colorado Division of Water Resources (DWR)</a>.</p>
@@ -402,7 +407,7 @@
 <div class="section level4">
 <h4 id="retrieve-groundwater-well-data">Retrieve groundwater well data<a class="anchor" aria-label="anchor" href="#retrieve-groundwater-well-data"></a>
 </h4>
-<p>The <strong><code><a href="reference/get_groundwater.html">get_groundwater()</a></code></strong> function lets users make get requests to the various CDSS API groundwater endpoints by providing different values to the <strong>type</strong> argument in <strong><code><a href="reference/get_groundwater.html">get_groundwater()</a></code></strong>.</p>
+<p>The <strong><code>get_groundwater()</code></strong> function lets users make get requests to the various CDSS API groundwater endpoints by providing different values to the <strong>type</strong> argument in <strong><code>get_groundwater()</code></strong>.</p>
 <p>Groundwater endpoints:</p>
 <table class="table">
 <colgroup>
@@ -441,7 +446,7 @@
 <p>Here we will retrieve groundwater well measurement data for Well ID 1274 between 1990-2022.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Use type = "wellmeasurements" to request wellmeasurements endpoint (api/v2/groundwater/waterlevels/wellmeasurements)</span></span>
-<span><span class="va">well_measure</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_groundwater.html">get_groundwater</a></span><span class="op">(</span></span>
+<span><span class="va">well_measure</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu">get_groundwater</span><span class="op">(</span></span>
 <span>  type       <span class="op">=</span> <span class="st">"wellmeasurements"</span>,</span>
 <span>  wellid     <span class="op">=</span> <span class="fl">1274</span>,</span>
 <span>  start_date <span class="op">=</span> <span class="st">"1990-01-01"</span>,</span>
@@ -470,7 +475,9 @@
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ³​management_district, ⁴​designated_basin, ⁵​publication, ⁶​measurement_date</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot_gw-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p><br><br></p>
-<blockquote><p><strong>More functions for more endpoints coming soon!</strong></p></blockquote>
+<blockquote>
+<p><strong>More functions for more endpoints coming soon!</strong></p>
+</blockquote>
 </div>
 </div>
 </div>

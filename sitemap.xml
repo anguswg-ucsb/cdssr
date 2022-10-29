@@ -40,13 +40,16 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_climate_ts_month.html</loc>
   </url>
   <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_groundwater.html</loc>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_gw_gplogs_geologpicks.html</loc>
   </url>
   <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_groundwater_well_measure.html</loc>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_gw_gplogs_wells.html</loc>
   </url>
   <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_groundwater_well_search.html</loc>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_gw_wl_wellmeasures.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_gw_wl_wells.html</loc>
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_ref_climate_params.html</loc>
