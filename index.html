@@ -92,7 +92,7 @@
 <table class="table">
 <colgroup>
 <col width="2%">
-<col width="8%">
+<col width="9%">
 <col width="20%">
 <col width="68%">
 </colgroup>
@@ -135,15 +135,27 @@
 </tr>
 <tr class="even">
 <td>6</td>
-<td><strong>get_groundwater()</strong></td>
-<td>Returns GeophysicalLogsWell from filters</td>
+<td><strong>get_gw_gplogs_wells()</strong></td>
+<td>Returns Groundwater GeophysicalLogsWell from filters</td>
 <td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#GroundwaterGeophysicalLogsController&amp;#gettingstarted&amp;#jsonxml" class="external-link">groundwater/geophysicallogs/</a></td>
 </tr>
 <tr class="odd">
 <td>7</td>
-<td><strong>get_groundwater()</strong></td>
+<td><strong>get_gw_gplogs_geologpicks()</strong></td>
+<td>Returns Groundwater Geophysical Log picks by well ID</td>
+<td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#GroundwaterGeophysicalLogsController&amp;#gettingstarted&amp;#jsonxml" class="external-link">groundwater/geophysicallogs/</a></td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td><strong>get_gw_wl_wells()</strong></td>
 <td>Returns WaterLevelsWell from filters</td>
-<td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#GroundwaterLevelsController&amp;#gettingstarted&amp;#jsonxml" class="external-link">groundwater/waterlevels/</a></td>
+<td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#GroundwaterLevelsController&amp;#gettingstarted&amp;#jsonxml" class="external-link">groundwater/waterlevels/wells</a></td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td><strong>get_gw_wl_wellmeasures()</strong></td>
+<td>Returns Groundwater Measurements</td>
+<td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#GroundwaterLevelsController&amp;#gettingstarted&amp;#jsonxml" class="external-link">groundwater/waterlevels/wellmeasurements</a></td>
 </tr>
 <tr class="even">
 <td>8</td>
@@ -407,47 +419,47 @@
 <div class="section level4">
 <h4 id="retrieve-groundwater-well-data">Retrieve groundwater well data<a class="anchor" aria-label="anchor" href="#retrieve-groundwater-well-data"></a>
 </h4>
-<p>The <strong><code>get_groundwater()</code></strong> function lets users make get requests to the various CDSS API groundwater endpoints by providing different values to the <strong>type</strong> argument in <strong><code>get_groundwater()</code></strong>.</p>
+<p>The <strong><code>get_gw_()</code></strong> functions lets users make get requests to the various CDSS API groundwater endpoints shown in the table below:</p>
 <p>Groundwater endpoints:</p>
 <table class="table">
 <colgroup>
 <col width="3%">
-<col width="10%">
-<col width="13%">
-<col width="72%">
+<col width="17%">
+<col width="78%">
 </colgroup>
 <thead><tr class="header">
 <th><strong>-</strong></th>
 <th><strong>Function</strong></th>
-<th><strong>Type argument</strong></th>
 <th><strong>Endpoint</strong></th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td><strong>get_groundwater</strong></td>
-<td>type = “wellmeasurements”</td>
+<td><strong>get_gw_wl_wellmeasures()</strong></td>
 <td><a href="https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-waterlevels-wellmeasurements" class="external-link">api/v2/groundwater/waterlevels/wellmeasurements</a></td>
 </tr>
 <tr class="even">
 <td>2</td>
-<td><strong>get_groundwater</strong></td>
-<td>type = “waterlevels”</td>
+<td><strong>get_gw_wl_wells()</strong></td>
 <td><a href="https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-waterlevels-wells" class="external-link">api/v2/groundwater/waterlevels/wells</a></td>
 </tr>
 <tr class="odd">
 <td>3</td>
-<td><strong>get_groundwater</strong></td>
-<td>type = “geophysicallogs”</td>
+<td><strong>get_gw_gplogs_wells()</strong></td>
 <td><a href="https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-geophysicallogs-wells" class="external-link">api/v2/groundwater/geophysicallogs/wells</a></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><strong>get_gw_gplogs_geologpicks()</strong></td>
+<td><a href="https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-groundwater-geophysicallogs-geoplogpicks" class="external-link">api/v2/groundwater/geophysicallogs/geoplogpicks</a></td>
 </tr>
 </tbody>
 </table>
+<p><br></p>
 <p>Here we will retrieve groundwater well measurement data for Well ID 1274 between 1990-2022.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Use type = "wellmeasurements" to request wellmeasurements endpoint (api/v2/groundwater/waterlevels/wellmeasurements)</span></span>
-<span><span class="va">well_measure</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu">get_groundwater</span><span class="op">(</span></span>
-<span>  type       <span class="op">=</span> <span class="st">"wellmeasurements"</span>,</span>
+<code class="sourceCode R"><span><span class="co"># Request wellmeasurements endpoint (api/v2/groundwater/waterlevels/wellmeasurements)</span></span>
+<span><span class="va">well_measure</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_gw_wl_wellmeasures.html">get_gw_wl_wellmeasures</a></span><span class="op">(</span></span>
 <span>  wellid     <span class="op">=</span> <span class="fl">1274</span>,</span>
 <span>  start_date <span class="op">=</span> <span class="st">"1990-01-01"</span>,</span>
 <span>  end_date   <span class="op">=</span> <span class="st">"2022-01-01"</span></span>
