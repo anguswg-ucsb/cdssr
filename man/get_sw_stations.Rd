@@ -33,7 +33,7 @@ get_sw_stations(
 
 \item{water_district}{numeric, indicating the water district to query}
 
-\item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
+\item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
 \value{
 dataframe of surface water station info

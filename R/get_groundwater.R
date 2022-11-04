@@ -6,7 +6,7 @@
 #' @param management_district character, indicating the management district to query
 #' @param water_district numeric, indicating the water district to query
 #' @param wellid character, indicating the Well ID to query
-#' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr bind_rows rename mutate
@@ -306,7 +306,7 @@ get_gw_wl_wellmeasures <- function(
 #' @param management_district character, indicating the management district to query
 #' @param water_district numeric, indicating the water district to query
 #' @param wellid character, indicating the Well ID to query
-#' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr bind_rows rename mutate
@@ -464,7 +464,7 @@ get_gw_gplogs_wells <- function(
 #' Returns Groundwater Geophysical Log picks by well ID
 #' @description Given a specified well ID, a request is made to api/v2/groundwater/geophysicallogs/geoplogpicks, and a dataframe of groundwater geophysical log picks for the given well ID is returned
 #' @param wellid character, indicating the Well ID to query
-#' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr bind_rows rename mutate
@@ -592,7 +592,7 @@ get_gw_gplogs_geologpicks <- function(
 #' #' @param division numeric, indicating the water division to query
 #' #' @param management_district character, indicating the management district to query
 #' #' @param water_district numeric, indicating the water district to query
-#' #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' #' @importFrom httr GET content
 #' #' @importFrom jsonlite fromJSON
 #' #' @importFrom dplyr bind_rows rename mutate

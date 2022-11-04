@@ -27,7 +27,7 @@ get_climate_ts(
 
 \item{param}{character climate variable. One of: "Evap", "FrostDate",  "MaxTemp", "MeanTemp", "MinTemp", "Precip", "Snow", "SnowDepth", "SnowSWE", "Solar","VP", "Wind"}
 
-\item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
+\item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
 \value{
 dataframe of climate station timeseries data

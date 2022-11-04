@@ -24,7 +24,7 @@ get_climate_ts_day(
 
 \item{end_date}{character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.}
 
-\item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
+\item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
 \value{
 dataframe of climate data station daily timeseries data

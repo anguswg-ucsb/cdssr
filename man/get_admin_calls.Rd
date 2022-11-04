@@ -27,7 +27,7 @@ get_admin_calls(
 
 \item{active}{logical, whether to get active or historical administrative calls. Default iS TRUE and will retrieve active administrative calls.}
 
-\item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
+\item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
 \value{
 dataframe of administrative calls data

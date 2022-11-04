@@ -27,7 +27,7 @@ get_sw_ts(
 
 \item{timescale}{character indicating data type to return, either "day", "month", or "wateryear". Default is "day".}
 
-\item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
+\item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
 \value{
 dataframe of surface water station timeseries data

@@ -27,7 +27,7 @@ get_gw_wl_wells(
 
 \item{wellid}{character, indicating the Well ID to query}
 
-\item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
+\item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
 \value{
 dataframe of groundwater wells within the given query specifications

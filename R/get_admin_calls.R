@@ -6,7 +6,7 @@
 #' @param start_date character date to request data start point YYYY-MM-DD
 #' @param end_date character date to request data end point YYYY-MM-DD
 #' @param active logical, whether to get active or historical administrative calls. Default iS TRUE and will retrieve active administrative calls.
-#' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr bind_rows rename mutate relocate
@@ -65,83 +65,6 @@ get_admin_calls <- function(
     location_wdid <- paste0(unlist(strsplit(location_wdid, " ")), collapse = "%2C+")
 
   }
-
-  # format location wdids if given
-  # if(!is.null(location_wdid)) {
-  #
-  #   location_wdid <- paste0(location_wdid, collapse = "%2C+")
-  #
-  # }
-
-  # if no min division given
-  # if(is.null(min_division)) {
-  #
-  #   min_division <- 1
-  #
-  # }
-  #
-  # # if no max division given
-  # if(is.null(max_division)) {
-  #
-  #   max_division <- 7
-  #
-  # }
-  #
-  # # if min division is greater than maximum division
-  # if(min_division > max_division) {
-  #
-  #   division <- c(min_division, max_division)
-  #
-  #   max_division <- division[which.max(division)]
-  #   min_division <- division[which.min(division)]
-  #
-  # }
-  #
-  # # if min division outside range of divisions, set to the min
-  # if(min_division > 7 | min_division < 1) {
-  #
-  #   min_division <- 1
-  #
-  # }
-  #
-  # # if max division outside range of divisions, set to the max
-  # if(max_division > 7 | max_division < 1) {
-  #
-  #   max_division <- 7
-  #
-  # }
-
-  # # if single division given
-  # if(length(divisions) > 1) {
-  #
-  #   min_division <- min(divisions)
-  #   max_division <- max(divisions)
-  #
-  # } else if(length(divisions == 1)) {
-  #
-  #   min_division <- min(divisions)
-  #   max_division <- max(divisions)
-  #
-  # } else {
-  #
-  #   min_division <- 1
-  #   max_division <- 7
-  #
-  # }
-  #
-  # # if diversion greater than 7 given
-  # if(max_division > 7 ) {
-  #
-  #   max_division <- 7
-  #
-  # }
-  #
-  # # if diversion less than 1 given
-  # if(min_division < 1 ) {
-  #
-  #   min_division <- 1
-  #
-  # }
 
     # reformat dates to MM-DD-YYYY and format for API query
     start <- gsub("-", "%2F", format(as.Date(start_date, '%Y-%m-%d'), "%m-%d-%Y"))

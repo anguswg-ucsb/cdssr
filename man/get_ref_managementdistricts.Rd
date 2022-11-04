@@ -9,7 +9,7 @@ get_ref_managementdistricts(management_district = NULL, api_key = NULL)
 \arguments{
 \item{management_district}{character, (optional) indicating the management district to query, if no management district is given, dataframe of all management districts is returned}
 
-\item{api_key}{character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
+\item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.#' @importFrom httr GET content}
 }
 \value{
 dataframe of Colorado management districts

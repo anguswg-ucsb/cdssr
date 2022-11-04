@@ -5,7 +5,7 @@
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
 #' @param timescale character indicating data type to return, either "raw", "hour", or "day". Default is "day"
 #' @param include_third_party logical, Whether to retrieve data from other third party sources if necessary. Default is TRUE
-#' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr bind_rows rename mutate

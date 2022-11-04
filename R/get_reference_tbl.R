@@ -333,8 +333,7 @@ get_ref_waterdivisions <- function(
 #' Return management districts reference table
 #' @description Make a request to the referencetables/managementdistrict/ endpoint to retrieve a reference table of management districts. The reference table functions can help provide information to use while querying other endpoints.
 #' @param management_district character, (optional) indicating the management district to query, if no management district is given, dataframe of all management districts is returned
-#' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
-#' @importFrom httr GET content
+#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.#' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr bind_rows mutate `%>%`
 #' @importFrom janitor clean_names
@@ -975,7 +974,7 @@ get_ref_stationflags<- function(
 #' Return reference table information, which may help with other searches
 #' @description Retrieve reference tables to help identify the correct and available inputs for generating a successful query using the other CDSS API retrieval functions in the cdssr package. This function makes requests to the /referencetables/ endpoints and returns helpful reference tables. For more information go to https://dwr.state.co.us/rest/get/help#Datasets&#ReferenceTablesController&#gettingstarted&#jsonxml
 #' @param table_name character, indicating which reference table should be returned. One of: "county", "waterdistricts", "waterdivisions", "designatedbasins", "managementdistricts", "telemetryparams", "climateparams", "divrectypes", "flags"
-#' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr bind_rows mutate `%>%`

@@ -36,7 +36,7 @@ get_telemetry_stations(
 
 \item{wdid}{character indicating WDID code of structure}
 
-\item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
+\item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
 \value{
 dataframe of telemetry station info

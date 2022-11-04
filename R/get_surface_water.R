@@ -8,7 +8,7 @@
 #' @param station_name character, surface water station name
 #' @param usgs_id character vector or list of characters of USGS Site IDs
 #' @param water_district numeric, indicating the water district to query
-#' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
@@ -217,7 +217,7 @@ get_sw_stations <- function(
 #' @param usgs_id character vector or list of characters of USGS Site IDs
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
-#' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
@@ -377,7 +377,7 @@ get_sw_ts_day <- function(
 #' @param usgs_id character vector or list of characters of USGS Site IDs
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
-#' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
@@ -541,7 +541,7 @@ get_sw_ts_month <- function(
 #' @param usgs_id character vector or list of characters of USGS Site IDs
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
-#' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
@@ -700,7 +700,7 @@ get_sw_ts_wyear <- function(
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
 #' @param timescale character indicating data type to return, either "day", "month", or "wateryear". Default is "day".
-#' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON

@@ -9,7 +9,7 @@
 #' @param usgs_id character, indicating USGS Station ID
 #' @param water_district numeric, indicating the water district to query
 #' @param wdid character indicating WDID code of structure
-#' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
