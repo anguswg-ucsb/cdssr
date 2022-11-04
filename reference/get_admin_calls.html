@@ -86,7 +86,7 @@
 
 
 <dt>api_key</dt>
-<dd><p>character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.</p></dd>
+<dd><p>character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -105,54 +105,50 @@
 <span class="r-in"><span>           <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Retrieving Administrative calls (ACTIVE) data from CDSS API...</span>
 <span class="r-in"><span><span class="va">active_calls</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    call_number           call_type       date_time_set date_time_released</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        31462 NONCONSUMPTIVE CALL 2022-09-02 12:00:00                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        31639                CALL 2022-09-23 08:00:00                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        31663                CALL 2022-09-27 16:00:00                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        31698                CALL 2022-10-05 08:00:00                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        31715                CALL 2022-10-14 08:00:00                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        31714                CALL 2022-10-14 08:00:00                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        31725                CALL 2022-10-19 08:00:00                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        31735                CALL 2022-10-25 12:00:00                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9        31741                CALL 2022-10-26 08:00:00                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10       31746                CALL 2022-10-27 16:00:00                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11       31747                CALL 2022-10-27 16:00:00                 NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    call_number call_type       date_time_set date_time_released</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        31715      CALL 2022-10-14 08:00:00                 NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        31758      CALL 2022-11-01 08:00:00                 NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        31759      CALL 2022-11-01 08:00:00                 NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        31762      CALL 2022-11-01 08:00:00                 NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        31761      CALL 2022-11-01 08:00:00                 NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        31755      CALL 2022-11-01 08:00:00                 NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        31756      CALL 2022-11-01 08:00:00                 NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        31765      CALL 2022-11-01 08:15:00                 NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        31767      CALL 2022-11-02 08:00:00                 NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10       31773      CALL 2022-11-03 08:00:00                 NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        water_source_name location_wdid location_wdid_streammile</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     SOUTH PLATTE RIVER       0801998                   253.98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  CACHE LA POUDRE RIVER       0300931                    28.61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     SOUTH PLATTE RIVER       0200802                   237.77</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    SOUTH BOULDER CREEK       0600582                     1.49</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5           TURKEY CREEK       0900767                     4.18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6             BEAR CREEK       0900958                    10.88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7      SAINT VRAIN CREEK       0500553                    25.49</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8     SOUTH PLATTE RIVER       0100829                    94.89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     BIG THOMPSON RIVER       0400520                    34.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10           CLEAR CREEK       0700601                    15.92</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11         RALSTON CREEK       0703308                    10.27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        location_structure_name priority_wdid     priority_structure_name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    LITTLETON BOAT CHUTE NO 9       0801998   LITTLETON BOAT CHUTE NO 9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2              B H EATON DITCH       0300919      LARIMER WELD IRR CANAL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  BURLINGTON D RIVER HEADGATE       0200802 BURLINGTON D RIVER HEADGATE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4         JONES DONNELLY DITCH       0600592              SCHEARER DITCH</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   INDEPENDENT HIGHLINE DITCH       0900767  INDEPENDENT HIGHLINE DITCH</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   WARD DITCH       0900958                  WARD DITCH</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7          HAGERS MEADOW DITCH       0500553         HAGERS MEADOW DITCH</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8          PREWITT INLET CANAL       0100829         PREWITT INLET CANAL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9            GEORGE RIST DITCH       0400521                 HANDY DITCH</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10    LEE STEWART ESKINS DITCH       0700569      FARMERS HIGHLINE CANAL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11                   BLUNN RES       0703308                   BLUNN RES</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           TURKEY CREEK       0900767                     4.18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     SOUTH PLATTE RIVER       0100687                    99.24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     BIG THOMPSON RIVER       0400520                    34.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      SAINT VRAIN CREEK       0500527                    31.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    SOUTH BOULDER CREEK       0600889                     3.35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6            CLEAR CREEK       0700553                    15.19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7          RALSTON CREEK       0704459                     9.91</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  CACHE LA POUDRE RIVER       0303738                    27.03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     SOUTH PLATTE RIVER       6400511                    42.79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10            BEAR CREEK       0900958                    10.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       location_structure_name priority_wdid    priority_structure_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  INDEPENDENT HIGHLINE DITCH       0900767 INDEPENDENT HIGHLINE DITCH</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        NORTH STERLING CANAL       0100687       NORTH STERLING CANAL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           GEORGE RIST DITCH       0400520          GEORGE RIST DITCH</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4           ROUGH READY DITCH       0504063        PLEASANT VALLEY RES</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    LAFAYETTE DIVERSION PT 4       0600564            COMMUNITY DITCH</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                 CROKE CANAL       0700553                CROKE CANAL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                  TUCKER RES       0704459                 TUCKER RES</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                 WINDSOR RES       0303738                WINDSOR RES</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9             HARMONY DITCH 1       6400535         SOUTH PLATTE DITCH</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10                 WARD DITCH       0900958                 WARD DITCH</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    priority_admin_number priority_order_number priority_date priority_number</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1               52595.52                     0    1993-12-31                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                6300.00                     0    1867-04-01                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3               21562.00                     0    1909-01-13                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                3805.00                     0    1860-06-01                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5               10476.00                     0    1878-09-06                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6               12028.00                     0    1882-12-06                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                5114.00                     0    1864-01-01                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8               31423.29                     0    1936-01-13                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9               24286.19                     0    1916-06-29                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10               8127.00                     0    1872-04-01                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11               4540.00                     0    1862-06-06                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1               10476.00                     0    1878-09-06                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2               26302.24                     0    1922-01-05                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3               14093.00                     0    1888-08-01                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                7822.00                     0    1871-06-01                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5               12941.00                     0    1885-06-06                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6               19055.00                     0    1902-03-04                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                7092.00                     0    1869-06-01                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8               14799.00                     0    1890-07-08                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9               45364.00                     0    1974-03-15                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10              12028.00                     0    1882-12-06                </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    bounding_wdid bounding_structure_name</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1             NA                      NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2             NA                      NA</span>
@@ -164,67 +160,61 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8             NA                      NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9             NA                      NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10            NA                      NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11            NA                      NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                set_comments release_comment division</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                      IN-STREAM RECREATION              NA        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                                      &lt;NA&gt;              NA        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3               AFFECTS DITSTRICT 8,9,23,80              NA        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                       AFFECTS DISTRICT 6               NA        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5          AFFECTS DIST 9 TURKEY CREEK ONLY              NA        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6            AFFECTS DIST 9 BEAR CREEK ONLY              NA        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                        AFFECTS DISTRICT 5              NA        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8           AFFECTS DISTRICTS 1,2,3,4,5,6,7              NA        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  AFFECTS BIG THOMPSON U/S OF G RIST DITCH              NA        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10                       AFFECTS DISTRICT 7              NA        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11                       AFFECTS DISTRICT 7              NA        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    location_structure_latitude location_structure_longitude</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                     39.59761                    -105.0253</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                     40.46959                    -104.9343</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                     39.79019                    -104.9694</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                     40.01773                    -105.2124</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                     39.62044                    -105.1995</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                     39.65195                    -105.1855</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                     40.17559                    -105.1685</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8                     40.37977                    -103.4783</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9                     40.41727                    -105.1802</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10                    39.76494                    -105.2060</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11                    39.82271                    -105.2092</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                    set_comments release_comment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                              AFFECTS DIST 9 TURKEY CREEK ONLY              NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                                            AFFECTS DISTRICT 1              NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  MARIANO RESERVOIR FILL, AFFECTS BIG THOMPSON U/S OF G RIST H              NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                            AFFECTS DISTRICT 5              NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                                            AFEECTS DISTRICT 6              NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                                           AFEECTS DISTRICT 7               NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                                            AFEECTS DISTICT 7               NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                                                          &lt;NA&gt;              NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                                         AFFECTS DISTRICT 1,64              NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10                               AFFECTS DIST 9 BEAR CREEK ONLY              NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    division location_structure_latitude location_structure_longitude</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         1                    39.62044                    -105.1995</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         1                    40.35247                    -103.5408</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         1                    40.41727                    -105.1802</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4         1                    40.21247                    -105.2528</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5         1                    39.99027                    -105.2144</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6         1                    39.76862                    -105.1936</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7         1                    39.82831                    -105.1980</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8         1                    40.53189                    -104.8878</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9         1                    40.82344                    -102.8744</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10        1                    39.65195                    -105.1855</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    bounding_structure_latitude bounding_structure_longitude            modified</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                           NA                           NA 2022-09-02 10:40:14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                           NA                           NA 2022-09-23 07:26:39</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                           NA                           NA 2022-09-27 16:37:49</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           NA                           NA 2022-10-05 08:39:17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           NA                           NA 2022-10-14 07:55:08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                           NA                           NA 2022-10-14 07:53:10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                           NA                           NA 2022-10-19 04:38:54</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8                           NA                           NA 2022-10-25 10:13:58</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9                           NA                           NA 2022-10-26 10:33:19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10                          NA                           NA 2022-10-27 13:04:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11                          NA                           NA 2022-10-27 13:08:53</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                           NA                           NA 2022-10-14 07:55:08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                           NA                           NA 2022-11-01 06:51:13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                           NA                           NA 2022-11-01 07:08:23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           NA                           NA 2022-11-01 07:49:18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           NA                           NA 2022-11-01 07:41:04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                           NA                           NA 2022-11-01 06:40:05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                           NA                           NA 2022-11-01 06:41:09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                           NA                           NA 2022-11-01 12:07:04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                           NA                           NA 2022-11-02 07:23:10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10                          NA                           NA 2022-11-03 07:50:20</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                           more_information active</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  https://dwr.state.co.us/Tools/AdministrativeCalls/31462   TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  https://dwr.state.co.us/Tools/AdministrativeCalls/31639   TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  https://dwr.state.co.us/Tools/AdministrativeCalls/31663   TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  https://dwr.state.co.us/Tools/AdministrativeCalls/31698   TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  https://dwr.state.co.us/Tools/AdministrativeCalls/31715   TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  https://dwr.state.co.us/Tools/AdministrativeCalls/31714   TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  https://dwr.state.co.us/Tools/AdministrativeCalls/31725   TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  https://dwr.state.co.us/Tools/AdministrativeCalls/31735   TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  https://dwr.state.co.us/Tools/AdministrativeCalls/31741   TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 https://dwr.state.co.us/Tools/AdministrativeCalls/31746   TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 https://dwr.state.co.us/Tools/AdministrativeCalls/31747   TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  https://dwr.state.co.us/Tools/AdministrativeCalls/31715   TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  https://dwr.state.co.us/Tools/AdministrativeCalls/31758   TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  https://dwr.state.co.us/Tools/AdministrativeCalls/31759   TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  https://dwr.state.co.us/Tools/AdministrativeCalls/31762   TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  https://dwr.state.co.us/Tools/AdministrativeCalls/31761   TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  https://dwr.state.co.us/Tools/AdministrativeCalls/31755   TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  https://dwr.state.co.us/Tools/AdministrativeCalls/31756   TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  https://dwr.state.co.us/Tools/AdministrativeCalls/31765   TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  https://dwr.state.co.us/Tools/AdministrativeCalls/31767   TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 https://dwr.state.co.us/Tools/AdministrativeCalls/31773   TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               datetime</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  2022-09-02 12:00:00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  2022-09-23 08:00:00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  2022-09-27 16:00:00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  2022-10-05 08:00:00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  2022-10-14 08:00:00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  2022-10-14 08:00:00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  2022-10-19 08:00:00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2022-10-25 12:00:00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2022-10-26 08:00:00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 2022-10-27 16:00:00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 2022-10-27 16:00:00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  2022-10-14 08:00:00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  2022-11-01 08:00:00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  2022-11-01 08:00:00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  2022-11-01 08:00:00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  2022-11-01 08:00:00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  2022-11-01 08:00:00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  2022-11-01 08:00:00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2022-11-01 08:15:00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2022-11-02 08:00:00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 2022-11-03 08:00:00</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Retrieve HISTORICAL administrative calls</span></span></span>
 <span class="r-in"><span><span class="va">historic_calls</span> <span class="op">&lt;-</span> <span class="fu">get_admin_calls</span><span class="op">(</span></span></span>
