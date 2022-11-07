@@ -547,7 +547,7 @@ get_sw_ts_month <- function(
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr bind_rows mutate `%>%`
 #' @importFrom janitor clean_names
-#' @return dataframe of surface water station monthly timeseries data
+#' @return dataframe of annual surface water station timeseries data
 get_sw_ts_wyear <- function(
     abbrev              = NULL,
     station_number      = NULL,
