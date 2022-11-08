@@ -210,6 +210,7 @@ get_sw_stations <- function(
   return(data_df)
 
 }
+
 #' Return daily surface water timeseries data
 #' @description Make a request to the /surfacewater/surfacewatertsday endpoint to retrieve surface water stations daily timeseries data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
 #' @param abbrev character vector or list of characters of station abbreviation
