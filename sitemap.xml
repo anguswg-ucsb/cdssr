@@ -28,6 +28,9 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_admin_calls.html</loc>
   </url>
   <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_call_analysis_wdid.html</loc>
+  </url>
+  <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_climate_frostdates.html</loc>
   </url>
   <url>
@@ -83,6 +86,9 @@
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_reference_tbl.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_source_route_framework.html</loc>
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_structure_divrecday.html</loc>
