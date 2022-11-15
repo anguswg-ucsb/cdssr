@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_groundwater.R
 \name{get_gw_wl_wellmeasures}
 \alias{get_gw_wl_wellmeasures}
-\title{Request groundwater water level well measurements}
+\title{Return groundwater water level well measurements}
 \usage{
 get_gw_wl_wellmeasures(
   wellid = NULL,

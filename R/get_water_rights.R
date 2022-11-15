@@ -1,4 +1,4 @@
-#' Returns water rights net amounts data
+#' Return water rights net amounts data
 #' Returns current status of a water right based on all of its court decreed actions from the CDSS API waterrights/netamount endpoint.
 #' @param county character, indicating the county to query
 #' @param division numeric, indicating the water division to query

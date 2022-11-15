@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_analysisservices.R
 \name{get_source_route_framework}
 \alias{get_source_route_framework}
-\title{Request DWR source route framework from analysis services API}
+\title{Return DWR source route framework from analysis services API}
 \usage{
 get_source_route_framework(
   division = NULL,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_analysisservices.R
 \name{get_call_analysis_wdid}
 \alias{get_call_analysis_wdid}
-\title{Request call analysis by WDID from analysis services API}
+\title{Return call analysis by WDID from analysis services API}
 \usage{
 get_call_analysis_wdid(
   wdid = NULL,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_climate_stations.R
 \name{get_climate_stations}
 \alias{get_climate_stations}
-\title{Return Climate Station info}
+\title{Return Climate Station information}
 \usage{
 get_climate_stations(
   aoi = NULL,

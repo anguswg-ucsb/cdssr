@@ -1,4 +1,4 @@
-#' Request active/historic administrative calls data
+#' Return active/historic administrative calls data
 #' @description Request active/historic administrative calls data from the CDSS API. For more information go here https://dwr.state.co.us/rest/get/help#Datasets&#AdministrativeCallsController&https://dnrweblink.state.co.us/dwr/ElectronicFile.aspx?docid=3600964&dbid=0&#gettingstarted&#jsonxml
 #' @param division numeric, indicating the water division to query
 #' @param location_wdid numeric, call location structure WDID

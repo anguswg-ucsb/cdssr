@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_water_rights.R
 \name{get_water_rights_netamount}
 \alias{get_water_rights_netamount}
-\title{Returns water rights net amounts data
+\title{Return water rights net amounts data
 Returns current status of a water right based on all of its court decreed actions from the CDSS API waterrights/netamount endpoint.}
 \usage{
 get_water_rights_netamount(
@@ -28,7 +28,7 @@ get_water_rights_netamount(
 dataframe of water right net amounts
 }
 \description{
-Returns water rights net amounts data
+Return water rights net amounts data
 Returns current status of a water right based on all of its court decreed actions from the CDSS API waterrights/netamount endpoint.
 }
 \examples{

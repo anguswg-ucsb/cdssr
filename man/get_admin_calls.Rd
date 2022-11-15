@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_admin_calls.R
 \name{get_admin_calls}
 \alias{get_admin_calls}
-\title{Request active/historic administrative calls data}
+\title{Return active/historic administrative calls data}
 \usage{
 get_admin_calls(
   division = NULL,

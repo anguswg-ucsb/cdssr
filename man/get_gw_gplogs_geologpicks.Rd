@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_groundwater.R
 \name{get_gw_gplogs_geologpicks}
 \alias{get_gw_gplogs_geologpicks}
-\title{Returns Groundwater Geophysical Log picks by well ID}
+\title{Return Groundwater Geophysical Log picks by well ID}
 \usage{
 get_gw_gplogs_geologpicks(wellid = NULL, api_key = NULL)
 }
