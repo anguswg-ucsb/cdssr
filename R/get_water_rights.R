@@ -190,7 +190,7 @@ get_water_rights_netamount <- function(
 #' @examples
 #'
 #' # Water right transactions within a county
-#' county_wr <- get_water_rights_trans(county = "Adams")'
+#' county_wr <- get_water_rights_trans(county = "Adams")
 #'
 #' county_wr
 #'

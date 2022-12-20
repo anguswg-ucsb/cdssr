@@ -6,6 +6,8 @@
 Returns current status of a water right based on all of its court decreed actions from the CDSS API waterrights/netamount endpoint.}
 \usage{
 get_water_rights_netamount(
+  aoi = NULL,
+  radius = NULL,
   county = NULL,
   division = NULL,
   water_district = NULL,
@@ -14,6 +16,10 @@ get_water_rights_netamount(
 )
 }
 \arguments{
+\item{aoi}{2 column matrix/dataframe of XY coordinates, SF point, or SF polygon object to search for water right net amounts within a given radius}
+
+\item{radius}{numeric, search radius in miles around a given point (or the centroid of a polygon) to return administrative structures. If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.}
+
 \item{county}{character, indicating the county to query}
 
 \item{division}{numeric, indicating the water division to query}
@@ -32,7 +38,25 @@ Return water rights net amounts data
 Returns current status of a water right based on all of its court decreed actions from the CDSS API waterrights/netamount endpoint.
 }
 \examples{
-# get_water_rights_netamount(county = "Adams")
-# get_water_rights_netamount(division = 1)
-# get_water_rights_netamount(wdid   = "0100555")
+# Water right net amounts within a county
+county_net <- get_water_rights_netamount(county = "Adams")
+
+county_net
+
+# Water right net amounts within a division
+division_net <- get_water_rights_netamount(division = 1)
+
+division_net
+
+# Water right net amounts for a WDID
+wdid_net <- get_water_rights_netamount(wdid   = "0100555")
+
+wdid_net
+# Water right net amounts within a 20 mile search radius
+aoi_net <- get_water_rights_netamount(
+                  aoi    = data.frame(X = -104.3379, Y = 39.87417),
+                  radius = 20
+                  )
+
+ aoi_net
 }
