@@ -152,3 +152,44 @@ check_radius <- function(
 
 }
 
+#' Extract coordinates and radius values to use in constructing location URL
+#' @description Internal helper function. Checks that an AOI is given and that the radius is within valid range of values. Radius must be: 0 < radius < 150.
+#' @param aoi 2 column matrix/dataframe of XY coordinates, or SF point or polygon object to search for administrative structures within a given radius
+#' @param radius numeric, search radius in miles around a given point (or the centroid of a polygon) to return administrative structures. If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
+#' @return named list containing lat, lng, and radius values
+check_aoi <- function(
+    aoi    = NULL,
+    radius = NULL
+) {
+
+  # extract lat/long coords for query
+  if(!is.null(aoi)) {
+
+    # extract coordinates from matrix/dataframe/sf object
+    coord_df <- extract_coords(aoi = aoi)
+
+    # check radius is valid and fix if necessary
+    radius   <- check_radius(
+      aoi    = aoi,
+      radius = radius
+    )
+
+    # lat/long coords
+    lat <- coord_df$lat
+    lng <- coord_df$lng
+
+  } else {
+
+    # if NULL aoi given, set coords and radius to NULL
+    lat    <- NULL
+    lng    <- NULL
+    radius <- NULL
+
+  }
+
+  # create list to return
+  aoi_lst <- list(lat = lat, lng = lng, radius = radius)
+
+  return(aoi_lst)
+
+}

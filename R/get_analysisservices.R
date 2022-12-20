@@ -21,7 +21,7 @@ get_call_analysis_wdid <- function(
 
   # check if valid wdid and admin_no were given
   if(all(is.null(wdid), is.null(admin_no))) {
-    stop(paste0("Please enter a valid 'wdid' and 'admin_no' to retrieve call analysis data for"))
+    stop(paste0("Please enter a valid 'wdid' and 'admin_no' to retrieve call analysis data"))
   }
 
   # base URL
@@ -148,7 +148,7 @@ get_source_route_framework <- function(
 
   # check if valid division, gnis_name or water_district was given
   if(all(is.null(division), is.null(gnis_name), is.null(water_district))) {
-    stop(paste0("Please enter a valid 'division', 'gnis_name', or 'water_district' to retreive DWR source route framework data for"))
+    stop(paste0("Please enter a valid 'division', 'gnis_name', or 'water_district' to retreive DWR source route framework data"))
   }
 
   # base URL
