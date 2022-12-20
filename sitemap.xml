@@ -19,6 +19,9 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/browse_api.html</loc>
   </url>
   <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/check_aoi.html</loc>
+  </url>
+  <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/check_radius.html</loc>
   </url>
   <url>
@@ -131,6 +134,9 @@
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_water_rights_netamount.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_water_rights_trans.html</loc>
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/index.html</loc>
