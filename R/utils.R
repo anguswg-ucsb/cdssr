@@ -1,4 +1,3 @@
-
 #' Extract lat/long coordinates from an AOI
 #' @description Internal helper function. Checks that an AOI is of valid type and then extracts the latitude/longitude of the point or centroid of the given polygon.
 #' @param aoi 2 column matrix/dataframe of XY coordinates, or SF point or polygon object to search for administrative structures within a given radius
