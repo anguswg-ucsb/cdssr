@@ -1,53 +1,68 @@
-#' Return Climate Station information
-#' @description Make a request to the climatedata/climatestations/ endpoint to locate climate stations by AOI, county, division, station name, Site ID or water_district.
-#' @param aoi 2 column matrix/dataframe of XY coordinates, or SF point or polygon object to search for climate station structures within a given radius
+#' Return Surface Water Station info
+#' @description Make a request to the /surfacewater/surfacewaterstations endpoint to locate surface water stations by AOI, station abbreviation, county, division, station name, USGS ID or water_district.
+#' @param aoi 2 column matrix/dataframe of XY coordinates, or SF point or polygon object to search for administrative structures within a given radius
 #' @param radius numeric, search radius in miles around a given point (or the centroid of a polygon) to return administrative structures. If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
+#' @param abbrev character vector or list of characters of station abbreviation
 #' @param county character, indicating the county to query
 #' @param division numeric, indicating the water division to query
 #' @param station_name character, surface water station name
-#' @param site_id character vector or list of characters of climate station site IDs
+#' @param usgs_id character vector or list of characters of USGS Site IDs
 #' @param water_district numeric, indicating the water district to query
-#' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr bind_rows mutate `%>%`
 #' @importFrom janitor clean_names
-#' @return dataframe of climate data station info
+#' @return dataframe of surface water station info
 #' @examples
-#' # get climate stations in Adams County, CO
-#' climate_stations  <- get_climate_stations(
-#'                        county = "Adams"
-#'                        )
-#'
-#' # plot latitude/longitude of climate stations
-#' plot(climate_stations$latitude~climate_stations$longitude)
+#' # Retrieve surface water station info from Larimer county
+#' sw_stations <- get_sw_stations(
+#'                     county = "Larimer"
+#'                     )
+#'  # plot latitude/longitude of surface water stations
+#'  plot(sw_stations$latitude~sw_stations$longitude)
 #' @export
-get_climate_stations <- function(
+get_sw_stations <- function(
     aoi                 = NULL,
     radius              = NULL,
+    abbrev              = NULL,
     county              = NULL,
     division            = NULL,
     station_name        = NULL,
-    site_id             = NULL,
+    usgs_id             = NULL,
     water_district      = NULL,
     api_key             = NULL
 ) {
 
   # base URL
-  base <- "https://dwr.state.co.us/Rest/GET/api/v2/climatedata/climatestations/?"
+  base <- "https://dwr.state.co.us/Rest/GET/api/v2/surfacewater/surfacewaterstations/?"
 
-  # format multiple Site ID query string
-  if(!is.null(site_id)) {
+  # format multiple abbrev query
+  if(!is.null(abbrev)) {
 
-    # if USGS IDs are in a list, unlist to a character vector
-    if(is.list(site_id) == TRUE) {
+    # if abbreviations are in a list, unlist to a character vector
+    if(is.list(abbrev) == TRUE) {
 
-      site_id <- unlist(site_id)
+      abbrev <- unlist(abbrev)
 
     }
 
-    site_id <- paste0(unlist(strsplit(site_id, " ")), collapse = "%2C+")
+    abbrev <- paste0(unlist(strsplit(abbrev, " ")), collapse = "%2C+")
+
+  }
+
+  # format multiple USGS ID query string
+  if(!is.null(usgs_id)) {
+
+    # if USGS IDs are in a list, unlist to a character vector
+    if(is.list(usgs_id) == TRUE) {
+
+      usgs_id <- unlist(usgs_id)
+
+    }
+
+    usgs_id <- paste0(unlist(strsplit(usgs_id, " ")), collapse = "%2C+")
 
   }
 
@@ -64,7 +79,6 @@ get_climate_stations <- function(
 
   # maximum records per page
   page_size  <- 50000
-  # page_size  <- 100
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -76,7 +90,7 @@ get_climate_stations <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving climate station data from CDSS API..."))
+  message(paste0("Retrieving surface water station data from CDSS API..."))
 
   # if location based search
   if(all(!is.null(lng), !is.null(lat))) {
@@ -94,10 +108,11 @@ get_climate_stations <- function(
     url <- paste0(
       base,
       "format=json&dateFormat=spaceSepToSeconds",
+      "&abbrev=", abbrev,
       "&county=", county,
       "&division=", division,
       "&stationName=", station_name,
-      "&siteId=", site_id,
+      "&usgsSiteId=", usgs_id,
       "&waterDistrict=", water_district,
       "&latitude=", lat,
       "&longitude=", lng,
@@ -129,17 +144,18 @@ get_climate_stations <- function(
 
       },
       error = function(e) {
-        message(paste0("Error in climate station query"))
+        message(paste0("Error in surface water station query"))
         message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
         message(paste0("Query:\n----------------------------------",
+                       "\nAbbreviation: ", abbrev,
                        "\nCounty: ", county,
                        "\nDivision: ", division,
                        "\nStation name: ", station_name,
-                       "\nSite ID: ", site_id,
+                       "\nUSGS ID: ", usgs_id,
                        "\nWater District: ", water_district,
                        "\nLatitude: ", lat,
                        "\nLongitude: ", lng,
-                       "\nRadius (miles) ", radius
+                       "\nRadius (miles)", radius
         ))
         message(paste0('\nHere is the URL address that was queried:\n'))
         message(paste0(url))
@@ -180,5 +196,3 @@ get_climate_stations <- function(
   return(data_df)
 
 }
-
-

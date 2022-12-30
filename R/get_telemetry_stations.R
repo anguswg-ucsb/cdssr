@@ -55,30 +55,16 @@ get_telemetry_stations <- function(
 
   }
 
-  # extract lat/long coords for query
-  if(!is.null(aoi)) {
+  # check and extract spatial data from 'aoi' and 'radius' args for location search query
+  aoi_lst <- check_aoi(
+    aoi    = aoi,
+    radius = radius
+  )
 
-    # extract coordinates from matrix/dataframe/sf object
-    coord_df <- extract_coords(aoi = aoi)
-
-    # check radius is valid and fix if necessary
-    radius   <- check_radius(
-      aoi    = aoi,
-      radius = radius
-    )
-
-    # lat/long coords
-    lat <- coord_df$lat
-    lng <- coord_df$lng
-
-  } else {
-
-    # if NULL aoi given, set coords and radius to NULL
-    lat    <- NULL
-    lng    <- NULL
-    radius <- NULL
-
-  }
+  # lat/long coords
+  lat    <- aoi_lst$lat
+  lng    <- aoi_lst$lng
+  radius <- aoi_lst$radius
 
   # maximum records per page
   page_size  <- 50000

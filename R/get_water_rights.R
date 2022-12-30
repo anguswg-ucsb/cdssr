@@ -51,13 +51,13 @@ get_water_rights_netamount <- function(
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/waterrights/netamount/?"
 
-  # Check if AOI given, and then extract lat/long coords for query
+  # check and extract spatial data from 'aoi' and 'radius' args for location search query
   aoi_lst <- check_aoi(
     aoi    = aoi,
     radius = radius
   )
 
-  # Lat, Lng, and radius values
+  # lat/long coords
   lat    <- aoi_lst$lat
   lng    <- aoi_lst$lng
   radius <- aoi_lst$radius
@@ -229,13 +229,13 @@ get_water_rights_trans <- function(
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/waterrights/transaction/?"
 
-  # Check if AOI given, and then extract lat/long coords for query
+  # check and extract spatial data from 'aoi' and 'radius' args for location search query
   aoi_lst <- check_aoi(
     aoi    = aoi,
     radius = radius
-    )
+  )
 
-  # Lat, Lng, and radius values
+  # lat/long coords
   lat    <- aoi_lst$lat
   lng    <- aoi_lst$lng
   radius <- aoi_lst$radius
