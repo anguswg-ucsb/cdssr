@@ -1,6 +1,6 @@
 Package: cdssr
 Title: R Client for CDSS REST API services
-Version: 1.0.0.3000
+Version: 1.0.0.4000
 Authors@R: 
     person("Angus", "Watters", , "anguswatters@gmail.com", role = c("aut", "cre"))
 Description: Provides functions for discovering and requesting data from the CDSS REST API.
@@ -17,5 +17,6 @@ Imports:
     httr,
     janitor, 
     jsonlite,
-    sf
+    sf,
+    terra
 URL: https://anguswg-ucsb.github.io/cdssr/

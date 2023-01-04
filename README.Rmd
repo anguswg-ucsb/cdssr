@@ -58,7 +58,7 @@ devtools::install_github("anguswg-ucsb/cdssr")
 library(cdssr)
 ```
 
-## **Avaliable endpoints**
+## **Available endpoints**
 Below is a table of all of the CDSS API endpoints **`cdssr`** has functions for. 
 
 
@@ -149,7 +149,7 @@ plot(stations$latitude~stations$longitude)
 <br>
 
 #### Retrieve Telemetry station timeseries data 
-The **`get_<endpoint>_ts()`** functions retrieve timeseries data from the CDSS API.
+The functions ending with **_ts()** map to the various timeseries data endpoints from the CDSS API.
 
 We can then take a station abbreviations from the **`get_telemetry_stations()`** call, a parameter from the **`get_reference_tbl()`** call, and use this information as inputs into the **`get_telemetry_ts()`** function. 
 
@@ -213,7 +213,7 @@ plot(structures$latdecdeg~structures$longdecdeg)
 #### Retrieve Diversion records for multiple structures
 We can then use the WDID's found from the spatial search to retrieve diversion, release, stage, or volume data from multiple structures using **`get_structures_divrec()`**. 
 
-**Note:** Data availability can vary between structures (i.e. Missing data, not all structures not having a given data type/temporal resolution, etc.) 
+**Note:** Data availability can vary between structures (i.e. Missing data, not all structures have every data type/temporal resolution available, etc.) 
 
 ```{r get_divrec, eval=TRUE, echo=TRUE}
 # create a character vector of WDID's for all active ditch structures
@@ -252,7 +252,7 @@ diversion_rec %>%
 ## **Example: Groundwater well data**
 
 #### Retrieve groundwater well data
-The **`get_gw_()`** functions lets users make get requests to the various CDSS API groundwater endpoints shown in the table below:
+The **get_gw_()** set of functions lets users make get requests to the various CDSS API groundwater endpoints shown in the table below:
 
 
 Groundwater endpoints:

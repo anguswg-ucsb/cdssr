@@ -16,9 +16,9 @@ get_water_rights_netamount(
 )
 }
 \arguments{
-\item{aoi}{2 column matrix/dataframe of XY coordinates, SF point, or SF polygon object to search for water right net amounts within a given radius}
+\item{aoi}{list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry}
 
-\item{radius}{numeric, search radius in miles around a given point (or the centroid of a polygon) to return administrative structures. If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.}
+\item{radius}{numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.}
 
 \item{county}{character, indicating the county to query}
 

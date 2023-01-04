@@ -1,7 +1,7 @@
 #' Return water rights net amounts data
 #' Returns current status of a water right based on all of its court decreed actions from the CDSS API waterrights/netamount endpoint.
-#' @param aoi 2 column matrix/dataframe of XY coordinates, SF point, or SF polygon object to search for water right net amounts within a given radius
-#' @param radius numeric, search radius in miles around a given point (or the centroid of a polygon) to return administrative structures. If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
+#' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
+#' @param radius numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
 #' @param county character, indicating the county to query
 #' @param division numeric, indicating the water division to query
 #' @param water_district numeric, indicating the water district to query
@@ -176,8 +176,8 @@ get_water_rights_netamount <- function(
 
 #' Return water rights transactions data
 #' Returns List of court decreed actions that affect amount and use(s) that can be used by each water right from the CDSS API waterrights/transcation endpoint.
-#' @param aoi 2 column matrix/dataframe of XY coordinates, SF point, or SF polygon object to search for water right transactions within a given radius
-#' @param radius numeric, search radius in miles around a given point (or the centroid of a polygon) to return administrative structures. If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
+#' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
+#' @param radius numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
 #' @param county character, indicating the county to query
 #' @param division numeric, indicating the water division to query
 #' @param water_district numeric, indicating the water district to query

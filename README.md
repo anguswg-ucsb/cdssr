@@ -51,7 +51,7 @@ devtools::install_github("anguswg-ucsb/cdssr")
 library(cdssr)
 ```
 
-## **Avaliable endpoints**
+## **Available endpoints**
 
 Below is a table of all of the CDSS API endpoints **`cdssr`** has
 functions for.
@@ -135,7 +135,7 @@ telemetry_params <- cdssr::get_reference_tbl(
 #> Retrieving telemetry parameter reference table from CDSS API...
 ```
 
-    #> # A tibble: 45 × 1
+    #> # A tibble: 46 × 1
     #>    parameter
     #>    <chr>    
     #>  1 AIRTEMP  
@@ -148,7 +148,7 @@ telemetry_params <- cdssr::get_reference_tbl(
     #>  8 DISCHRG1 
     #>  9 DISCHRG2 
     #> 10 DISCHRG3 
-    #> # … with 35 more rows
+    #> # … with 36 more rows
 
 <br>
 
@@ -167,20 +167,20 @@ stations <- cdssr::get_telemetry_stations(
 #> Retrieving telemetry station data from CDSS API...
 ```
 
-    #> # A tibble: 70 × 35
+    #> # A tibble: 71 × 35
     #>    divis…¹ water…² county stati…³ data_…⁴ data_…⁵ water…⁶ gnis_id strea…⁷ abbrev
     #>      <int>   <int> <chr>  <chr>   <chr>   <chr>   <chr>   <chr>     <dbl> <chr> 
     #>  1       1       6 BOULD… "ANDER… DWR     Co. Di… BOULDE… 001783…   23.6  ANDDI…
-    #>  2       1       6 BOULD… "BASEL… DWR     Co. Di… BOULDE… 001783…   19.2  BASOU…
-    #>  3       1       6 BOULD… "BOULD… NCWCD   Northe… BOULDE… 001783…   15.5  BCSCB…
-    #>  4       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BLDLH…
-    #>  5       1       6 BOULD… "BUTTE… DWR     Co. Di… BOULDE… 001783…   18.6  BMLDI…
-    #>  6       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…    9.52 BOC10…
-    #>  7       1       6 BOULD… "MIDDL… DWR     Co. Di… MIDDLE… 001785…    5.92 BOCBB…
-    #>  8       1       6 BOULD… "SOUTH… DWR     Co. Di… SOUTH … 001809…   16.5  BOCBG…
-    #>  9       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BOCBR…
-    #> 10       1       6 BOULD… "SOUTH… DWR     Co. Di… SOUTH … 001809…   12.1  BOCEL…
-    #> # … with 60 more rows, 25 more variables: usgs_station_id <chr>,
+    #>  2       1       6 BOULD… "ANDRE… DWR     Co. Di… SOUTH … 001809…    1.5  ANFDI…
+    #>  3       1       6 BOULD… "BASEL… DWR     Co. Di… BOULDE… 001783…   19.2  BASOU…
+    #>  4       1       6 BOULD… "BOULD… NCWCD   Northe… BOULDE… 001783…   15.5  BCSCB…
+    #>  5       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BLDLH…
+    #>  6       1       6 BOULD… "BUTTE… DWR     Co. Di… BOULDE… 001783…   18.6  BMLDI…
+    #>  7       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…    9.52 BOC10…
+    #>  8       1       6 BOULD… "MIDDL… DWR     Co. Di… MIDDLE… 001785…    5.92 BOCBB…
+    #>  9       1       6 BOULD… "SOUTH… DWR     Co. Di… SOUTH … 001809…   16.5  BOCBG…
+    #> 10       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BOCBR…
+    #> # … with 61 more rows, 25 more variables: usgs_station_id <chr>,
     #> #   station_status <chr>, station_type <chr>, structure_type <chr>,
     #> #   meas_date_time <dttm>, parameter <chr>, stage <dbl>, meas_value <dbl>,
     #> #   units <chr>, flag_a <chr>, flag_b <chr>, contr_area <dbl>,
@@ -194,8 +194,8 @@ stations <- cdssr::get_telemetry_stations(
 
 #### Retrieve Telemetry station timeseries data
 
-The **`get_<endpoint>_ts()`** functions retrieve timeseries data from
-the CDSS API.
+The functions ending with \*\*\_ts()\*\* map to the various timeseries
+data endpoints from the CDSS API.
 
 We can then take a station abbreviations from the
 **`get_telemetry_stations()`** call, a parameter from the
@@ -304,8 +304,8 @@ diversion, release, stage, or volume data from multiple structures using
 **`get_structures_divrec()`**.
 
 **Note:** Data availability can vary between structures (i.e. Missing
-data, not all structures not having a given data type/temporal
-resolution, etc.)
+data, not all structures have every data type/temporal resolution
+available, etc.)
 
 ``` r
 # create a character vector of WDID's for all active ditch structures
@@ -349,7 +349,7 @@ diversion_rec <-
 
 #### Retrieve groundwater well data
 
-The **`get_gw_()`** functions lets users make get requests to the
+The **get_gw\_()** set of functions lets users make get requests to the
 various CDSS API groundwater endpoints shown in the table below:
 
 Groundwater endpoints:
