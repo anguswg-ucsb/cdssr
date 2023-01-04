@@ -16,6 +16,9 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/index.html</loc>
   </url>
   <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/aoi_error_msg.html</loc>
+  </url>
+  <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/browse_api.html</loc>
   </url>
   <url>
@@ -140,6 +143,9 @@
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/parse_aoi.html</loc>
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/preview_endpoint.html</loc>

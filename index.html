@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="index.html">cdssr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.3000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.4000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,8 +85,8 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://anguswg-ucsb.github.io/cdssr/">cdssr</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="avaliable-endpoints">
-<strong>Avaliable endpoints</strong><a class="anchor" aria-label="anchor" href="#avaliable-endpoints"></a>
+<h2 id="available-endpoints">
+<strong>Available endpoints</strong><a class="anchor" aria-label="anchor" href="#available-endpoints"></a>
 </h2>
 <p>Below is a table of all of the CDSS API endpoints <strong><code>cdssr</code></strong> has functions for.</p>
 <table class="table">
@@ -232,7 +232,7 @@
 <span>  table_name <span class="op">=</span> <span class="st">"telemetryparams"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Retrieving telemetry parameter reference table from CDSS API...</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 45 × 1</span></span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 46 × 1</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    parameter</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    </span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 AIRTEMP  </span></span>
@@ -245,7 +245,7 @@
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 DISCHRG1 </span></span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 DISCHRG2 </span></span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 DISCHRG3 </span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 35 more rows</span></span></code></pre></div>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 36 more rows</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div class="section level4">
@@ -258,20 +258,20 @@
 <span>  water_district <span class="op">=</span> <span class="fl">6</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Retrieving telemetry station data from CDSS API...</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 70 × 35</span></span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 71 × 35</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    divis…¹ water…² county stati…³ data_…⁴ data_…⁵ water…⁶ gnis_id strea…⁷ abbrev</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;int&gt;   &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt; </span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1       1       6 BOULD… "ANDER… DWR     Co. Di… BOULDE… 001783…   23.6  ANDDI…</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2       1       6 BOULD… "BASEL… DWR     Co. Di… BOULDE… 001783…   19.2  BASOU…</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3       1       6 BOULD… "BOULD… NCWCD   Northe… BOULDE… 001783…   15.5  BCSCB…</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BLDLH…</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5       1       6 BOULD… "BUTTE… DWR     Co. Di… BOULDE… 001783…   18.6  BMLDI…</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…    9.52 BOC10…</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7       1       6 BOULD… "MIDDL… DWR     Co. Di… MIDDLE… 001785…    5.92 BOCBB…</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8       1       6 BOULD… "SOUTH… DWR     Co. Di… SOUTH … 001809…   16.5  BOCBG…</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BOCBR…</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10       1       6 BOULD… "SOUTH… DWR     Co. Di… SOUTH … 001809…   12.1  BOCEL…</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 60 more rows, 25 more variables: usgs_station_id &lt;chr&gt;,</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2       1       6 BOULD… "ANDRE… DWR     Co. Di… SOUTH … 001809…    1.5  ANFDI…</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3       1       6 BOULD… "BASEL… DWR     Co. Di… BOULDE… 001783…   19.2  BASOU…</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4       1       6 BOULD… "BOULD… NCWCD   Northe… BOULDE… 001783…   15.5  BCSCB…</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BLDLH…</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6       1       6 BOULD… "BUTTE… DWR     Co. Di… BOULDE… 001783…   18.6  BMLDI…</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…    9.52 BOC10…</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8       1       6 BOULD… "MIDDL… DWR     Co. Di… MIDDLE… 001785…    5.92 BOCBB…</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9       1       6 BOULD… "SOUTH… DWR     Co. Di… SOUTH … 001809…   16.5  BOCBG…</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BOCBR…</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 61 more rows, 25 more variables: usgs_station_id &lt;chr&gt;,</span></span>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   station_status &lt;chr&gt;, station_type &lt;chr&gt;, structure_type &lt;chr&gt;,</span></span>
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   meas_date_time &lt;dttm&gt;, parameter &lt;chr&gt;, stage &lt;dbl&gt;, meas_value &lt;dbl&gt;,</span></span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   units &lt;chr&gt;, flag_a &lt;chr&gt;, flag_b &lt;chr&gt;, contr_area &lt;dbl&gt;,</span></span>
@@ -284,7 +284,7 @@
 <div class="section level4">
 <h4 id="retrieve-telemetry-station-timeseries-data">Retrieve Telemetry station timeseries data<a class="anchor" aria-label="anchor" href="#retrieve-telemetry-station-timeseries-data"></a>
 </h4>
-<p>The <strong><code>get_&lt;endpoint&gt;_ts()</code></strong> functions retrieve timeseries data from the CDSS API.</p>
+<p>The functions ending with **_ts()** map to the various timeseries data endpoints from the CDSS API.</p>
 <p>We can then take a station abbreviations from the <strong><code><a href="reference/get_telemetry_stations.html">get_telemetry_stations()</a></code></strong> call, a parameter from the <strong><code><a href="reference/get_reference_tbl.html">get_reference_tbl()</a></code></strong> call, and use this information as inputs into the <strong><code><a href="reference/get_telemetry_ts.html">get_telemetry_ts()</a></code></strong> function.</p>
 <p>The function call below with return a daily discharge timeseries for the ANDDITCO site between 2015-2022</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -376,7 +376,7 @@
 <h4 id="retrieve-diversion-records-for-multiple-structures">Retrieve Diversion records for multiple structures<a class="anchor" aria-label="anchor" href="#retrieve-diversion-records-for-multiple-structures"></a>
 </h4>
 <p>We can then use the WDID’s found from the spatial search to retrieve diversion, release, stage, or volume data from multiple structures using <strong><code><a href="reference/get_structures_divrec.html">get_structures_divrec()</a></code></strong>.</p>
-<p><strong>Note:</strong> Data availability can vary between structures (i.e. Missing data, not all structures not having a given data type/temporal resolution, etc.)</p>
+<p><strong>Note:</strong> Data availability can vary between structures (i.e. Missing data, not all structures have every data type/temporal resolution available, etc.)</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create a character vector of WDID's for all active ditch structures</span></span>
 <span><span class="va">ditch_wdids</span> <span class="op">&lt;-</span></span>
@@ -419,7 +419,7 @@
 <div class="section level4">
 <h4 id="retrieve-groundwater-well-data">Retrieve groundwater well data<a class="anchor" aria-label="anchor" href="#retrieve-groundwater-well-data"></a>
 </h4>
-<p>The <strong><code>get_gw_()</code></strong> functions lets users make get requests to the various CDSS API groundwater endpoints shown in the table below:</p>
+<p>The <strong>get_gw_()</strong> set of functions lets users make get requests to the various CDSS API groundwater endpoints shown in the table below:</p>
 <p>Groundwater endpoints:</p>
 <table class="table">
 <colgroup>
