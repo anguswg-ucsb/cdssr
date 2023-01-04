@@ -149,7 +149,7 @@ plot(stations$latitude~stations$longitude)
 <br>
 
 #### Retrieve Telemetry station timeseries data 
-The functions ending with **_ts()** map to the various timeseries data endpoints from the CDSS API.
+The functions ending with **`_ts()`** map to the various timeseries data endpoints from the CDSS API.
 
 We can then take a station abbreviations from the **`get_telemetry_stations()`** call, a parameter from the **`get_reference_tbl()`** call, and use this information as inputs into the **`get_telemetry_ts()`** function. 
 
@@ -157,8 +157,8 @@ The function call below with return a daily discharge timeseries for the ANDDITC
 ```{r get_ts, eval=TRUE, echo=TRUE}
 # # Daily discharge at "ANDDITCO" telemetry station
 discharge_ts <- cdssr::get_telemetry_ts(
-                      abbrev              = stations$abbrev[1],
-                      parameter           = telemetry_params$parameter[7],
+                      abbrev              = "ANDDITCO",
+                      parameter           = "DISCHRG",
                       start_date          = "2015-01-01",
                       end_date            = "2022-01-01",
                       timescale           = "day"

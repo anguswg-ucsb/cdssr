@@ -194,8 +194,8 @@ stations <- cdssr::get_telemetry_stations(
 
 #### Retrieve Telemetry station timeseries data
 
-The functions ending with \*\*\_ts()\*\* map to the various timeseries
-data endpoints from the CDSS API.
+The functions ending with **`_ts()`** map to the various timeseries data
+endpoints from the CDSS API.
 
 We can then take a station abbreviations from the
 **`get_telemetry_stations()`** call, a parameter from the
@@ -208,8 +208,8 @@ ANDDITCO site between 2015-2022
 ``` r
 # # Daily discharge at "ANDDITCO" telemetry station
 discharge_ts <- cdssr::get_telemetry_ts(
-                      abbrev              = stations$abbrev[1],
-                      parameter           = telemetry_params$parameter[7],
+                      abbrev              = "ANDDITCO",
+                      parameter           = "DISCHRG",
                       start_date          = "2015-01-01",
                       end_date            = "2022-01-01",
                       timescale           = "day"
