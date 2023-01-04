@@ -91,10 +91,10 @@
 <p>Below is a table of all of the CDSS API endpoints <strong><code>cdssr</code></strong> has functions for.</p>
 <table class="table">
 <colgroup>
-<col width="2%">
-<col width="9%">
-<col width="20%">
-<col width="68%">
+<col width="1%">
+<col width="7%">
+<col width="39%">
+<col width="51%">
 </colgroup>
 <thead><tr class="header">
 <th><strong>-</strong></th>
@@ -135,57 +135,87 @@
 </tr>
 <tr class="even">
 <td>6</td>
+<td><strong>get_climate_frostdates()</strong></td>
+<td>Returns Climate Station Frost Dates</td>
+<td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#ClimateStationsController&amp;https://www.ncdc.noaa.gov/cdo-web/webservices&amp;https://www.northernwater.org/our-data/weather-data&amp;#gettingstarted&amp;#jsonxml" class="external-link">climatedata/climatestationfrostdates</a></td>
+</tr>
+<tr class="odd">
+<td>7</td>
 <td><strong>get_gw_gplogs_wells()</strong></td>
 <td>Returns Groundwater GeophysicalLogsWell from filters</td>
 <td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#GroundwaterGeophysicalLogsController&amp;#gettingstarted&amp;#jsonxml" class="external-link">groundwater/geophysicallogs/</a></td>
 </tr>
-<tr class="odd">
-<td>7</td>
+<tr class="even">
+<td>8</td>
 <td><strong>get_gw_gplogs_geologpicks()</strong></td>
 <td>Returns Groundwater Geophysical Log picks by well ID</td>
 <td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#GroundwaterGeophysicalLogsController&amp;#gettingstarted&amp;#jsonxml" class="external-link">groundwater/geophysicallogs/</a></td>
 </tr>
-<tr class="even">
-<td>7</td>
+<tr class="odd">
+<td>9</td>
 <td><strong>get_gw_wl_wells()</strong></td>
 <td>Returns WaterLevelsWell from filters</td>
 <td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#GroundwaterLevelsController&amp;#gettingstarted&amp;#jsonxml" class="external-link">groundwater/waterlevels/wells</a></td>
 </tr>
-<tr class="odd">
-<td>6</td>
+<tr class="even">
+<td>10</td>
 <td><strong>get_gw_wl_wellmeasures()</strong></td>
 <td>Returns Groundwater Measurements</td>
 <td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#GroundwaterLevelsController&amp;#gettingstarted&amp;#jsonxml" class="external-link">groundwater/waterlevels/wellmeasurements</a></td>
 </tr>
-<tr class="even">
-<td>8</td>
+<tr class="odd">
+<td>11</td>
 <td><strong>get_reference_tbl()</strong></td>
 <td>Returns reference tables list</td>
 <td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#ReferenceTablesController&amp;#gettingstarted&amp;#jsonxml" class="external-link">referencetables/</a></td>
 </tr>
-<tr class="odd">
-<td>9</td>
+<tr class="even">
+<td>12</td>
 <td><strong>get_sw_stations()</strong></td>
 <td>Returns Surface Water Station info</td>
 <td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#SurfaceWaterController&amp;#gettingstarted&amp;#jsonxml" class="external-link">surfacewater/surfacewaterstations</a></td>
 </tr>
-<tr class="even">
-<td>10</td>
+<tr class="odd">
+<td>13</td>
 <td><strong>get_sw_ts()</strong></td>
 <td>Returns Surface Water Time Series</td>
 <td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#SurfaceWaterController&amp;#gettingstarted&amp;#jsonxml" class="external-link">surfacewater/surfacewaterts</a></td>
 </tr>
-<tr class="odd">
-<td>11</td>
+<tr class="even">
+<td>14</td>
 <td><strong>get_telemetry_stations()</strong></td>
 <td>Returns telemetry stations and their most recent parameter reading</td>
 <td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#TelemetryStationsController&amp;#gettingstarted&amp;#jsonxml" class="external-link">telemetrystations/telemetrystation</a></td>
 </tr>
-<tr class="even">
-<td>12</td>
+<tr class="odd">
+<td>15</td>
 <td><strong>get_telemetry_ts()</strong></td>
 <td>Returns telemetry time series data (raw, hour, day)</td>
 <td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#TelemetryStationsController&amp;#gettingstarted&amp;#jsonxml" class="external-link">telemetrystations/telemetrytimeseries</a></td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td><strong>get_water_rights_netamount()</strong></td>
+<td>Returns current status of a water right based on all of its court decreed actions</td>
+<td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#WaterRightsController&amp;#gettingstarted&amp;#jsonxml" class="external-link">waterrights/netamount</a></td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td><strong>get_water_rights_trans()</strong></td>
+<td>Returns court decreed actions that affect amount and use(s) that can be used by each water right</td>
+<td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#WaterRightsController&amp;#gettingstarted&amp;#jsonxml" class="external-link">waterrights/transaction</a></td>
+</tr>
+<tr class="even">
+<td>18</td>
+<td><strong>get_call_analysis_wdid()</strong></td>
+<td>Performs a call analysis that returns a time series showing the percentage of each day that the specified WDID and priority was out of priority and the downstream call in priority</td>
+<td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#AnalysisServicesController&amp;#gettingstarted&amp;#jsonxml" class="external-link">analysisservices/callanalysisbywdid</a></td>
+</tr>
+<tr class="odd">
+<td>19</td>
+<td><strong>get_source_route_framework()</strong></td>
+<td>Returns the DWR source route framework reference table for the criteria specified</td>
+<td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#AnalysisServicesController&amp;#gettingstarted&amp;#jsonxml" class="external-link">analysisservices/watersourcerouteframework</a></td>
 </tr>
 </tbody>
 </table>
@@ -325,7 +355,7 @@
 <div class="section level4">
 <h4 id="find-structuresstations-from-coordinates">Find structures/stations from coordinates<a class="anchor" aria-label="anchor" href="#find-structuresstations-from-coordinates"></a>
 </h4>
-<p>A spatial search for structures/stations can be made by supplying an SF point/polygon to the <strong>aoi</strong> argument and a numeric value for the search <strong>radius</strong> distance in miles.</p>
+<p>A spatial search for structures/stations can be made by supplying a list of XY coordinates, an <strong><code>sf</code></strong> point/polygon/linestring, or a <strong><code>terra</code></strong> SpatVector object to the <strong>aoi</strong> argument and a numeric value to the <strong>radius</strong> argument, indicating the distance, in miles, to search.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Linking to GEOS 3.9.1, GDAL 3.4.3, PROJ 7.2.1; sf_use_s2() is TRUE</span></span>
