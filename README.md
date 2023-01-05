@@ -277,6 +277,7 @@ search.
 
 ``` r
 library(sf)
+#> Linking to GEOS 3.9.1, GDAL 3.4.3, PROJ 7.2.1; sf_use_s2() is TRUE
 
 # locate structures within 10 miles of point
 structures <- cdssr::get_structures(
@@ -326,7 +327,7 @@ a polygon of Boulder County, CO.
 
 ![](https://cdsspy-images.s3.us-west-1.amazonaws.com/boulder_telem_stations.gif)
 
-<br>
+<br> <br>
 
 ## **Example: Retrieve Diversion records for multiple structures**
 

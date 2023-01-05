@@ -14,8 +14,7 @@ knitr::opts_chunk$set(
   comment     = "#>",
   fig.path    = "man/figures/README-",
   out.width   = "40%",
-  eval        = TRUE, 
-  cache       = TRUE
+  eval        = TRUE
 )
 ```
 
@@ -233,6 +232,7 @@ The gif below highlights a search for telemetry stations that are within a polyg
 
 ![](https://cdsspy-images.s3.us-west-1.amazonaws.com/boulder_telem_stations.gif)
 
+<br>
 <br>
 
 ## **Example: Retrieve Diversion records for multiple structures**
