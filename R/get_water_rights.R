@@ -169,6 +169,12 @@ get_water_rights_netamount <- function(
 
   }
 
+  # mask data in the case that a polygon AOI was given, otherwise masking is skipped in original dataset is returned
+  data_df <- aoi_mask(
+                  aoi = aoi,
+                  pts = data_df
+                  )
+
   # return final binded dataframe
   return(data_df)
 
@@ -346,6 +352,12 @@ get_water_rights_trans <- function(
     }
 
   }
+
+  # mask data in the case that a polygon AOI was given, otherwise masking is skipped in original dataset is returned
+  data_df <- aoi_mask(
+                  aoi = aoi,
+                  pts = data_df
+                  )
 
   # return final binded dataframe
   return(data_df)

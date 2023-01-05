@@ -34,7 +34,28 @@ Resources (DWR)](https://dwr.colorado.gov/).
 Thank you to those at CWCB and DWR for providing an accessible and well
 documented REST API!
 
-<hr>
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
+</style>
+
+<div class="blue">
+
+If you are looking for the equivalent Python package, see
+[**cdsspy**](https://github.com/anguswg-ucsb/cdsspy)
+
+</div>
+
+-   [**cdssr GitHub (R)**](https://github.com/anguswg-ucsb/cdssr)
+
+-   [**cdsspy Github (Python)**](https://github.com/anguswg-ucsb/cdsspy)
+
+-   [**cdssr documentation**](https://anguswg-ucsb.github.io/cdssr/)
+
+-   [**cdsspy PyPI**](https://pypi.org/project/cdsspy/)
+
+------------------------------------------------------------------------
+
+<br>
 
 ## Installation
 
@@ -256,23 +277,13 @@ search.
 
 ``` r
 library(sf)
-#> Linking to GEOS 3.9.1, GDAL 3.4.3, PROJ 7.2.1; sf_use_s2() is TRUE
-
-# create a spatial point
-pt <- sf::st_as_sf(
-            data.frame(
-              lng = -105.549  ,
-              lat = 40.672
-            ),
-            coords = c("lng", "lat"),
-            crs = 4326
-            )
 
 # locate structures within 10 miles of point
 structures <- cdssr::get_structures(
-  aoi    = pt,
+  aoi    = c(-105.549, 40.672),
   radius = 10
   )
+#> List/vector
 #> Retreiving administrative structures from CDSS API...
 #> Location search: 
 #> Latitude: 40.672
@@ -304,7 +315,20 @@ structures <- cdssr::get_structures(
 <img src="man/figures/README-plot_spatial_search-1.png" width="100%" style="display: block; margin: auto;" />
 <br>
 
-#### Retrieve Diversion records for multiple structures
+#### Find structures/stations within a polygon
+
+If a polygon is given as the **aoi** input, a masking operation is done
+to ensure the returned points only include those that are *within* the
+given polygon.
+
+The gif below highlights a search for telemetry stations that are within
+a polygon of Boulder County, CO.
+
+![](https://cdsspy-images.s3.us-west-1.amazonaws.com/boulder_telem_stations.gif)
+
+<br>
+
+## **Example: Retrieve Diversion records for multiple structures**
 
 We can then use the WDID’s found from the spatial search to retrieve
 diversion, release, stage, or volume data from multiple structures using
@@ -406,6 +430,14 @@ well_measure <- cdssr::get_gw_wl_wellmeasures(
 
 <img src="man/figures/README-plot_gw-1.png" width="100%" style="display: block; margin: auto;" />
 
-<br> <br>
+<br> <br> <br>
 
-> **More functions for more endpoints coming soon!**
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px; font-size: 16px; text-align: left}
+</style>
+
+<div class="blue">
+
+**More functions for more endpoints coming soon!**
+
+</div>

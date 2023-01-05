@@ -192,6 +192,12 @@ get_sw_stations <- function(
 
   }
 
+  # mask data in the case that a polygon AOI was given, otherwise masking is skipped in original dataset is returned
+  data_df <- aoi_mask(
+                  aoi = aoi,
+                  pts = data_df
+                  )
+
   # return final binded dataframe
   return(data_df)
 

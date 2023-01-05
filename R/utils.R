@@ -8,7 +8,7 @@ aoi_error_msg <- function() {
     "1. List/Vector of an XY coordinate pair (longitude, latitude)\n",
     "2. 2 column XY coordinate matrix/dataframe (longitude, latitude)\n",
     "3. sf point, polygon, or linestring geometry\n",
-    "4. Terra SpatVector point, polygon, or linestring geometry"
+    "4. terra SpatVector point, polygon, or linestring geometry"
   )
 }
 
@@ -22,7 +22,9 @@ parse_aoi <- function(aoi) {
   # if an SF object is provided, convert to Terra before extracting coordinates
   if(class(aoi)[1] == "sf") {
 
-    message("sf")
+    # message("sf")
+
+    # convert sf to terra SpatVector
     aoi <- terra::vect(aoi)
 
     # check CRS is 4326, and transform if necessary
@@ -51,7 +53,7 @@ parse_aoi <- function(aoi) {
     # check if points
     if(terra::is.points(aoi)) {
 
-      message("terra points")
+      # message("terra points")
 
       # Extract point coordinates
       coords <-
@@ -67,7 +69,7 @@ parse_aoi <- function(aoi) {
     # check if polygons
     if(terra::is.polygons(aoi)) {
 
-      message("terra poly")
+      # message("terra poly")
 
       # Extract polygon centroid coordinates
       coords <-
@@ -84,7 +86,7 @@ parse_aoi <- function(aoi) {
     # check if lines
     if(terra::is.lines(aoi)) {
 
-      message("terra line")
+      # message("terra line")
 
       # Extract line centroid coordinates
       coords <-
@@ -130,7 +132,7 @@ extract_coords <- function(
     # given a 2 column matrix of XY coords
     if(any(all(class(aoi) == "list"), is.numeric(aoi), is.character(aoi))) {
 
-      message("List/vector")
+      # message("List/vector")
 
       # extract lng/lat coords
       lng <- as.numeric(aoi[1])
@@ -297,24 +299,16 @@ extract_coords <- function(
 #
 # }
 
-
-
-
 #' Validate radius for location search queries
 #' @description Internal helper function. Checks that an AOI is given and that the radius is within valid range of values. Radius must be: 0 < radius < 150.
-#' @param aoi 2 column matrix/dataframe of XY coordinates, or SF point or polygon object to search for administrative structures within a given radius
-#' @param radius numeric, search radius in miles around a given point (or the centroid of a polygon) to return administrative structures. If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
-#' @param verbose logical, whether to print messages to console. Default is FALSE, no print.
+#' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
+#' @param radius numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
 #' @return numeric radius value or NULL
 check_radius <- function(
     aoi,
-    radius,
-    verbose = FALSE
+    radius
 ) {
 
-  if(verbose == TRUE){
-    message(paste0(radius))
-  }
 
   # if spatial data is provided, check type and try to extract XY coordinates
   if(!is.null(aoi)) {
@@ -351,8 +345,8 @@ check_radius <- function(
 
 #' Extract coordinates and radius values to use in constructing location URL
 #' @description Internal helper function. Checks that an AOI is given and that the radius is within valid range of values. Radius must be: 0 < radius < 150.
-#' @param aoi 2 column matrix/dataframe of XY coordinates, or SF point or polygon object to search for administrative structures within a given radius
-#' @param radius numeric, search radius in miles around a given point (or the centroid of a polygon) to return administrative structures. If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
+#' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
+#' @param radius numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
 #' @return named list containing lat, lng, and radius values
 check_aoi <- function(
     aoi    = NULL,
@@ -388,5 +382,97 @@ check_aoi <- function(
   aoi_lst <- list(lat = lat, lng = lng, radius = radius)
 
   return(aoi_lst)
+
+}
+
+
+#' Mask points returned from CDSS to only those within polygon AOI
+#' @description Internal function for masking out extraneous points that fall outside of bounds of provided 'aoi' polygon. If not 'aoi' is provided to the function, the default behavior is to return the original set of points received from CDSS. Furthermore, if the AOI is anything other than a sf or terra polygon, the function will return the original set of data from CDSS.
+#' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry. Default is NULL.
+#' @param pts dataframe of points that should be masked to the given aoi. Dataframe must contain "latitude" and "longitude"columns
+#' @return dataframe containing subset (or original) point data from the CDSS API
+aoi_mask <- function(
+    aoi = NULL,
+    pts = NULL
+) {
+
+  # if AOI and pts are NULL, return NULL
+  if(all(is.null(aoi), is.null(pts))) {
+
+    return(NULL)
+
+  }
+
+  # if no 'aoi' is given (NULL), just return original pts data. Default behavior
+  if(is.null(aoi)) {
+
+    # message("returning original bc AOI is null")
+
+    return(pts)
+
+  }
+
+  # if an SF object is provided, convert to Terra before extracting coordinates
+  if(class(aoi)[1] == "sf") {
+
+    # convert sf to terra SpatVector
+    aoi <- terra::vect(aoi)
+
+    # check CRS is 4326, and transform if necessary
+    if(terra::crs(aoi, describe = T)$code != "4326") {
+
+      aoi <- terra::project(aoi, "epsg:4326")
+
+    }
+  }
+
+  # get coordinates from SpatVector points/polygons/lines
+  if(class(aoi)[1] == "SpatVector") {
+
+    # check CRS is 4326, and transform if necessary
+    if(terra::crs(aoi, describe = T)$code != "4326") {
+
+      aoi <- terra::project(aoi, "epsg:4326")
+
+    }
+
+    # check if polygons
+    if(terra::is.polygons(aoi)) {
+
+      # keep only points within given aoi polygon
+      rel_pts <- pts[
+                    as.vector(
+                      terra::relate(
+                        x = aoi,
+                        y = terra::project(
+                          terra::vect(pts, geom = c("utm_x", "utm_y"), crs  = "epsg:26913"),
+                          "epsg:4326"
+                        ),
+                        "contains"
+                      )
+                    ),
+                  ]
+
+      # message("returning masked subset of points")
+
+      return(rel_pts)
+
+    } else {
+
+      # message("returning original data bc SpatVector is NOT a POLYGON")
+
+      # If SpatVector but NOT polygon, return original data
+      return(pts)
+
+    }
+
+  } else {
+
+    # message("returning original data the AOI was not NULL but also not SF/TERRA")
+
+    # If neither sf OR SpatVector, return original data
+    return(pts)
+
+  }
 
 }
