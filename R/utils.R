@@ -385,11 +385,10 @@ check_aoi <- function(
 
 }
 
-
 #' Mask points returned from CDSS to only those within polygon AOI
 #' @description Internal function for masking out extraneous points that fall outside of bounds of provided 'aoi' polygon. If not 'aoi' is provided to the function, the default behavior is to return the original set of points received from CDSS. Furthermore, if the AOI is anything other than a sf or terra polygon, the function will return the original set of data from CDSS.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry. Default is NULL.
-#' @param pts dataframe of points that should be masked to the given aoi. Dataframe must contain "latitude" and "longitude"columns
+#' @param pts dataframe of points that should be masked to the given aoi. Dataframe must contain "utm_y" and "utm_x"columns
 #' @return dataframe containing subset (or original) point data from the CDSS API
 aoi_mask <- function(
     aoi = NULL,

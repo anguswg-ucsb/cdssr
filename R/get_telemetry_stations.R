@@ -81,6 +81,15 @@ get_telemetry_stations <- function(
   # print message
   message(paste0("Retrieving telemetry station data from CDSS API..."))
 
+  # if location based search
+  if(all(!is.null(lng), !is.null(lat))) {
+
+    # location search print message
+    message(paste0("Location search: \nLatitude: ", lat,
+                   "\nLongitude: ", lng,
+                   "\nRadius (miles): ", radius))
+  }
+
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
 

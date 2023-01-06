@@ -9,7 +9,7 @@ aoi_mask(aoi = NULL, pts = NULL)
 \arguments{
 \item{aoi}{list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry. Default is NULL.}
 
-\item{pts}{dataframe of points that should be masked to the given aoi. Dataframe must contain "latitude" and "longitude"columns}
+\item{pts}{dataframe of points that should be masked to the given aoi. Dataframe must contain "utm_y" and "utm_x"columns}
 }
 \value{
 dataframe containing subset (or original) point data from the CDSS API
