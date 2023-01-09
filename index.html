@@ -101,7 +101,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <h2 id="available-endpoints">
 <strong>Available endpoints</strong><a class="anchor" aria-label="anchor" href="#available-endpoints"></a>
 </h2>
-<p>Below is a table of all of the CDSS API endpoints <strong><code>cdssr</code></strong> has functions for.</p>
+<p>Below is a table of all of the CDSS API endpoints that <strong><code>cdssr</code></strong> provides functions for.</p>
 <table class="table">
 <colgroup>
 <col width="1%">
@@ -232,33 +232,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 </tr>
 </tbody>
 </table>
-<p><br></p>
-<p><strong>Note:</strong> Not all of the CDSS API endpoints have function in <strong><code>cdssr</code></strong>(yet), but if you want to <em>quickly view all</em> of the possible endpoints that the <a href="https://dwr.state.co.us/Rest/GET/Help" class="external-link">CDSS REST API provides</a> use the <strong><code><a href="reference/browse_api.html">browse_api()</a></code></strong> function.</p>
-<div class="section level4">
-<h4 id="view-the-return-fields">View the return fields<a class="anchor" aria-label="anchor" href="#view-the-return-fields"></a>
-</h4>
-<p>Use <strong><code><a href="reference/preview_endpoint.html">preview_endpoint()</a></code></strong> to inspect what fields will be returned from a given endpoint, enter the <a href="https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-referencetables-stationflags" class="external-link">help page URL</a>. This URL is also located as a column named <strong>endpoint_url</strong> in the data frame output of <strong><code><a href="reference/browse_api.html">browse_api()</a></code></strong>.</p>
-<p>Let’s see what data will be returned from the referencetables/stationflags/ endpoint</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># URL to referencetables/stationflags endpoint</span></span>
-<span><span class="va">url</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/browse_api.html">browse_api</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">endpoint</span> <span class="op">==</span> <span class="st">"api/v2/referencetables/stationflags"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="va">.</span><span class="op">$</span><span class="va">endpoint_url</span></span>
-<span></span>
-<span><span class="co"># Return expected data fields for a given endpoint</span></span>
-<span><span class="va">return_fields</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/preview_endpoint.html">preview_endpoint</a></span><span class="op">(</span></span>
-<span>                      endpoint_url <span class="op">=</span> <span class="va">url</span></span>
-<span>                      <span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 × 3</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   name        description                     type  </span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;                           &lt;chr&gt; </span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 dataSource  Data Source that uses this flag string</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 description Description of the flag         string</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 flag        Short code for the flag         string</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 flagColumn  Column for this flag            string</span></span></code></pre></div>
 <p><br><br><br></p>
-</div>
 </div>
 <div class="section level2">
 <h2 id="identify-input-parameters">
@@ -270,26 +244,26 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 </h4>
 <p>The <strong><code><a href="reference/get_reference_tbl.html">get_reference_tbl()</a></code></strong> function will return tables that makes it easier to know what information should be supplied to the data retrieval functions in <strong><code>cdssr</code></strong>. For more information on the exact reference tables click <a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#ReferenceTablesController&amp;#gettingstarted&amp;#jsonxml" class="external-link">here</a>.</p>
 <p>Let’s locate the parameters available at telemetry stations.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># available parameters for telemetry stations</span></span>
 <span><span class="va">telemetry_params</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_reference_tbl.html">get_reference_tbl</a></span><span class="op">(</span></span>
 <span>  table_name <span class="op">=</span> <span class="st">"telemetryparams"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Retrieving telemetry parameter reference table from CDSS API...</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 46 × 1</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    parameter</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    </span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 AIRTEMP  </span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 BAR_P    </span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 BATTERY  </span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 COND     </span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 D1       </span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 D2       </span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 DISCHRG  </span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 DISCHRG1 </span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 DISCHRG2 </span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 DISCHRG3 </span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 36 more rows</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 46 × 1</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    parameter</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    </span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 AIRTEMP  </span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 BAR_P    </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 BATTERY  </span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 COND     </span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 D1       </span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 D2       </span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 DISCHRG  </span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 DISCHRG1 </span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 DISCHRG2 </span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 DISCHRG3 </span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 36 more rows</span></span></code></pre></div>
 <p><br><br></p>
 </div>
 </div>
@@ -297,7 +271,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <h2 id="locate-structures">
 <strong>Locate structures</strong><a class="anchor" aria-label="anchor" href="#locate-structures"></a>
 </h2>
-<p>We can use the functions in the table below to identify different types of stations/structures/wells within a given spatial extent, water district, division, county, designated basin, management district. Station data can also be retrieved by providing the specific abbreviation, GNIS ID, USGS ID, WDID, or Well ID for the structure of interest.</p>
+<p>Structures (stations/wells/sites/diversions) can be identified by providing a spatial extent, water district, division, county, designated basin, or management district to the functions in the table below. Structure data can also be retrieved by providing the structure specific abbreviations, GNIS IDs, USGS IDs, WDIDs, or Well IDs.</p>
 <table class="table">
 <colgroup>
 <col width="2%">
@@ -355,32 +329,32 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <h4 id="example-locating-telemetry-stations-by-county">
 <strong>Example: Locating telemetry stations by county</strong><a class="anchor" aria-label="anchor" href="#example-locating-telemetry-stations-by-county"></a>
 </h4>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># identify telemetry stations in Boulder county</span></span>
 <span><span class="va">stations</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_telemetry_stations.html">get_telemetry_stations</a></span><span class="op">(</span></span>
 <span>  county <span class="op">=</span> <span class="st">"Boulder"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Retrieving telemetry station data from CDSS API...</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 110 × 35</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    divis…¹ water…² county stati…³ data_…⁴ data_…⁵ water…⁶ gnis_id strea…⁷ abbrev</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;int&gt;   &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt; </span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1       1       5 BOULD… "CLOUG… NCWCD   Northe… SAINT … 002050…   NA    05005…</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2       1       6 BOULD… "ANDER… DWR     Co. Di… BOULDE… 001783…   23.6  ANDDI…</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3       1       6 BOULD… "ANDRE… DWR     Co. Di… SOUTH … 001809…    1.5  ANFDI…</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4       1       6 BOULD… "BASEL… DWR     Co. Di… BOULDE… 001783…   19.2  BASOU…</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5       1       6 BOULD… "BOULD… NCWCD   Northe… BOULDE… 001783…   15.5  BCSCB…</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6       1       5 BOULD… "BOULD… NCWCD   Northe… LEFT H… 001782…    8.66 BFCIN…</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7       1       5 BOULD… "BOULD… NCWCD   Northe… SAINT … 002050…   31.7  BFCLY…</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8       1       5 BOULD… "BOULD… NCWCD   Northe… SAINT … 002050…   31.7  BFCLY…</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9       1       5 BOULD… "LYONS… DWR     Co. Di… SOUTH … 001782…    0.03 BHNPR…</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BLDLH…</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 100 more rows, 25 more variables: usgs_station_id &lt;chr&gt;,</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   station_status &lt;chr&gt;, station_type &lt;chr&gt;, structure_type &lt;chr&gt;,</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   meas_date_time &lt;dttm&gt;, parameter &lt;chr&gt;, stage &lt;dbl&gt;, meas_value &lt;dbl&gt;,</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   units &lt;chr&gt;, flag_a &lt;chr&gt;, flag_b &lt;chr&gt;, contr_area &lt;dbl&gt;,</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   drain_area &lt;dbl&gt;, huc10 &lt;chr&gt;, utm_x &lt;dbl&gt;, utm_y &lt;dbl&gt;, latitude &lt;dbl&gt;,</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   longitude &lt;dbl&gt;, location_accuracy &lt;chr&gt;, wdid &lt;chr&gt;, modified &lt;chr&gt;,</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   more_information &lt;chr&gt;, station_por_start &lt;dttm&gt;, station_por_end &lt;dttm&gt;, …</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 110 × 35</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    divis…¹ water…² county stati…³ data_…⁴ data_…⁵ water…⁶ gnis_id strea…⁷ abbrev</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;int&gt;   &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt; </span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1       1       5 BOULD… "CLOUG… NCWCD   Northe… SAINT … 002050…   NA    05005…</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2       1       6 BOULD… "ANDER… DWR     Co. Di… BOULDE… 001783…   23.6  ANDDI…</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3       1       6 BOULD… "ANDRE… DWR     Co. Di… SOUTH … 001809…    1.5  ANFDI…</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4       1       6 BOULD… "BASEL… DWR     Co. Di… BOULDE… 001783…   19.2  BASOU…</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5       1       6 BOULD… "BOULD… NCWCD   Northe… BOULDE… 001783…   15.5  BCSCB…</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6       1       5 BOULD… "BOULD… NCWCD   Northe… LEFT H… 001782…    8.66 BFCIN…</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7       1       5 BOULD… "BOULD… NCWCD   Northe… SAINT … 002050…   31.7  BFCLY…</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8       1       5 BOULD… "BOULD… NCWCD   Northe… SAINT … 002050…   31.7  BFCLY…</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9       1       5 BOULD… "LYONS… DWR     Co. Di… SOUTH … 001782…    0.03 BHNPR…</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BLDLH…</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 100 more rows, 25 more variables: usgs_station_id &lt;chr&gt;,</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   station_status &lt;chr&gt;, station_type &lt;chr&gt;, structure_type &lt;chr&gt;,</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   meas_date_time &lt;dttm&gt;, parameter &lt;chr&gt;, stage &lt;dbl&gt;, meas_value &lt;dbl&gt;,</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   units &lt;chr&gt;, flag_a &lt;chr&gt;, flag_b &lt;chr&gt;, contr_area &lt;dbl&gt;,</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   drain_area &lt;dbl&gt;, huc10 &lt;chr&gt;, utm_x &lt;dbl&gt;, utm_y &lt;dbl&gt;, latitude &lt;dbl&gt;,</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   longitude &lt;dbl&gt;, location_accuracy &lt;chr&gt;, wdid &lt;chr&gt;, modified &lt;chr&gt;,</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   more_information &lt;chr&gt;, station_por_start &lt;dttm&gt;, station_por_end &lt;dttm&gt;, …</span></span></code></pre></div>
 <p><img src="https://cdsspy-images.s3.us-west-1.amazonaws.com/county_telem_stations2.png"></p>
 <p><br></p>
 </div>
@@ -388,7 +362,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <h4 id="example-locating-telemetry-stations-around-a-point">
 <strong>Example: Locating telemetry stations around a point</strong><a class="anchor" aria-label="anchor" href="#example-locating-telemetry-stations-around-a-point"></a>
 </h4>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># identify telemetry stations 10 miles around a point</span></span>
 <span><span class="va">stations</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_telemetry_stations.html">get_telemetry_stations</a></span><span class="op">(</span></span>
 <span>  aoi    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">105.358164</span>, <span class="fl">40.092608</span><span class="op">)</span>,</span>
@@ -402,7 +376,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <strong>Example: Locating telemetry stations within a spatial extent</strong><a class="anchor" aria-label="anchor" href="#example-locating-telemetry-stations-within-a-spatial-extent"></a>
 </h4>
 <p>If a polygon is given as the <strong>aoi</strong> input, a masking operation is done to ensure the returned points only include those that are <em>within</em> the given polygon.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load AOI to retrieve county polygons</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">AOI</span><span class="op">)</span></span>
 <span></span>
@@ -475,7 +449,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <p>We can then take a station abbreviations from the <strong><code><a href="reference/get_telemetry_stations.html">get_telemetry_stations()</a></code></strong> call, a parameter from the <strong><code><a href="reference/get_reference_tbl.html">get_reference_tbl()</a></code></strong> call, and use this information as inputs into the <strong><code><a href="reference/get_telemetry_ts.html">get_telemetry_ts()</a></code></strong> function.</p>
 <p><br></p>
 <p>The function below returns a dataframe of daily discharge for the “ANDDITCO” site between 2015-2022.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># # Daily discharge at "ANDDITCO" telemetry station</span></span>
 <span><span class="va">discharge_ts</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_telemetry_ts.html">get_telemetry_ts</a></span><span class="op">(</span></span>
 <span>                      abbrev              <span class="op">=</span> <span class="st">"ANDDITCO"</span>,     <span class="co"># Site abbreviation from the outputs of get_telemetry_stations()</span></span>
@@ -488,20 +462,20 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <span><span class="co">#&gt; Telemetry station abbreviation: ANDDITCO</span></span>
 <span><span class="co">#&gt; Parameter: DISCHRG</span></span>
 <span><span class="co">#&gt; Timescale: day</span></span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 572 × 7</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    abbrev   parameter date               value unit  datetime            times…¹</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt; &lt;dttm&gt;              &lt;chr&gt;  </span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 ANDDITCO DISCHRG   2020-05-07 00:00:…  3.05 cfs   2020-05-07 00:00:00 day    </span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 ANDDITCO DISCHRG   2020-05-08 00:00:…  3.04 cfs   2020-05-08 00:00:00 day    </span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 ANDDITCO DISCHRG   2020-05-09 00:00:…  2.98 cfs   2020-05-09 00:00:00 day    </span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 ANDDITCO DISCHRG   2020-05-10 00:00:…  2.95 cfs   2020-05-10 00:00:00 day    </span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 ANDDITCO DISCHRG   2020-05-11 00:00:…  2.95 cfs   2020-05-11 00:00:00 day    </span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 ANDDITCO DISCHRG   2020-05-12 00:00:…  2.95 cfs   2020-05-12 00:00:00 day    </span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 ANDDITCO DISCHRG   2020-05-13 00:00:…  2.95 cfs   2020-05-13 00:00:00 day    </span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 ANDDITCO DISCHRG   2020-05-14 00:00:…  2.95 cfs   2020-05-14 00:00:00 day    </span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 ANDDITCO DISCHRG   2020-05-15 00:00:…  2.95 cfs   2020-05-15 00:00:00 day    </span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 ANDDITCO DISCHRG   2020-05-16 00:00:…  2.95 cfs   2020-05-16 00:00:00 day    </span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 562 more rows, and abbreviated variable name ¹​timescale</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 572 × 7</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    abbrev   parameter date               value unit  datetime            times…¹</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt; &lt;dttm&gt;              &lt;chr&gt;  </span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 ANDDITCO DISCHRG   2020-05-07 00:00:…  3.05 cfs   2020-05-07 00:00:00 day    </span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 ANDDITCO DISCHRG   2020-05-08 00:00:…  3.04 cfs   2020-05-08 00:00:00 day    </span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 ANDDITCO DISCHRG   2020-05-09 00:00:…  2.98 cfs   2020-05-09 00:00:00 day    </span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 ANDDITCO DISCHRG   2020-05-10 00:00:…  2.95 cfs   2020-05-10 00:00:00 day    </span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 ANDDITCO DISCHRG   2020-05-11 00:00:…  2.95 cfs   2020-05-11 00:00:00 day    </span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 ANDDITCO DISCHRG   2020-05-12 00:00:…  2.95 cfs   2020-05-12 00:00:00 day    </span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 ANDDITCO DISCHRG   2020-05-13 00:00:…  2.95 cfs   2020-05-13 00:00:00 day    </span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 ANDDITCO DISCHRG   2020-05-14 00:00:…  2.95 cfs   2020-05-14 00:00:00 day    </span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 ANDDITCO DISCHRG   2020-05-15 00:00:…  2.95 cfs   2020-05-15 00:00:00 day    </span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 ANDDITCO DISCHRG   2020-05-16 00:00:…  2.95 cfs   2020-05-16 00:00:00 day    </span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 562 more rows, and abbreviated variable name ¹​timescale</span></span></code></pre></div>
 <p><img src="https://cdsspy-images.s3.us-west-1.amazonaws.com/discharge_timeseries_plot2.png"></p>
 <p><br><br></p>
 </div>
@@ -517,7 +491,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 </li>
 </ol>
 <p><strong>Note:</strong> Data availability can vary between structures (i.e. Missing data, not all structures have every data type/temporal resolution available, etc.)</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 1. Executing a spatial search</span></span>
 <span><span class="va">structures</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_structures.html">get_structures</a></span><span class="op">(</span></span>
 <span>  aoi    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">105.3578</span>, <span class="fl">40.09244</span><span class="op">)</span>,</span>
@@ -544,22 +518,22 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <span>                        type           <span class="op">=</span> <span class="st">"month"</span></span>
 <span>                        <span class="op">)</span></span>
 <span><span class="co">#&gt; Retrieving monthly diversion data from CDSS API...</span></span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 495 × 10</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    wdid    water_class…¹ wc_id…² meas_…³ data_…⁴ data_…⁵ meas_…⁶ obs_c…⁷ appro…⁸</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  </span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 0500564      10500564 050056… Daily   1992-04    165. ACFT    U       Approv…</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 0500564      10500564 050056… Daily   1992-05    745. ACFT    U       Approv…</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 0500564      10500564 050056… Daily   1992-06    430. ACFT    U       Approv…</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 0500564      10500564 050056… Daily   1992-07    372. ACFT    U       Approv…</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 0500564      10500564 050056… Daily   1992-08    611. ACFT    U       Approv…</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 0500564      10500564 050056… Daily   1992-09    315. ACFT    U       Approv…</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 0500564      10500564 050056… Daily   1992-10    120. ACFT    U       Approv…</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 0500564      10500564 050056… Daily   2004-04    244. ACFT    U       Approv…</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 0500564      10500564 050056… Daily   2004-05    699. ACFT    U       Approv…</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 0500564      10500564 050056… Daily   2004-06    294. ACFT    U       Approv…</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 485 more rows, 1 more variable: datetime &lt;date&gt;, and abbreviated</span></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   variable names ¹​water_class_num, ²​wc_identifier, ³​meas_interval,</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ⁴​data_meas_date, ⁵​data_value, ⁶​meas_units, ⁷​obs_code, ⁸​approval_status</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 495 × 10</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    wdid    water_class…¹ wc_id…² meas_…³ data_…⁴ data_…⁵ meas_…⁶ obs_c…⁷ appro…⁸</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  </span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 0500564      10500564 050056… Daily   1992-04    165. ACFT    U       Approv…</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 0500564      10500564 050056… Daily   1992-05    745. ACFT    U       Approv…</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 0500564      10500564 050056… Daily   1992-06    430. ACFT    U       Approv…</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 0500564      10500564 050056… Daily   1992-07    372. ACFT    U       Approv…</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 0500564      10500564 050056… Daily   1992-08    611. ACFT    U       Approv…</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 0500564      10500564 050056… Daily   1992-09    315. ACFT    U       Approv…</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 0500564      10500564 050056… Daily   1992-10    120. ACFT    U       Approv…</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 0500564      10500564 050056… Daily   2004-04    244. ACFT    U       Approv…</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 0500564      10500564 050056… Daily   2004-05    699. ACFT    U       Approv…</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 0500564      10500564 050056… Daily   2004-06    294. ACFT    U       Approv…</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 485 more rows, 1 more variable: datetime &lt;date&gt;, and abbreviated</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   variable names ¹​water_class_num, ²​wc_identifier, ³​meas_interval,</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ⁴​data_meas_date, ⁵​data_value, ⁶​meas_units, ⁷​obs_code, ⁸​approval_status</span></span></code></pre></div>
 <p><img src="https://cdsspy-images.s3.us-west-1.amazonaws.com/divrec_facet_plot.png"></p>
 <p><br><br><br></p>
 </div>
@@ -608,7 +582,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 </table>
 <p><br></p>
 <p>Here we will retrieve groundwater well measurement data for Well ID 1274 between 1990-2022.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Request wellmeasurements endpoint (api/v2/groundwater/waterlevels/wellmeasurements)</span></span>
 <span><span class="va">well_measure</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_gw_wl_wellmeasures.html">get_gw_wl_wellmeasures</a></span><span class="op">(</span></span>
 <span>  wellid     <span class="op">=</span> <span class="fl">1274</span>,</span>
@@ -617,25 +591,25 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Downloading data from CDSS API...</span></span>
 <span><span class="co">#&gt; Groundwater well measurements</span></span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1,469 × 18</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    well_id well_name      divis…¹ water…² county manag…³ desig…⁴ publi…⁵ measu…⁶</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;int&gt; &lt;chr&gt;            &lt;int&gt;   &lt;int&gt; &lt;chr&gt;  &lt;lgl&gt;   &lt;lgl&gt;   &lt;chr&gt;   &lt;chr&gt;  </span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1990-0…</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1990-1…</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1991-0…</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1991-1…</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1992-0…</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1992-0…</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1992-1…</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1993-0…</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1993-1…</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1994-0…</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 1,459 more rows, 9 more variables: depth_to_water &lt;dbl&gt;,</span></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   measuring_point_above_land_surface &lt;dbl&gt;,</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   depth_water_below_land_surface &lt;dbl&gt;, elevation_of_water &lt;dbl&gt;,</span></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   delta &lt;dbl&gt;, data_source &lt;chr&gt;, published &lt;chr&gt;, modified &lt;chr&gt;,</span></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   datetime &lt;dttm&gt;, and abbreviated variable names ¹​division, ²​water_district,</span></span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ³​management_district, ⁴​designated_basin, ⁵​publication, ⁶​measurement_date</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1,469 × 18</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    well_id well_name      divis…¹ water…² county manag…³ desig…⁴ publi…⁵ measu…⁶</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;int&gt; &lt;chr&gt;            &lt;int&gt;   &lt;int&gt; &lt;chr&gt;  &lt;lgl&gt;   &lt;lgl&gt;   &lt;chr&gt;   &lt;chr&gt;  </span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1990-0…</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1990-1…</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1991-0…</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1991-1…</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1992-0…</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1992-0…</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1992-1…</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1993-0…</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1993-1…</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10    1274 LSP-020  03N6…       1       2 WELD   NA      NA      LOWER … 1994-0…</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 1,459 more rows, 9 more variables: depth_to_water &lt;dbl&gt;,</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   measuring_point_above_land_surface &lt;dbl&gt;,</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   depth_water_below_land_surface &lt;dbl&gt;, elevation_of_water &lt;dbl&gt;,</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   delta &lt;dbl&gt;, data_source &lt;chr&gt;, published &lt;chr&gt;, modified &lt;chr&gt;,</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   datetime &lt;dttm&gt;, and abbreviated variable names ¹​division, ²​water_district,</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ³​management_district, ⁴​designated_basin, ⁵​publication, ⁶​measurement_date</span></span></code></pre></div>
 <p><img src="https://cdsspy-images.s3.us-west-1.amazonaws.com/gw_depth_to_water_plot.png"><br><br><br></p>
 </div>
 </div>
