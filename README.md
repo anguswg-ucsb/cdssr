@@ -74,8 +74,8 @@ library(cdssr)
 
 ## **Available endpoints**
 
-Below is a table of all of the CDSS API endpoints **`cdssr`** has
-functions for.
+Below is a table of all of the CDSS API endpoints that **`cdssr`**
+provides functions for.
 
 | **-** | **Function**                     | **Description**                                                                                                                                                                     | **Endpoint**                                                                                                                                                                                                                                 |
 |-------|----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -98,46 +98,6 @@ functions for.
 | 17    | **get_water_rights_trans()**     | Returns court decreed actions that affect amount and use(s) that can be used by each water right                                                                                    | [waterrights/transaction](https://dwr.state.co.us/rest/get/help#Datasets&#WaterRightsController&#gettingstarted&#jsonxml)                                                                                                                    |
 | 18    | **get_call_analysis_wdid()**     | Performs a call analysis that returns a time series showing the percentage of each day that the specified WDID and priority was out of priority and the downstream call in priority | [analysisservices/callanalysisbywdid](https://dwr.state.co.us/rest/get/help#Datasets&#AnalysisServicesController&#gettingstarted&#jsonxml)                                                                                                   |
 | 19    | **get_source_route_framework()** | Returns the DWR source route framework reference table for the criteria specified                                                                                                   | [analysisservices/watersourcerouteframework](https://dwr.state.co.us/rest/get/help#Datasets&#AnalysisServicesController&#gettingstarted&#jsonxml)                                                                                            |
-
-<br>
-
-**Note:** Not all of the CDSS API endpoints have function in
-**`cdssr`**(yet), but if you want to *quickly view all* of the possible
-endpoints that the [CDSS REST API
-provides](https://dwr.state.co.us/Rest/GET/Help) use the
-**`browse_api()`** function.
-
-#### View the return fields
-
-Use **`preview_endpoint()`** to inspect what fields will be returned
-from a given endpoint, enter the [help page
-URL](https://dwr.state.co.us/Rest/GET/Help/Api/GET-api-v2-referencetables-stationflags).
-This URL is also located as a column named **endpoint_url** in the data
-frame output of **`browse_api()`**.
-
-Let’s see what data will be returned from the
-referencetables/stationflags/ endpoint
-
-``` r
-# URL to referencetables/stationflags endpoint
-url <- 
-  cdssr::browse_api() %>% 
-  dplyr::filter(endpoint == "api/v2/referencetables/stationflags") %>% 
-  .$endpoint_url
-
-# Return expected data fields for a given endpoint
-return_fields <- cdssr::preview_endpoint(
-                      endpoint_url = url
-                      )
-```
-
-    #> # A tibble: 4 × 3
-    #>   name        description                     type  
-    #>   <chr>       <chr>                           <chr> 
-    #> 1 dataSource  Data Source that uses this flag string
-    #> 2 description Description of the flag         string
-    #> 3 flag        Short code for the flag         string
-    #> 4 flagColumn  Column for this flag            string
 
 <br> <br> <br>
 
@@ -180,12 +140,11 @@ telemetry_params <- cdssr::get_reference_tbl(
 
 ## **Locate structures**
 
-We can use the functions in the table below to identify different types
-of stations/structures/wells within a given spatial extent, water
-district, division, county, designated basin, management district.
-Station data can also be retrieved by providing the specific
-abbreviation, GNIS ID, USGS ID, WDID, or Well ID for the structure of
-interest.
+Structures (stations/wells/sites/diversions) can be identified by
+providing a spatial extent, water district, division, county, designated
+basin, or management district to the functions in the table below.
+Structure data can also be retrieved by providing the structure specific
+abbreviations, GNIS IDs, USGS IDs, WDIDs, or Well IDs.
 
 | **-** | **Function**                 | **Description**                                                    | **Endpoint**                                                                                                                                                                                                                        |
 |-------|------------------------------|--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
