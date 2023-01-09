@@ -41,7 +41,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <div class="blue">
 
 If you are looking for the equivalent Python package, see
-[**cdsspy**](https://github.com/anguswg-ucsb/cdsspy)
+<a href="https://github.com/anguswg-ucsb/cdsspy"><strong>cdsspy</strong></a>
 
 </div>
 
@@ -141,9 +141,9 @@ return_fields <- cdssr::preview_endpoint(
 
 <br> <br> <br>
 
-## **Example: Telemetry site data**
+## **Identify input parameters**
 
-#### Identify query inputs using reference tables
+#### **Example: Identify query inputs using reference tables**
 
 The **`get_reference_tbl()`** function will return tables that makes it
 easier to know what information should be supplied to the data retrieval
@@ -176,37 +176,52 @@ telemetry_params <- cdssr::get_reference_tbl(
     #> 10 DISCHRG3 
     #> # … with 36 more rows
 
+<br> <br>
+
+## **Locate structures**
+
+We can use the functions in the table below to identify different types
+of stations/structures/wells within a given spatial extent, water
+district, division, county, designated basin, management district.
+Station data can also be retrieved by providing the specific
+abbreviation, GNIS ID, USGS ID, WDID, or Well ID for the structure of
+interest.
+
+| **-** | **Function**                 | **Description**                                                    | **Endpoint**                                                                                                                                                                                                                        |
+|-------|------------------------------|--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1     | **get_structures()**         | Returns list of administrative structures                          | [structures](https://dwr.state.co.us/rest/get/help#Datasets&#StructuresController&#gettingstarted&#jsonxml)                                                                                                                         |
+| 2     | **get_climate_stations()**   | Returns Climate Stations                                           | [climatedata/climatestations](https://dwr.state.co.us/rest/get/help#Datasets&#ClimateStationsController&https://www.ncdc.noaa.gov/cdo-web/webservices&https://www.northernwater.org/our-data/weather-data&#gettingstarted&#jsonxml) |
+| 3     | **get_gw_gplogs_wells()**    | Returns Groundwater GeophysicalLogsWell from filters               | [groundwater/geophysicallogs/](https://dwr.state.co.us/rest/get/help#Datasets&#GroundwaterGeophysicalLogsController&#gettingstarted&#jsonxml)                                                                                       |
+| 4     | **get_gw_wl_wells()**        | Returns WaterLevelsWell from filters                               | [groundwater/waterlevels/wells](https://dwr.state.co.us/rest/get/help#Datasets&#GroundwaterLevelsController&#gettingstarted&#jsonxml)                                                                                               |
+| 5     | **get_sw_stations()**        | Returns Surface Water Station info                                 | [surfacewater/surfacewaterstations](https://dwr.state.co.us/rest/get/help#Datasets&#SurfaceWaterController&#gettingstarted&#jsonxml)                                                                                                |
+| 6     | **get_telemetry_stations()** | Returns telemetry stations and their most recent parameter reading | [telemetrystations/telemetrystation](https://dwr.state.co.us/rest/get/help#Datasets&#TelemetryStationsController&#gettingstarted&#jsonxml)                                                                                          |
+
 <br>
 
-#### Locate stations
-
-We can use the **`get_<endpoint>_stations()`** functions to identify the
-stations within a given spatial extent (point/polygon), water district,
-division, or county. Station data can also be retrieved by providing a
-specific station abbreviation, GNIS ID, USGS ID, or WDID.
+#### **Example: Locating telemetry stations by county**
 
 ``` r
-# identify telemetry stations in water district 6
+# identify telemetry stations in Boulder county
 stations <- cdssr::get_telemetry_stations(
-  water_district = 6
+  county = "Boulder"
   )
 #> Retrieving telemetry station data from CDSS API...
 ```
 
-    #> # A tibble: 71 × 35
+    #> # A tibble: 110 × 35
     #>    divis…¹ water…² county stati…³ data_…⁴ data_…⁵ water…⁶ gnis_id strea…⁷ abbrev
     #>      <int>   <int> <chr>  <chr>   <chr>   <chr>   <chr>   <chr>     <dbl> <chr> 
-    #>  1       1       6 BOULD… "ANDER… DWR     Co. Di… BOULDE… 001783…   23.6  ANDDI…
-    #>  2       1       6 BOULD… "ANDRE… DWR     Co. Di… SOUTH … 001809…    1.5  ANFDI…
-    #>  3       1       6 BOULD… "BASEL… DWR     Co. Di… BOULDE… 001783…   19.2  BASOU…
-    #>  4       1       6 BOULD… "BOULD… NCWCD   Northe… BOULDE… 001783…   15.5  BCSCB…
-    #>  5       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BLDLH…
-    #>  6       1       6 BOULD… "BUTTE… DWR     Co. Di… BOULDE… 001783…   18.6  BMLDI…
-    #>  7       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…    9.52 BOC10…
-    #>  8       1       6 BOULD… "MIDDL… DWR     Co. Di… MIDDLE… 001785…    5.92 BOCBB…
-    #>  9       1       6 BOULD… "SOUTH… DWR     Co. Di… SOUTH … 001809…   16.5  BOCBG…
-    #> 10       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BOCBR…
-    #> # … with 61 more rows, 25 more variables: usgs_station_id <chr>,
+    #>  1       1       5 BOULD… "CLOUG… NCWCD   Northe… SAINT … 002050…   NA    05005…
+    #>  2       1       6 BOULD… "ANDER… DWR     Co. Di… BOULDE… 001783…   23.6  ANDDI…
+    #>  3       1       6 BOULD… "ANDRE… DWR     Co. Di… SOUTH … 001809…    1.5  ANFDI…
+    #>  4       1       6 BOULD… "BASEL… DWR     Co. Di… BOULDE… 001783…   19.2  BASOU…
+    #>  5       1       6 BOULD… "BOULD… NCWCD   Northe… BOULDE… 001783…   15.5  BCSCB…
+    #>  6       1       5 BOULD… "BOULD… NCWCD   Northe… LEFT H… 001782…    8.66 BFCIN…
+    #>  7       1       5 BOULD… "BOULD… NCWCD   Northe… SAINT … 002050…   31.7  BFCLY…
+    #>  8       1       5 BOULD… "BOULD… NCWCD   Northe… SAINT … 002050…   31.7  BFCLY…
+    #>  9       1       5 BOULD… "LYONS… DWR     Co. Di… SOUTH … 001782…    0.03 BHNPR…
+    #> 10       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BLDLH…
+    #> # … with 100 more rows, 25 more variables: usgs_station_id <chr>,
     #> #   station_status <chr>, station_type <chr>, structure_type <chr>,
     #> #   meas_date_time <dttm>, parameter <chr>, stage <dbl>, meas_value <dbl>,
     #> #   units <chr>, flag_a <chr>, flag_b <chr>, contr_area <dbl>,
@@ -214,31 +229,83 @@ stations <- cdssr::get_telemetry_stations(
     #> #   longitude <dbl>, location_accuracy <chr>, wdid <chr>, modified <chr>,
     #> #   more_information <chr>, station_por_start <dttm>, station_por_end <dttm>, …
 
-<img src="man/figures/README-plot_tele_stations-1.png" width="100%" style="display: block; margin: auto;" />
+![](https://cdsspy-images.s3.us-west-1.amazonaws.com/county_telem_stations2.png)
 
 <br>
 
-#### Retrieve Telemetry station timeseries data
+#### **Example: Locating telemetry stations around a point**
 
-The functions ending with **`_ts()`** map to the various timeseries data
-endpoints from the CDSS API.
+``` r
+# identify telemetry stations 10 miles around a point
+stations <- cdssr::get_telemetry_stations(
+  aoi    = c(-105.358164, 40.092608),
+  radius = 10
+  )
+```
+
+![](https://cdsspy-images.s3.us-west-1.amazonaws.com/poi_telem_stations.png)
+
+<br>
+
+#### **Example: Locating telemetry stations within a spatial extent**
+
+If a polygon is given as the **aoi** input, a masking operation is done
+to ensure the returned points only include those that are *within* the
+given polygon.
+
+``` r
+# load AOI to retrieve county polygons
+library(AOI)
+
+# identify telemetry stations 15 miles around a point
+stations <- cdssr::get_telemetry_stations(
+  aoi    = AOI::aoi_get(county = "Boulder", state = "CO"),
+  radius = 15
+  )
+```
+
+The gif below highlights the masking process that is done when a polygon
+is used as the input for conducting a location search.
+
+![](https://cdsspy-images.s3.us-west-1.amazonaws.com/boulder_telem_stations_poly.gif)
+
+<br> <br> <br>
+
+## **Retrieve timeseries data**
+
+We can use the functions in the table below retrieve timeseries data
+from the various timeseries related CDSS API endpoint.
+
+| **-** | **Function**                 | **Description**                                               | **Endpoint**                                                                                                                                                                                                                         |
+|-------|------------------------------|---------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1     | **get_structures_divrec()**  | Returns list of diversion/release/stage records based on WDID | [structures/divrec/](https://dwr.state.co.us/rest/get/help#Datasets&#DiversionRecordsController&https://dnrweblink.state.co.us/dwr/ElectronicFile.aspx?docid=3600965&dbid=0&#gettingstarted&#jsonxml)                                |
+| 2     | **get_climate_ts()**         | Returns Climate Station Time Series (day, month, year)        | [climatedata/climatestationts](https://dwr.state.co.us/rest/get/help#Datasets&#ClimateStationsController&https://www.ncdc.noaa.gov/cdo-web/webservices&https://www.northernwater.org/our-data/weather-data&#gettingstarted&#jsonxml) |
+| 3     | **get_gw_wl_wellmeasures()** | Returns Groundwater Measurements                              | [groundwater/waterlevels/wellmeasurements](https://dwr.state.co.us/rest/get/help#Datasets&#GroundwaterLevelsController&#gettingstarted&#jsonxml)                                                                                     |
+| 4     | **get_sw_ts()**              | Returns Surface Water Time Series                             | [surfacewater/surfacewaterts](https://dwr.state.co.us/rest/get/help#Datasets&#SurfaceWaterController&#gettingstarted&#jsonxml)                                                                                                       |
+| 5     | **get_telemetry_ts()**       | Returns telemetry time series data (raw, hour, day)           | [telemetrystations/telemetrytimeseries](https://dwr.state.co.us/rest/get/help#Datasets&#TelemetryStationsController&#gettingstarted&#jsonxml)                                                                                        |
+
+<br>
+
+#### **Example: Daily discharge at a telemetry station**
 
 We can then take a station abbreviations from the
 **`get_telemetry_stations()`** call, a parameter from the
 **`get_reference_tbl()`** call, and use this information as inputs into
 the **`get_telemetry_ts()`** function.
 
-The function call below with return a daily discharge timeseries for the
-ANDDITCO site between 2015-2022
+<br>
+
+The function below returns a dataframe of daily discharge for the
+“ANDDITCO” site between 2015-2022.
 
 ``` r
 # # Daily discharge at "ANDDITCO" telemetry station
 discharge_ts <- cdssr::get_telemetry_ts(
-                      abbrev              = "ANDDITCO",
-                      parameter           = "DISCHRG",
-                      start_date          = "2015-01-01",
-                      end_date            = "2022-01-01",
-                      timescale           = "day"
+                      abbrev              = "ANDDITCO",     # Site abbreviation from the outputs of get_telemetry_stations()
+                      parameter           = "DISCHRG",      # Desired parameter, identified by the get_reference_tbl() function
+                      start_date          = "2015-01-01",   # Starting date
+                      end_date            = "2022-01-01",   # Ending date
+                      timescale           = "day"           # select daily timescale 
                                )
 #> Downloading data from CDSS API...
 #> Telemetry station abbreviation: ANDDITCO
@@ -261,92 +328,43 @@ discharge_ts <- cdssr::get_telemetry_ts(
     #> 10 ANDDITCO DISCHRG   2020-05-16 00:00:…  2.95 cfs   2020-05-16 00:00:00 day    
     #> # … with 562 more rows, and abbreviated variable name ¹​timescale
 
-<img src="man/figures/README-plot_ts-1.png" width="100%" style="display: block; margin: auto;" />
-
-<br> <br> <br>
-
-## **Example: Spatial search**
-
-#### Find structures/stations from coordinates
-
-A spatial search for structures/stations can be made by supplying a list
-of XY coordinates, an **`sf`** point/polygon/linestring, or a
-**`terra`** SpatVector object to the **aoi** argument and a numeric
-value to the **radius** argument, indicating the distance, in miles, to
-search.
-
-``` r
-library(sf)
-#> Linking to GEOS 3.9.1, GDAL 3.4.3, PROJ 7.2.1; sf_use_s2() is TRUE
-
-# locate structures within 10 miles of point
-structures <- cdssr::get_structures(
-  aoi    = c(-105.549, 40.672),
-  radius = 10
-  )
-#> List/vector
-#> Retreiving administrative structures from CDSS API...
-#> Location search: 
-#> Latitude: 40.672
-#> Longitude: -105.549
-#> Radius (miles): 10
-```
-
-    #> # A tibble: 528 × 37
-    #>    wdid  struc…¹ assoc…² ciu_c…³ struc…⁴ water…⁵ gnis_id strea…⁶ assoc…⁷ assoc…⁸
-    #>    <chr> <chr>   <chr>   <chr>   <chr>   <chr>   <chr>     <dbl> <chr>   <chr>  
-    #>  1 0300… POUDRE… <NA>    U       DITCH   CACHE … 002050…   96.6  04CW03… <NA>   
-    #>  2 0300… POUDRE… <NA>    U       DITCH   CACHE … 002050…   96.6  04CW03… <NA>   
-    #>  3 0300… MUCKLO… <NA>    U       PIPELI… FALL C… 001773…    0.45 95CW02… <NA>   
-    #>  4 0300… BRINKH… <NA>    U       PIPELI… MANHAT… 001771…    3.69 88CW00… <NA>   
-    #>  5 0300… NORGRE… <NA>    U       SPRING  CACHE … 002050…   NA    W3906   <NA>   
-    #>  6 0300… BEN DE… <NA>    U       DITCH   ELKHOR… 001702…    8.75 89CW02… <NA>   
-    #>  7 0300… MANHAT… <NA>    U       DITCH   MANHAT… 001771…    1.48 89CW02… <NA>   
-    #>  8 0300… FRY HA… <NA>    U       PUMP    CACHE … 002050…   89.5  97CW02… <NA>   
-    #>  9 0300… HOME D… <NA>    U       DITCH   CACHE … 002050…   94.8  CA2031  <NA>   
-    #> 10 0300… FRY HA… <NA>    A       DITCH   CACHE … 002050…   89.0  93CW00… <NA>   
-    #> # … with 518 more rows, 27 more variables: associated_meters <lgl>,
-    #> #   associated_contacts <chr>, por_start <chr>, por_end <chr>, division <int>,
-    #> #   water_district <int>, subdistrict <lgl>, county <chr>,
-    #> #   designated_basin_name <lgl>, management_district_name <lgl>, pm <chr>,
-    #> #   township <chr>, range <chr>, section <chr>, q10 <chr>, q40 <chr>,
-    #> #   q160 <chr>, coordsew <int>, coordsew_dir <chr>, coordsns <int>,
-    #> #   coordsns_dir <chr>, utm_x <dbl>, utm_y <dbl>, latdecdeg <dbl>, …
-
-<img src="man/figures/README-plot_spatial_search-1.png" width="100%" style="display: block; margin: auto;" />
-<br>
-
-#### Find structures/stations within a polygon
-
-If a polygon is given as the **aoi** input, a masking operation is done
-to ensure the returned points only include those that are *within* the
-given polygon.
-
-The gif below highlights a search for telemetry stations that are within
-a polygon of Boulder County, CO.
-
-![](https://cdsspy-images.s3.us-west-1.amazonaws.com/boulder_telem_stations.gif)
+![](https://cdsspy-images.s3.us-west-1.amazonaws.com/discharge_timeseries_plot2.png)
 
 <br> <br>
 
-## **Example: Retrieve Diversion records for multiple structures**
+#### **Example: Retrieve Diversion records for multiple structures**
 
-We can then use the WDID’s found from the spatial search to retrieve
-diversion, release, stage, or volume data from multiple structures using
-**`get_structures_divrec()`**.
+Some of the CDSS API endpoints allow users to request data from multiple
+structures. To do this, we can get a list of relevent WDIDs by:
+
+1.  Executing a spatial search
+2.  Selecting the WDID’s of interest from our search results
+3.  Providing the WDID’s as a vector to **`get_structures_divrec()`**
 
 **Note:** Data availability can vary between structures (i.e. Missing
 data, not all structures have every data type/temporal resolution
 available, etc.)
 
 ``` r
-# create a character vector of WDID's for all active ditch structures
+# 1. Executing a spatial search
+structures <- cdssr::get_structures(
+  aoi    = c(-105.3578, 40.09244),
+  radius = 5
+)
+#> List/vector
+#> Retreiving administrative structures from CDSS API...
+#> Location search: 
+#> Latitude: 40.09244
+#> Longitude: -105.3578
+#> Radius (miles): 5
+
+# 2. Selecting the WDID's of interest from our search results
 ditch_wdids <-
   structures %>%
     dplyr::filter(ciu_code == "A", structure_type == "DITCH") %>%
   .$wdid
 
-# get diversion records
+# 3. Providing the WDID's as a vector to **`get_structures_divrec()`** 
 diversion_rec <-
   cdssr::get_structures_divrec(
                         wdid           = ditch_wdids,
@@ -356,24 +374,24 @@ diversion_rec <-
 #> Retrieving monthly diversion data from CDSS API...
 ```
 
-    #> # A tibble: 123 × 10
+    #> # A tibble: 495 × 10
     #>    wdid    water_class…¹ wc_id…² meas_…³ data_…⁴ data_…⁵ meas_…⁶ obs_c…⁷ appro…⁸
     #>    <chr>           <int> <chr>   <chr>   <chr>     <dbl> <chr>   <chr>   <chr>  
-    #>  1 0300949      10300949 030094… Daily   2010-05  195.   ACFT    *       Approv…
-    #>  2 0300949      10300949 030094… Daily   2010-06  137.   ACFT    *       Approv…
-    #>  3 0300949      10300949 030094… Daily   2010-07    0    ACFT    *       Approv…
-    #>  4 0300949      10300949 030094… Daily   2011-05   43.6  ACFT    *       Approv…
-    #>  5 0300949      10300949 030094… Daily   2011-06   93.2  ACFT    *       Approv…
-    #>  6 0300949      10300949 030094… Daily   2011-07   77.4  ACFT    *       Approv…
-    #>  7 0300949      10300949 030094… Daily   2011-08    8.93 ACFT    *       Approv…
-    #>  8 0300949      10300949 030094… Daily   2012-04   46.6  ACFT    *       Approv…
-    #>  9 0300949      10300949 030094… Daily   2012-05   66.4  ACFT    *       Approv…
-    #> 10 0300949      10300949 030094… Daily   2014-06   28.3  ACFT    *       Approv…
-    #> # … with 113 more rows, 1 more variable: datetime <date>, and abbreviated
+    #>  1 0500564      10500564 050056… Daily   1992-04    165. ACFT    U       Approv…
+    #>  2 0500564      10500564 050056… Daily   1992-05    745. ACFT    U       Approv…
+    #>  3 0500564      10500564 050056… Daily   1992-06    430. ACFT    U       Approv…
+    #>  4 0500564      10500564 050056… Daily   1992-07    372. ACFT    U       Approv…
+    #>  5 0500564      10500564 050056… Daily   1992-08    611. ACFT    U       Approv…
+    #>  6 0500564      10500564 050056… Daily   1992-09    315. ACFT    U       Approv…
+    #>  7 0500564      10500564 050056… Daily   1992-10    120. ACFT    U       Approv…
+    #>  8 0500564      10500564 050056… Daily   2004-04    244. ACFT    U       Approv…
+    #>  9 0500564      10500564 050056… Daily   2004-05    699. ACFT    U       Approv…
+    #> 10 0500564      10500564 050056… Daily   2004-06    294. ACFT    U       Approv…
+    #> # … with 485 more rows, 1 more variable: datetime <date>, and abbreviated
     #> #   variable names ¹​water_class_num, ²​wc_identifier, ³​meas_interval,
     #> #   ⁴​data_meas_date, ⁵​data_value, ⁶​meas_units, ⁷​obs_code, ⁸​approval_status
 
-<img src="man/figures/README-plot_divrec-1.png" width="100%" style="display: block; margin: auto;" />
+![](https://cdsspy-images.s3.us-west-1.amazonaws.com/divrec_facet_plot.png)
 
 <br> <br> <br>
 
@@ -383,8 +401,6 @@ diversion_rec <-
 
 The **get_gw\_()** set of functions lets users make get requests to the
 various CDSS API groundwater endpoints shown in the table below:
-
-Groundwater endpoints:
 
 | **-** | **Function**                    | **Endpoint**                                                                                                                                     |
 |-------|---------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -429,16 +445,5 @@ well_measure <- cdssr::get_gw_wl_wellmeasures(
     #> #   datetime <dttm>, and abbreviated variable names ¹​division, ²​water_district,
     #> #   ³​management_district, ⁴​designated_basin, ⁵​publication, ⁶​measurement_date
 
-<img src="man/figures/README-plot_gw-1.png" width="100%" style="display: block; margin: auto;" />
-
+![](https://cdsspy-images.s3.us-west-1.amazonaws.com/gw_depth_to_water_plot.png)
 <br> <br> <br>
-
-<style>
-div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px; font-size: 16px; text-align: left}
-</style>
-
-<div class="blue">
-
-**More functions for more endpoints coming soon!**
-
-</div>
