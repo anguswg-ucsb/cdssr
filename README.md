@@ -101,9 +101,7 @@ provides functions for.
 
 <br> <br> <br>
 
-## **Identify input parameters**
-
-#### **Example: Identify query inputs using reference tables**
+## **Identify query inputs using reference tables**
 
 The **`get_reference_tbl()`** function will return tables that makes it
 easier to know what information should be supplied to the data retrieval
@@ -140,11 +138,12 @@ telemetry_params <- cdssr::get_reference_tbl(
 
 ## **Locate structures**
 
-Structures (stations/wells/sites/diversions) can be identified by
-providing a spatial extent, water district, division, county, designated
-basin, or management district to the functions in the table below.
-Structure data can also be retrieved by providing the structure specific
-abbreviations, GNIS IDs, USGS IDs, WDIDs, or Well IDs.
+**`cdssr`** provides functions for locating
+structures/stations/wells/sites by providing a spatial extent, water
+district, division, county, designated basin, or management district to
+the functions in the table below. Site data can also be retrieved by
+providing the site specific abbreviations, GNIS IDs, USGS IDs, WDIDs, or
+Well IDs.
 
 | **-** | **Function**                 | **Description**                                                    | **Endpoint**                                                                                                                                                                                                                        |
 |-------|------------------------------|--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -216,7 +215,7 @@ given polygon.
 # load AOI to retrieve county polygons
 library(AOI)
 
-# identify telemetry stations 15 miles around a point
+# identify telemetry stations 15 miles around the centroid of a polygon
 stations <- cdssr::get_telemetry_stations(
   aoi    = AOI::aoi_get(county = "Boulder", state = "CO"),
   radius = 15
@@ -232,8 +231,8 @@ is used as the input for conducting a location search.
 
 ## **Retrieve timeseries data**
 
-We can use the functions in the table below retrieve timeseries data
-from the various timeseries related CDSS API endpoint.
+The functions in the table below retrieve timeseries data from the
+various timeseries related CDSS API endpoints.
 
 | **-** | **Function**                 | **Description**                                               | **Endpoint**                                                                                                                                                                                                                         |
 |-------|------------------------------|---------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -258,7 +257,7 @@ The function below returns a dataframe of daily discharge for the
 “ANDDITCO” site between 2015-2022.
 
 ``` r
-# # Daily discharge at "ANDDITCO" telemetry station
+# Daily discharge at "ANDDITCO" telemetry station
 discharge_ts <- cdssr::get_telemetry_ts(
                       abbrev              = "ANDDITCO",     # Site abbreviation from the outputs of get_telemetry_stations()
                       parameter           = "DISCHRG",      # Desired parameter, identified by the get_reference_tbl() function
@@ -310,7 +309,6 @@ structures <- cdssr::get_structures(
   aoi    = c(-105.3578, 40.09244),
   radius = 5
 )
-#> List/vector
 #> Retreiving administrative structures from CDSS API...
 #> Location search: 
 #> Latitude: 40.09244
