@@ -222,7 +222,7 @@ stations <- cdssr::get_telemetry_stations(
 The gif below highlights the masking process that is done when a polygon
 is used as the input for conducting a location search.
 
-![](https://cdsspy-images.s3.us-west-1.amazonaws.com/boulder_telem_stations_poly.gif)
+![](https://cdsspy-images.s3.us-west-1.amazonaws.com/boulder_telem_stations_poly2.gif)
 
 <br> <br> <br>
 
@@ -399,5 +399,5 @@ well_measure <- cdssr::get_gw_wl_wellmeasures(
     #> #   datetime <dttm>, and abbreviated variable names ¹​division, ²​water_district,
     #> #   ³​management_district, ⁴​designated_basin, ⁵​publication, ⁶​measurement_date
 
-![](https://cdsspy-images.s3.us-west-1.amazonaws.com/gw_depth_to_water_plot.png)
+![](https://cdsspy-images.s3.us-west-1.amazonaws.com/gw_depth_to_water_plot2.png)
 <br> <br> <br>
