@@ -42,13 +42,13 @@ documented REST API!
 
 ------------------------------------------------------------------------
 
--   [**cdssr GitHub (R)**](https://github.com/anguswg-ucsb/cdssr)
+-   [**cdssr (R)**](https://github.com/anguswg-ucsb/cdssr)
 
 -   [**cdssr documentation**](https://anguswg-ucsb.github.io/cdssr/)
 
--   [**cdsspy GitHub (Python)**](https://github.com/anguswg-ucsb/cdsspy)
+-   [**cdsspy (Python)**](https://github.com/anguswg-ucsb/cdsspy)
 
--   [**cdsspy PyPI**](https://pypi.org/project/cdsspy/)
+-   [**cdsspy documentation**](https://pypi.org/project/cdsspy/)
 
 ------------------------------------------------------------------------
 
@@ -57,7 +57,7 @@ documented REST API!
 ## Installation
 
 You can install the development version of **`cdssr`** from
-[GitHub](https://github.com/) with:
+[GitHub](https://github.com/anguswg-ucsb/cdssr) with:
 
 ``` r
 # install.packages("devtools")
