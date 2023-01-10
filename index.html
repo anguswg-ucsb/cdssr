@@ -235,13 +235,9 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <p><br><br><br></p>
 </div>
 <div class="section level2">
-<h2 id="identify-input-parameters">
-<strong>Identify input parameters</strong><a class="anchor" aria-label="anchor" href="#identify-input-parameters"></a>
+<h2 id="identify-query-inputs-using-reference-tables">
+<strong>Identify query inputs using reference tables</strong><a class="anchor" aria-label="anchor" href="#identify-query-inputs-using-reference-tables"></a>
 </h2>
-<div class="section level4">
-<h4 id="example-identify-query-inputs-using-reference-tables">
-<strong>Example: Identify query inputs using reference tables</strong><a class="anchor" aria-label="anchor" href="#example-identify-query-inputs-using-reference-tables"></a>
-</h4>
 <p>The <strong><code><a href="reference/get_reference_tbl.html">get_reference_tbl()</a></code></strong> function will return tables that makes it easier to know what information should be supplied to the data retrieval functions in <strong><code>cdssr</code></strong>. For more information on the exact reference tables click <a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#ReferenceTablesController&amp;#gettingstarted&amp;#jsonxml" class="external-link">here</a>.</p>
 <p>Let’s locate the parameters available at telemetry stations.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -266,12 +262,11 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 36 more rows</span></span></code></pre></div>
 <p><br><br></p>
 </div>
-</div>
 <div class="section level2">
 <h2 id="locate-structures">
 <strong>Locate structures</strong><a class="anchor" aria-label="anchor" href="#locate-structures"></a>
 </h2>
-<p>Structures (stations/wells/sites/diversions) can be identified by providing a spatial extent, water district, division, county, designated basin, or management district to the functions in the table below. Structure data can also be retrieved by providing the structure specific abbreviations, GNIS IDs, USGS IDs, WDIDs, or Well IDs.</p>
+<p><strong><code>cdssr</code></strong> provides functions for locating structures/stations/wells/sites by providing a spatial extent, water district, division, county, designated basin, or management district to the functions in the table below. Site data can also be retrieved by providing the site specific abbreviations, GNIS IDs, USGS IDs, WDIDs, or Well IDs.</p>
 <table class="table">
 <colgroup>
 <col width="2%">
@@ -380,7 +375,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <code class="sourceCode R"><span><span class="co"># load AOI to retrieve county polygons</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">AOI</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># identify telemetry stations 15 miles around a point</span></span>
+<span><span class="co"># identify telemetry stations 15 miles around the centroid of a polygon</span></span>
 <span><span class="va">stations</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_telemetry_stations.html">get_telemetry_stations</a></span><span class="op">(</span></span>
 <span>  aoi    <span class="op">=</span> <span class="fu">AOI</span><span class="fu">::</span><span class="fu">aoi_get</span><span class="op">(</span>county <span class="op">=</span> <span class="st">"Boulder"</span>, state <span class="op">=</span> <span class="st">"CO"</span><span class="op">)</span>,</span>
 <span>  radius <span class="op">=</span> <span class="fl">15</span></span>
@@ -394,7 +389,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <h2 id="retrieve-timeseries-data">
 <strong>Retrieve timeseries data</strong><a class="anchor" aria-label="anchor" href="#retrieve-timeseries-data"></a>
 </h2>
-<p>We can use the functions in the table below retrieve timeseries data from the various timeseries related CDSS API endpoint.</p>
+<p>The functions in the table below retrieve timeseries data from the various timeseries related CDSS API endpoints.</p>
 <table class="table">
 <colgroup>
 <col width="2%">
@@ -450,7 +445,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <p><br></p>
 <p>The function below returns a dataframe of daily discharge for the “ANDDITCO” site between 2015-2022.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># # Daily discharge at "ANDDITCO" telemetry station</span></span>
+<code class="sourceCode R"><span><span class="co"># Daily discharge at "ANDDITCO" telemetry station</span></span>
 <span><span class="va">discharge_ts</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_telemetry_ts.html">get_telemetry_ts</a></span><span class="op">(</span></span>
 <span>                      abbrev              <span class="op">=</span> <span class="st">"ANDDITCO"</span>,     <span class="co"># Site abbreviation from the outputs of get_telemetry_stations()</span></span>
 <span>                      parameter           <span class="op">=</span> <span class="st">"DISCHRG"</span>,      <span class="co"># Desired parameter, identified by the get_reference_tbl() function</span></span>
@@ -497,7 +492,6 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <span>  aoi    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">105.3578</span>, <span class="fl">40.09244</span><span class="op">)</span>,</span>
 <span>  radius <span class="op">=</span> <span class="fl">5</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; List/vector</span></span>
 <span><span class="co">#&gt; Retreiving administrative structures from CDSS API...</span></span>
 <span><span class="co">#&gt; Location search: </span></span>
 <span><span class="co">#&gt; Latitude: 40.09244</span></span>
