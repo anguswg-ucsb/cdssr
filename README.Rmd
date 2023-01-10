@@ -44,7 +44,7 @@ Thank you to those at CWCB and DWR for providing an accessible and well document
 
 <br>
 
-> See [**`cdsspy`**](https://github.com/anguswg-ucsb/cdsspy), for the Python version of this package 
+> See [**`cdsspy`**](https://github.com/anguswg-ucsb/cdsspy), for the **Python** version of this package 
 
 ---
 
@@ -374,7 +374,7 @@ dplyr::tibble(diversion_rec)
 ## **Example: Groundwater well data**
 
 #### Retrieve groundwater well data
-The **get_gw_()** set of functions lets users make get requests to the various CDSS API groundwater endpoints shown in the table below:
+The **`get_gw_()`** set of functions lets users make get requests to the various CDSS API groundwater endpoints shown in the table below:
 
 
 |**-**|**Function**          |**Endpoint**                                       |          

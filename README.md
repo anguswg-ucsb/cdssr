@@ -38,7 +38,7 @@ documented REST API!
 <br>
 
 > See [**`cdsspy`**](https://github.com/anguswg-ucsb/cdsspy), for the
-> Python version of this package
+> **Python** version of this package
 
 ------------------------------------------------------------------------
 
@@ -353,7 +353,7 @@ diversion_rec <-
 
 #### Retrieve groundwater well data
 
-The **get_gw\_()** set of functions lets users make get requests to the
+The **`get_gw_()`** set of functions lets users make get requests to the
 various CDSS API groundwater endpoints shown in the table below:
 
 | **-** | **Function**                    | **Endpoint**                                                                                                                                     |
