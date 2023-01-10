@@ -36,29 +36,26 @@ knitr::opts_chunk$set(
 
 <hr>
 
-The goal of **`cdssr`** is to provide functions that help R users to navigate, explore, and make requests to the [CDSS REST API web service](https://dwr.state.co.us/Rest/GET/Help). 
+The goal of [**`cdssr`**](https://anguswg-ucsb.github.io/cdssr/) is to provide functions that help R users to navigate, explore, and make requests to the [CDSS REST API web service](https://dwr.state.co.us/Rest/GET/Help). 
 
 The Colorado's Decision Support Systems (CDSS) is a water management system created and developed by the [Colorado Water Conservation Board (CWCB)](https://cwcb.colorado.gov/) and the [Colorado Division of Water Resources (DWR)](https://dwr.colorado.gov/). 
 
 Thank you to those at CWCB and DWR for providing an accessible and well documented REST API! 
 
+<br>
 
-<style>
-div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
-</style>
-<div class = "blue">
-If you are looking for the equivalent Python package, see 
-<a href="https://github.com/anguswg-ucsb/cdsspy"><strong>cdsspy</strong></a>
-</div>
+> See [**`cdsspy`**](https://github.com/anguswg-ucsb/cdsspy), for the Python version of this package 
 
+---
 
 - [**cdssr GitHub (R)**](https://github.com/anguswg-ucsb/cdssr)
 
-- [**cdsspy Github (Python)**](https://github.com/anguswg-ucsb/cdsspy)
-
 - [**cdssr documentation**](https://anguswg-ucsb.github.io/cdssr/)
 
+- [**cdsspy GitHub (Python)**](https://github.com/anguswg-ucsb/cdsspy)
+
 - [**cdsspy PyPI**](https://pypi.org/project/cdsspy/)
+
 
 ---
 
@@ -222,7 +219,7 @@ stations <- cdssr::get_telemetry_stations(
 <br>
 
 #### **Example: Locating telemetry stations within a spatial extent**
-If a polygon is given as the **aoi** input, a masking operation is done to ensure the returned points only include those that are *within* the given polygon. 
+A masking operation is performed when a location search is done using a **polygon**. This ensures that the function only returns points that are *within* the given polygon. 
 
 ```{r tele_stations_mask, eval=F, echo=TRUE}
 # load AOI to retrieve county polygons

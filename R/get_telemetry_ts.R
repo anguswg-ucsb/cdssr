@@ -1,4 +1,5 @@
-#' Request Telemetry station timeseries data
+#' Return Telemetry station timeseries data
+#' @description Make a request to the /telemetrystations/telemetrytimeseries endpoint to retrieve raw, hourly, or daily telemetry station timeseries data by station abbreviations, within a given date range (start and end dates).
 #' @param abbrev character indicating station abbreviation
 #' @param parameter character indicating which parameter should be retrieved. Default is "DISCHRG" (discharge), all parameters are not avaliable at all telemetry stations.
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".

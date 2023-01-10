@@ -24,7 +24,7 @@ get_gw_wl_wellmeasures(
 dataframe of groundwater wells within the given query specifications
 }
 \description{
-Given query specifications, this function makes a request to this endpoint of the CDSS API: api/v2/groundwater/waterlevels/wellmeasurements and returns a dataframe containing  groundwater water level well measurements
+Make a request to the groundwater/waterlevels/wellmeasurements endpoint to retrieve groundwater water level well measurement data.
 }
 \examples{
 # Request endpoint: api/v2/groundwater/waterlevels/wellmeasurements

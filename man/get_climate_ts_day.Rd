@@ -30,5 +30,5 @@ get_climate_ts_day(
 dataframe of climate data station daily timeseries data
 }
 \description{
-Make a request to the /climatedata/climatestationtsday endpoint to retrieve climate stations daily timeseries data by station number, or Site IDs within a given date range (start and end dates)
+Make a request to the /climatedata/climatestationtsday endpoint to retrieve climate stations daily time series data by station number, or Site IDs within a given date range (start and end dates)
 }

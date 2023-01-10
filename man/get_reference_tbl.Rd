@@ -7,7 +7,7 @@
 get_reference_tbl(table_name = NULL, api_key = NULL)
 }
 \arguments{
-\item{table_name}{character, indicating which reference table should be returned. One of: "county", "waterdistricts", "waterdivisions", "designatedbasins", "managementdistricts", "telemetryparams", "climateparams", "divrectypes", "flags"}
+\item{table_name}{character,name of the reference table to return. Must be one of: ("county", "waterdistricts", "waterdivisions", "designatedbasins", "managementdistricts", "telemetryparams", "climateparams", "divrectypes", "flags"). Defaults to NULL}
 
 \item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
@@ -15,7 +15,7 @@ get_reference_tbl(table_name = NULL, api_key = NULL)
 dataframe of CDSS endpoint Reference Table
 }
 \description{
-Retrieve reference tables to help identify the correct and available inputs for generating a successful query using the other CDSS API retrieval functions in the cdssr package. This function makes requests to the /referencetables/ endpoints and returns helpful reference tables. For more information go to https://dwr.state.co.us/rest/get/help#Datasets&#ReferenceTablesController&#gettingstarted&#jsonxml
+Makes requests to the /referencetables/ endpoints and returns helpful reference tables. Reference tables can help identify valid inputs for querying CDSS API resources using cdssr. For more detailed information visit: https://dwr.state.co.us/rest/get/help#Datasets&#ReferenceTablesController&#gettingstarted&#jsonxml.
 }
 \examples{
 # Retrieve station flag reference table

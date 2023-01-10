@@ -2,30 +2,30 @@
 % Please edit documentation in R/get_climate_ts.R
 \name{get_climate_ts}
 \alias{get_climate_ts}
-\title{Return climate station timeseries data}
+\title{Return climate station time series data}
 \usage{
 get_climate_ts(
-  timescale = "day",
-  start_date = "1900-01-01",
-  end_date = Sys.Date(),
   station_number = NULL,
   site_id = NULL,
   param = NULL,
+  start_date = "1900-01-01",
+  end_date = Sys.Date(),
+  timescale = "day",
   api_key = NULL
 )
 }
 \arguments{
-\item{timescale}{character indicating data type to return, either "day" or "month". Default is "day".}
-
-\item{start_date}{character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".}
-
-\item{end_date}{character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.}
-
 \item{station_number}{character, surface water station number}
 
 \item{site_id}{character vector or list of characters of climate station site IDs}
 
 \item{param}{character climate variable. One of: "Evap", "FrostDate",  "MaxTemp", "MeanTemp", "MinTemp", "Precip", "Snow", "SnowDepth", "SnowSWE", "Solar","VP", "Wind"}
+
+\item{start_date}{character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".}
+
+\item{end_date}{character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.}
+
+\item{timescale}{character indicating data type to return, either "day" or "month". Default is "day".}
 
 \item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
@@ -33,7 +33,7 @@ get_climate_ts(
 dataframe of climate station timeseries data
 }
 \description{
-Make a request to the /climatedata/climatestationts  endpoints (climatestationtsday, climatestationtsmonth) to retrieve climate station timeseries data by station number or Site IDs within a given date range (start and end dates)
+Make a request to the /climatedata/climatestationts endpoints to retrieve daily or monthly (climatestationtsday or climatestationtsmonth)climate station time series data by station number or Site IDs within a given date range (start and end dates)
 }
 \examples{
 # Retrieve daily maximum temperatures

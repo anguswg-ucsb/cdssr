@@ -15,7 +15,7 @@ get_gw_gplogs_geologpicks(wellid = NULL, api_key = NULL)
 dataframe of groundwater geophysical log picks for a given well ID
 }
 \description{
-Given a specified well ID, a request is made to api/v2/groundwater/geophysicallogs/geoplogpicks, and a dataframe of groundwater geophysical log picks for the given well ID is returned
+Make a request to the groundwater/geophysicallogs/wells endpoint to retrieve groundwater geophysical log picks for the given well ID.
 }
 \examples{
 # Request endpoint: api/v2/groundwater/geophysicallogs/geoplogpicks/

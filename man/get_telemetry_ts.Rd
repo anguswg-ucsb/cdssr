@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_telemetry_ts.R
 \name{get_telemetry_ts}
 \alias{get_telemetry_ts}
-\title{Request Telemetry station timeseries data}
+\title{Return Telemetry station timeseries data}
 \usage{
 get_telemetry_ts(
   abbrev = NULL,
@@ -33,7 +33,7 @@ get_telemetry_ts(
 dataframe with telemetry station timeseries data
 }
 \description{
-Request Telemetry station timeseries data
+Make a request to the /telemetrystations/telemetrytimeseries endpoint to retrieve raw, hourly, or daily telemetry station timeseries data by station abbreviations, within a given date range (start and end dates).
 }
 \examples{
 # Retrieve daily discharge for CLAFTCCO telemetry station

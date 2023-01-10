@@ -2,8 +2,7 @@
 % Please edit documentation in R/get_water_rights.R
 \name{get_water_rights_trans}
 \alias{get_water_rights_trans}
-\title{Return water rights transactions data
-Returns List of court decreed actions that affect amount and use(s) that can be used by each water right from the CDSS API waterrights/transcation endpoint.}
+\title{Return water rights transactions data}
 \usage{
 get_water_rights_trans(
   aoi = NULL,
@@ -34,8 +33,7 @@ get_water_rights_trans(
 dataframe of water right transactions
 }
 \description{
-Return water rights transactions data
-Returns List of court decreed actions that affect amount and use(s) that can be used by each water right from the CDSS API waterrights/transcation endpoint.
+Make a request to the /waterrights/transaction endpoint to retrieve water rights transactions data via a spatial search or by county, division, water district, or WDID, within a given date range (start and end dates). Returns List of court decreed actions that affect amount and use(s) that can be used by each water right.
 }
 \examples{
 

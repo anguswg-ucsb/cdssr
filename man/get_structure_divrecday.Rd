@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_structure_divrecday.R
 \name{get_structure_divrecday}
 \alias{get_structure_divrecday}
-\title{Request Structure Daily Diversion/Release Records}
+\title{Return Structure Daily Diversion/Release Records}
 \usage{
 get_structure_divrecday(
   wdid = NULL,
@@ -27,5 +27,6 @@ get_structure_divrecday(
 dataframe with diversion or flow data for CDSS structure of interest
 }
 \description{
-Request Structure Daily Diversion/Release Records
+\if{html}{\out{<div class="sourceCode">}}\preformatted{Make a request to the api/v2/structures/divrec/divrecday/ endpoint to retrieve daily structure diversion/release data for a specified WDID within a specified date range.
+}\if{html}{\out{</div>}}
 }

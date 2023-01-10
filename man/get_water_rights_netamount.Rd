@@ -2,8 +2,7 @@
 % Please edit documentation in R/get_water_rights.R
 \name{get_water_rights_netamount}
 \alias{get_water_rights_netamount}
-\title{Return water rights net amounts data
-Returns current status of a water right based on all of its court decreed actions from the CDSS API waterrights/netamount endpoint.}
+\title{Return water rights net amounts data}
 \usage{
 get_water_rights_netamount(
   aoi = NULL,
@@ -34,8 +33,7 @@ get_water_rights_netamount(
 dataframe of water right net amounts
 }
 \description{
-Return water rights net amounts data
-Returns current status of a water right based on all of its court decreed actions from the CDSS API waterrights/netamount endpoint.
+Make a request to the /waterrights/netamount endpoint to retrieve water rights net amounts data via a spatial search or by county, division, water district, or WDID, within a given date range (start and end dates). Returns current status of a water right based on all of its court decreed actions.
 }
 \examples{
 # Water right net amounts within a county

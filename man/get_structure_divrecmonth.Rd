@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_structure_divrecmonth.R
 \name{get_structure_divrecmonth}
 \alias{get_structure_divrecmonth}
-\title{Request Structure Monthly Diversion/Release Records}
+\title{Return Structure Monthly Diversion/Release Records}
 \usage{
 get_structure_divrecmonth(
   wdid = NULL,
@@ -27,5 +27,5 @@ get_structure_divrecmonth(
 dataframe with monthly structure data for the CDSS structure of interest
 }
 \description{
-Request Structure Monthly Diversion/Release Records
+Make a request to the api/v2/structures/divrec/divrecmonth/ endpoint to retrieve monthly structure  diversion/release data for a specified WDID within a specified date range.
 }

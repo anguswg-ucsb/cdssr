@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_structure_divrecyear.R
 \name{get_structure_divrecyear}
 \alias{get_structure_divrecyear}
-\title{Request Structure Yearly Diversion/Release Records}
+\title{Return Structure Yearly Diversion/Release Records}
 \usage{
 get_structure_divrecyear(
   wdid = NULL,
@@ -27,5 +27,5 @@ get_structure_divrecyear(
 dataframe with yearly structure data for the CDSS structure of interest
 }
 \description{
-Request Structure Yearly Diversion/Release Records
+Make a request to the api/v2/structures/divrec/divrecyear/ endpoint to retrieve annual structure diversion/release data for a specified WDID within a specified date range.
 }

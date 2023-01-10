@@ -33,7 +33,7 @@ get_gw_gplogs_wells(
 dataframe of groundwater wells within the given query specifications
 }
 \description{
-Given search query parameters, a request is made to the api/v2/groundwater/geophysicallogs/wells endpoint, and a dataframe of groundwater geophysicallog wells is returned matching the specified query
+Make a request to the groundwater/geophysicallogs/wells endpoint to retrieve groundwater geophysicallog wells data.
 }
 \examples{
 # Request endpoint: api/v2/groundwater/geophysicallogs/wells/

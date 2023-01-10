@@ -1,5 +1,5 @@
 #' Return Climate Station information
-#' @description Make a request to the climatedata/climatestations/ endpoint to locate climate stations by AOI, county, division, station name, Site ID or water_district.
+#' @description Make a request to the climatedata/climatestations/ endpoint to locate climate stations by AOI, county, division, station name, Site ID or water district.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
 #' @param radius numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
 #' @param county character, indicating the county to query

@@ -1,5 +1,5 @@
 #' Return call analysis by WDID from analysis services API
-#' @description Performs a call analysis that returns a time series showing the percentage of each day that the specified WDID and priority was out of priority and the downstream call in priority.
+#' @description Makes a request to the analysisservices/callanalysisbywdid/ endpoint that performs a call analysis that returns a time series showing the percentage of each day that the specified WDID and priority was out of priority and the downstream call in priority.
 #' @param wdid character indicating DWR unique structure identifier code (WDID)
 #' @param admin_no character Water Right Administration Number
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
@@ -128,7 +128,7 @@ get_call_analysis_wdid <- function(
 }
 
 #' Return DWR source route framework from analysis services API
-#' @description Returns the DWR source route framework reference table for the criteria specified
+#' @description Makes a request to the analysisservices/watersourcerouteframework/ endpoint to retrieve the DWR source route framework reference table for the criteria specified.
 #' @param division character, the division to query and retrieve DWR source route frameworks. Defaults to NULL.
 #' @param gnis_name character, the GNIS Name to query and retrieve DWR source route frameworks. Defaults to NULL.
 #' @param water_district character, the water district to query and retrieve DWR source route frameworks. Defaults to NULL.

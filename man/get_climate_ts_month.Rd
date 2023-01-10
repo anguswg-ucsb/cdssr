@@ -30,5 +30,5 @@ get_climate_ts_month(
 dataframe of climate data station monthly timeseries data
 }
 \description{
-Make a request to the /climatedata/climatestationtsmonth endpoint to retrieve climate stations monthly timeseries data by station number, or Site IDs within a given date range (start and end dates)
+Make a request to the /climatedata/climatestationtsmonth endpoint to retrieve climate stations monthly time series data by station number, or Site IDs within a given date range (start and end dates)
 }

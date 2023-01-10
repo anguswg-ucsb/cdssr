@@ -1,5 +1,5 @@
 #' Return list of administrative structures
-#' @description Make a request to the api/v2/structures endpoint to locate administrative structures by division, county, water_district, GNIS, or WDID.
+#' @description Make a request to the api/v2/structures endpoint to locate administrative structures via a spatial search or by division, county, water_district, GNIS, or WDID.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
 #' @param radius numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
 #' @param county character, indicating the county to query
@@ -7,7 +7,7 @@
 #' @param gnis_id character, water source - Geographic Name Information System ID
 #' @param water_district numeric, indicating the water district to query
 #' @param wdid character vector or list of characters indicating WDID code of structure
-#' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS. Defaults to NULL.
 #' @importFrom sf st_coordinates st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON

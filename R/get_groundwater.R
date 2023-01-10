@@ -1,5 +1,5 @@
 #' Search for groundwater water level wells
-#' @description Given search query parameters, a request is made to the api/v2/groundwater/waterlevels/wells endpoint, and a dataframe of groundwater water level wells is returned matching the specified query
+#' @description Make a request to the groundwater/waterlevels/wells endpoint to retrieve groundwater water level wells data.
 #' @param county character, indicating the county to query
 #' @param designated_basin character, indicating the  designated basin to query
 #' @param division numeric, indicating the water division to query
@@ -162,7 +162,7 @@ get_gw_wl_wells <- function(
 }
 
 #' Return groundwater water level well measurements
-#' @description Given query specifications, this function makes a request to this endpoint of the CDSS API: api/v2/groundwater/waterlevels/wellmeasurements and returns a dataframe containing  groundwater water level well measurements
+#' @description  Make a request to the groundwater/waterlevels/wellmeasurements endpoint to retrieve groundwater water level well measurement data.
 #' @param wellid character, indicating the Well ID to query
 #' @param start_date character date to request data start point YYYY-MM-DD.
 #' @param end_date character date to request data end point YYYY-MM-DD. Default is set to the current date function is run.
@@ -299,7 +299,7 @@ get_gw_wl_wellmeasures <- function(
 }
 
 #' Search for groundwater geophysicallog wells
-#' @description Given search query parameters, a request is made to the api/v2/groundwater/geophysicallogs/wells endpoint, and a dataframe of groundwater geophysicallog wells is returned matching the specified query
+#' @description Make a request to the groundwater/geophysicallogs/wells endpoint to retrieve groundwater geophysicallog wells data.
 #' @param county character, indicating the county to query
 #' @param designated_basin character, indicating the  designated basin to query
 #' @param division numeric, indicating the water division to query
@@ -462,7 +462,7 @@ get_gw_gplogs_wells <- function(
 }
 
 #' Return Groundwater Geophysical Log picks by well ID
-#' @description Given a specified well ID, a request is made to api/v2/groundwater/geophysicallogs/geoplogpicks, and a dataframe of groundwater geophysical log picks for the given well ID is returned
+#' @description Make a request to the groundwater/geophysicallogs/wells endpoint to retrieve groundwater geophysical log picks for the given well ID.
 #' @param wellid character, indicating the Well ID to query
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content

@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_structure_stage.R
 \name{get_structure_stage}
 \alias{get_structure_stage}
-\title{Request Structure stage/volume Records}
+\title{Return Structure stage/volume Records}
 \usage{
 get_structure_stage(
   wdid = NULL,
@@ -24,5 +24,5 @@ get_structure_stage(
 dataframe with stage/volume data for CDSS structure of interest
 }
 \description{
-Request Structure stage/volume Records
+Make a request to the api/v2/structures/divrec/stagevolume/ endpoint to retrieve structure stage/volume data for a specified WDID within a specified date range.
 }

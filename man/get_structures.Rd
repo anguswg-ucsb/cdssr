@@ -30,11 +30,11 @@ get_structures(
 
 \item{wdid}{character vector or list of characters indicating WDID code of structure}
 
-\item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
+\item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS. Defaults to NULL.}
 }
 \value{
 dataframe of administrative structures
 }
 \description{
-Make a request to the api/v2/structures endpoint to locate administrative structures by division, county, water_district, GNIS, or WDID.
+Make a request to the api/v2/structures endpoint to locate administrative structures via a spatial search or by division, county, water_district, GNIS, or WDID.
 }

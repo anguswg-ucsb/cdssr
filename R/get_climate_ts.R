@@ -1,5 +1,5 @@
 #' Return daily climate data
-#' @description Make a request to the /climatedata/climatestationtsday endpoint to retrieve climate stations daily timeseries data by station number, or Site IDs within a given date range (start and end dates)
+#' @description Make a request to the /climatedata/climatestationtsday endpoint to retrieve climate stations daily time series data by station number, or Site IDs within a given date range (start and end dates)
 #' @param station_number character, climate data station number
 #' @param site_id character vector or list of characters of climate station site IDs
 #' @param param character climate variable. One of: "Evap", "FrostDate",  "MaxTemp", "MeanTemp", "MinTemp", "Precip", "Snow", "SnowDepth", "SnowSWE", "Solar","VP", "Wind"
@@ -155,7 +155,7 @@ get_climate_ts_day <- function(
 }
 
 #' Return monthly climate data
-#' @description Make a request to the /climatedata/climatestationtsmonth endpoint to retrieve climate stations monthly timeseries data by station number, or Site IDs within a given date range (start and end dates)
+#' @description Make a request to the /climatedata/climatestationtsmonth endpoint to retrieve climate stations monthly time series data by station number, or Site IDs within a given date range (start and end dates)
 #' @param station_number character, climate data station number
 #' @param site_id character vector or list of characters of climate station site IDs
 #' @param param character climate variable. One of: "Evap", "FrostDate",  "MaxTemp", "MeanTemp", "MinTemp", "Precip", "Snow", "SnowDepth", "SnowSWE", "Solar","VP", "Wind"
@@ -312,8 +312,8 @@ get_climate_ts_month <- function(
 
 }
 
-#' Return climate station timeseries data
-#' @description Make a request to the /climatedata/climatestationts  endpoints (climatestationtsday, climatestationtsmonth) to retrieve climate station timeseries data by station number or Site IDs within a given date range (start and end dates)
+#' Return climate station time series data
+#' @description Make a request to the /climatedata/climatestationts endpoints to retrieve daily or monthly (climatestationtsday or climatestationtsmonth)climate station time series data by station number or Site IDs within a given date range (start and end dates)
 #' @param station_number character, surface water station number
 #' @param site_id character vector or list of characters of climate station site IDs
 #' @param param character climate variable. One of: "Evap", "FrostDate",  "MaxTemp", "MeanTemp", "MinTemp", "Precip", "Snow", "SnowDepth", "SnowSWE", "Solar","VP", "Wind"
@@ -352,12 +352,12 @@ get_climate_ts_month <- function(
 #'  plot(monthly_precip$avg_value~monthly_precip$datetime, type = "l")
 #' @export
 get_climate_ts <- function(
-    timescale           = "day",
-    start_date          = "1900-01-01",
-    end_date            = Sys.Date(),
     station_number      = NULL,
     site_id             = NULL,
     param               = NULL,
+    start_date          = "1900-01-01",
+    end_date            = Sys.Date(),
+    timescale           = "day",
     api_key             = NULL
 ) {
 

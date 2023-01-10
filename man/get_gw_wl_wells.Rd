@@ -33,7 +33,7 @@ get_gw_wl_wells(
 dataframe of groundwater wells within the given query specifications
 }
 \description{
-Given search query parameters, a request is made to the api/v2/groundwater/waterlevels/wells endpoint, and a dataframe of groundwater water level wells is returned matching the specified query
+Make a request to the groundwater/waterlevels/wells endpoint to retrieve groundwater water level wells data.
 }
 \examples{
 # Request endpoint: api/v2/groundwater/waterlevels/wells/

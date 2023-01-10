@@ -33,7 +33,7 @@ get_admin_calls(
 dataframe of administrative calls data
 }
 \description{
-Request active/historic administrative calls data from the CDSS API. For more information go here https://dwr.state.co.us/rest/get/help#Datasets&#AdministrativeCallsController&https://dnrweblink.state.co.us/dwr/ElectronicFile.aspx?docid=3600964&dbid=0&#gettingstarted&#jsonxml
+Make a request to the api/v2/administrativecalls endpoints to locate active or historical administrative calls by division, location WDID, or call number within a specified date range.
 }
 \examples{
 # Retrieve ACTIVE administrative calls

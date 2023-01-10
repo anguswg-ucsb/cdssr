@@ -1,5 +1,5 @@
-#' Request Structure stage/volume Records
-#'
+#' Return Structure stage/volume Records
+#' @description Make a request to the api/v2/structures/divrec/stagevolume/ endpoint to retrieve structure stage/volume data for a specified WDID within a specified date range.
 #' @param wdid character indicating WDID code of structure
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.

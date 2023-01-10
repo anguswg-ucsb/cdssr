@@ -1,5 +1,6 @@
-#' Request Structure Daily Diversion/Release Records
-#'
+#' Return Structure Daily Diversion/Release Records
+#' @description     Make a request to the api/v2/structures/divrec/divrecday/ endpoint to retrieve daily structure diversion/release data for a specified WDID within a specified date range.
+
 #' @param wdid character vector or list of characters indicating WDID code of structure
 #' @param wc_identifier character indicating whether "diversion" or "release" should be returned. Defaults to "diversion"
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".

@@ -36,7 +36,7 @@ get_climate_stations(
 dataframe of climate data station info
 }
 \description{
-Make a request to the climatedata/climatestations/ endpoint to locate climate stations by AOI, county, division, station name, Site ID or water_district.
+Make a request to the climatedata/climatestations/ endpoint to locate climate stations by AOI, county, division, station name, Site ID or water district.
 }
 \examples{
 # get climate stations in Adams County, CO

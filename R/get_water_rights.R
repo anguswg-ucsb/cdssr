@@ -1,5 +1,5 @@
 #' Return water rights net amounts data
-#' Returns current status of a water right based on all of its court decreed actions from the CDSS API waterrights/netamount endpoint.
+#' @description Make a request to the /waterrights/netamount endpoint to retrieve water rights net amounts data via a spatial search or by county, division, water district, or WDID, within a given date range (start and end dates). Returns current status of a water right based on all of its court decreed actions.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
 #' @param radius numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
 #' @param county character, indicating the county to query
@@ -181,7 +181,7 @@ get_water_rights_netamount <- function(
 }
 
 #' Return water rights transactions data
-#' Returns List of court decreed actions that affect amount and use(s) that can be used by each water right from the CDSS API waterrights/transcation endpoint.
+#' @description  Make a request to the /waterrights/transaction endpoint to retrieve water rights transactions data via a spatial search or by county, division, water district, or WDID, within a given date range (start and end dates). Returns List of court decreed actions that affect amount and use(s) that can be used by each water right.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
 #' @param radius numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
 #' @param county character, indicating the county to query

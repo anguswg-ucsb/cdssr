@@ -27,5 +27,5 @@ get_call_analysis_wdid(
 dataframe of call services by WDID
 }
 \description{
-Performs a call analysis that returns a time series showing the percentage of each day that the specified WDID and priority was out of priority and the downstream call in priority.
+Makes a request to the analysisservices/callanalysisbywdid/ endpoint that performs a call analysis that returns a time series showing the percentage of each day that the specified WDID and priority was out of priority and the downstream call in priority.
 }

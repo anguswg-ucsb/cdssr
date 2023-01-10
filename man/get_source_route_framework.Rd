@@ -24,5 +24,5 @@ get_source_route_framework(
 dataframe of source route framework
 }
 \description{
-Returns the DWR source route framework reference table for the criteria specified
+Makes a request to the analysisservices/watersourcerouteframework/ endpoint to retrieve the DWR source route framework reference table for the criteria specified.
 }
