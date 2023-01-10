@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="index.html">cdssr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.5000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.6000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,19 +69,18 @@
 </p>
 </div>
 <hr>
-<p>The goal of <strong><code>cdssr</code></strong> is to provide functions that help R users to navigate, explore, and make requests to the <a href="https://dwr.state.co.us/Rest/GET/Help" class="external-link">CDSS REST API web service</a>.</p>
+<p>The goal of <a href="https://anguswg-ucsb.github.io/cdssr/"><strong><code>cdssr</code></strong></a> is to provide functions that help R users to navigate, explore, and make requests to the <a href="https://dwr.state.co.us/Rest/GET/Help" class="external-link">CDSS REST API web service</a>.</p>
 <p>The Colorado’s Decision Support Systems (CDSS) is a water management system created and developed by the <a href="https://cwcb.colorado.gov/" class="external-link">Colorado Water Conservation Board (CWCB)</a> and the <a href="https://dwr.colorado.gov/" class="external-link">Colorado Division of Water Resources (DWR)</a>.</p>
 <p>Thank you to those at CWCB and DWR for providing an accessible and well documented REST API!</p>
-<style>
-div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
-</style>
-<div class="blue">
-<p>If you are looking for the equivalent Python package, see <a href="https://github.com/anguswg-ucsb/cdsspy" class="external-link"><strong>cdsspy</strong></a></p>
-</div>
+<p><br></p>
+<blockquote>
+<p>See <a href="https://github.com/anguswg-ucsb/cdsspy" class="external-link"><strong><code>cdsspy</code></strong></a>, for the Python version of this package</p>
+</blockquote>
+<hr>
 <ul>
 <li><p><a href="https://github.com/anguswg-ucsb/cdssr" class="external-link"><strong>cdssr GitHub (R)</strong></a></p></li>
-<li><p><a href="https://github.com/anguswg-ucsb/cdsspy" class="external-link"><strong>cdsspy Github (Python)</strong></a></p></li>
 <li><p><a href="https://anguswg-ucsb.github.io/cdssr/"><strong>cdssr documentation</strong></a></p></li>
+<li><p><a href="https://github.com/anguswg-ucsb/cdsspy" class="external-link"><strong>cdsspy GitHub (Python)</strong></a></p></li>
 <li><p><a href="https://pypi.org/project/cdsspy/" class="external-link"><strong>cdsspy PyPI</strong></a></p></li>
 </ul>
 <hr>
@@ -370,7 +369,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <h4 id="example-locating-telemetry-stations-within-a-spatial-extent">
 <strong>Example: Locating telemetry stations within a spatial extent</strong><a class="anchor" aria-label="anchor" href="#example-locating-telemetry-stations-within-a-spatial-extent"></a>
 </h4>
-<p>If a polygon is given as the <strong>aoi</strong> input, a masking operation is done to ensure the returned points only include those that are <em>within</em> the given polygon.</p>
+<p>A masking operation is performed when a location search is done using a <strong>polygon</strong>. This ensures that the function only returns points that are <em>within</em> the given polygon.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load AOI to retrieve county polygons</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">AOI</span><span class="op">)</span></span>
