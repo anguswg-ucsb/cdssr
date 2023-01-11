@@ -22,6 +22,9 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/aoi_mask.html</loc>
   </url>
   <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/api_endpoints.html</loc>
+  </url>
+  <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/browse_api.html</loc>
   </url>
   <url>
@@ -97,6 +100,9 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_reference_tbl.html</loc>
   </url>
   <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_resource_meta.html</loc>
+  </url>
+  <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_source_route_framework.html</loc>
   </url>
   <url>
@@ -151,6 +157,6 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/parse_aoi.html</loc>
   </url>
   <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/preview_endpoint.html</loc>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/resource_meta.html</loc>
   </url>
 </urlset>
