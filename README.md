@@ -419,7 +419,7 @@ ditch_wdids <-
     dplyr::filter(ciu_code == "A", structure_type == "DITCH") %>%
   .$wdid
 
-# 3. Providing the WDID's as a vector to **`get_structures_divrec()`** 
+# 3. Providing the WDID's as a vector to get_structures_divrec()
 diversion_rec <-
   cdssr::get_structures_divrec(
                         wdid           = ditch_wdids,
