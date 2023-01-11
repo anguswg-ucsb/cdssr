@@ -96,6 +96,58 @@ provides functions for.
 | 18    | **get_call_analysis_wdid()**     | Performs a call analysis that returns a time series showing the percentage of each day that the specified WDID and priority was out of priority and the downstream call in priority | [analysisservices/callanalysisbywdid](https://dwr.state.co.us/rest/get/help#Datasets&#AnalysisServicesController&#gettingstarted&#jsonxml)                                                                                                   |
 | 19    | **get_source_route_framework()** | Returns the DWR source route framework reference table for the criteria specified                                                                                                   | [analysisservices/watersourcerouteframework](https://dwr.state.co.us/rest/get/help#Datasets&#AnalysisServicesController&#gettingstarted&#jsonxml)                                                                                            |
 
+#### **Example: Explore endpoint**
+
+To check out the various CDSS API endpoint, **`cdssr`** comes packaged
+with an **`api_endpoint`** table which details endpoint names,
+descriptions, and relevant URLs.
+
+``` r
+dplyr::tibble(cdssr::api_endpoints)
+#> # A tibble: 61 × 5
+#>    resource                                      descrip…¹ endpo…² url   endpo…³
+#>    <chr>                                         <chr>     <chr>   <chr> <chr>  
+#>  1 Active Administrative Calls Generator         Returns … api/v2… http… https:…
+#>  2 Historical Administrative Calls Generator     Returns … api/v2… http… https:…
+#>  3 Water Source Route Analysis Info Generator    Returns … api/v2… http… https:…
+#>  4 Water Source Route Framework Info Generator   Returns … api/v2… http… https:…
+#>  5 Call Analysis Structure Info Generator        Performs… api/v2… http… https:…
+#>  6 Call Analysis Stream Mile Info Generator      Performs… api/v2… http… https:…
+#>  7 Climate Stations Generator                    Returns … api/v2… http… https:…
+#>  8 Climate Station Data Types Generator          Returns … api/v2… http… https:…
+#>  9 Climate Station Time Series - Day Generator   Returns … api/v2… http… https:…
+#> 10 Climate Station Time Series - Month Generator Returns … api/v2… http… https:…
+#> # … with 51 more rows, and abbreviated variable names ¹​description, ²​endpoint,
+#> #   ³​endpoint_url
+```
+
+<br>
+
+#### **Example: View meta data**
+
+**`cdssr`** also comes packaged with a **`resource_meta`** dataset which
+provides meta data for the data retrieved by **`cdssr`** (via the CDSS
+REST API)
+
+``` r
+dplyr::tibble(cdssr::resource_meta)
+#> # A tibble: 1,031 × 5
+#>    endpoint                          name                  descr…¹ type  endpo…²
+#>    <chr>                             <chr>                 <chr>   <chr> <chr>  
+#>  1 api/v2/administrativecalls/active boundingStructureLat… Latitu… deci… https:…
+#>  2 api/v2/administrativecalls/active boundingStructureLon… Longit… deci… https:…
+#>  3 api/v2/administrativecalls/active boundingStructureName Struct… stri… https:…
+#>  4 api/v2/administrativecalls/active boundingWdid          WDID o… stri… https:…
+#>  5 api/v2/administrativecalls/active callNumber            Unique… inte… https:…
+#>  6 api/v2/administrativecalls/active callType              The ty… stri… https:…
+#>  7 api/v2/administrativecalls/active dateTimeReleased      Date a… date  https:…
+#>  8 api/v2/administrativecalls/active dateTimeSet           Date a… date  https:…
+#>  9 api/v2/administrativecalls/active division              DWR Wa… inte… https:…
+#> 10 api/v2/administrativecalls/active locationStructureLat… Latitu… deci… https:…
+#> # … with 1,021 more rows, and abbreviated variable names ¹​description,
+#> #   ²​endpoint_url
+```
+
 <br> <br> <br>
 
 ## **Identify query inputs using reference tables**
@@ -198,6 +250,27 @@ stations <- cdssr::get_telemetry_stations(
   )
 ```
 
+    #> # A tibble: 110 × 35
+    #>    divis…¹ water…² county stati…³ data_…⁴ data_…⁵ water…⁶ gnis_id strea…⁷ abbrev
+    #>      <int>   <int> <chr>  <chr>   <chr>   <chr>   <chr>   <chr>     <dbl> <chr> 
+    #>  1       1       5 BOULD… "CLOUG… NCWCD   Northe… SAINT … 002050…   NA    05005…
+    #>  2       1       6 BOULD… "ANDER… DWR     Co. Di… BOULDE… 001783…   23.6  ANDDI…
+    #>  3       1       6 BOULD… "ANDRE… DWR     Co. Di… SOUTH … 001809…    1.5  ANFDI…
+    #>  4       1       6 BOULD… "BASEL… DWR     Co. Di… BOULDE… 001783…   19.2  BASOU…
+    #>  5       1       6 BOULD… "BOULD… NCWCD   Northe… BOULDE… 001783…   15.5  BCSCB…
+    #>  6       1       5 BOULD… "BOULD… NCWCD   Northe… LEFT H… 001782…    8.66 BFCIN…
+    #>  7       1       5 BOULD… "BOULD… NCWCD   Northe… SAINT … 002050…   31.7  BFCLY…
+    #>  8       1       5 BOULD… "BOULD… NCWCD   Northe… SAINT … 002050…   31.7  BFCLY…
+    #>  9       1       5 BOULD… "LYONS… DWR     Co. Di… SOUTH … 001782…    0.03 BHNPR…
+    #> 10       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BLDLH…
+    #> # … with 100 more rows, 25 more variables: usgs_station_id <chr>,
+    #> #   station_status <chr>, station_type <chr>, structure_type <chr>,
+    #> #   meas_date_time <dttm>, parameter <chr>, stage <dbl>, meas_value <dbl>,
+    #> #   units <chr>, flag_a <chr>, flag_b <chr>, contr_area <dbl>,
+    #> #   drain_area <dbl>, huc10 <chr>, utm_x <dbl>, utm_y <dbl>, latitude <dbl>,
+    #> #   longitude <dbl>, location_accuracy <chr>, wdid <chr>, modified <chr>,
+    #> #   more_information <chr>, station_por_start <dttm>, station_por_end <dttm>, …
+
 ![](https://cdsspy-images.s3.us-west-1.amazonaws.com/poi_telem_stations.png)
 
 <br>
@@ -206,7 +279,7 @@ stations <- cdssr::get_telemetry_stations(
 
 A masking operation is performed when a location search is done using a
 **polygon**. This ensures that the function only returns points that are
-*within* the given polygon.
+***within*** the given polygon.
 
 ``` r
 # load AOI to retrieve county polygons
@@ -217,10 +290,38 @@ stations <- cdssr::get_telemetry_stations(
   aoi    = AOI::aoi_get(county = "Boulder", state = "CO"),
   radius = 15
   )
+#> Retrieving telemetry station data from CDSS API...
+#> Location search: 
+#> Latitude: 40.0843975
+#> Longitude: -105.345242774525
+#> Radius (miles): 15
 ```
 
-The gif below highlights the masking process that is done when a polygon
-is used as the input for conducting a location search.
+    #> # A tibble: 108 × 35
+    #>    divis…¹ water…² county stati…³ data_…⁴ data_…⁵ water…⁶ gnis_id strea…⁷ abbrev
+    #>      <int>   <int> <chr>  <chr>   <chr>   <chr>   <chr>   <chr>     <dbl> <chr> 
+    #>  1       1       5 BOULD… "CLOUG… NCWCD   Northe… SAINT … 002050…   NA    05005…
+    #>  2       1       6 BOULD… "ANDER… DWR     Co. Di… BOULDE… 001783…   23.6  ANDDI…
+    #>  3       1       6 BOULD… "ANDRE… DWR     Co. Di… SOUTH … 001809…    1.5  ANFDI…
+    #>  4       1       6 BOULD… "BASEL… DWR     Co. Di… BOULDE… 001783…   19.2  BASOU…
+    #>  5       1       6 BOULD… "BOULD… NCWCD   Northe… BOULDE… 001783…   15.5  BCSCB…
+    #>  6       1       5 BOULD… "BOULD… NCWCD   Northe… LEFT H… 001782…    8.66 BFCIN…
+    #>  7       1       5 BOULD… "BOULD… NCWCD   Northe… SAINT … 002050…   31.7  BFCLY…
+    #>  8       1       5 BOULD… "BOULD… NCWCD   Northe… SAINT … 002050…   31.7  BFCLY…
+    #>  9       1       5 BOULD… "LYONS… DWR     Co. Di… SOUTH … 001782…    0.03 BHNPR…
+    #> 10       1       6 BOULD… "BOULD… DWR     Co. Di… BOULDE… 001783…   22.3  BLDLH…
+    #> # … with 98 more rows, 25 more variables: usgs_station_id <chr>,
+    #> #   station_status <chr>, station_type <chr>, structure_type <chr>,
+    #> #   meas_date_time <dttm>, parameter <chr>, stage <dbl>, meas_value <dbl>,
+    #> #   units <chr>, flag_a <chr>, flag_b <chr>, contr_area <dbl>,
+    #> #   drain_area <dbl>, huc10 <chr>, utm_x <dbl>, utm_y <dbl>, latitude <dbl>,
+    #> #   longitude <dbl>, location_accuracy <chr>, wdid <chr>, modified <chr>,
+    #> #   more_information <chr>, station_por_start <dttm>, station_por_end <dttm>, …
+
+<br>
+
+This gif highlights the masking process that happens when the **`aoi`**
+argument is given a **polygon**
 
 ![](https://cdsspy-images.s3.us-west-1.amazonaws.com/boulder_telem_stations_poly2.gif)
 
@@ -256,8 +357,8 @@ The function below returns a dataframe of daily discharge for the
 ``` r
 # Daily discharge at "ANDDITCO" telemetry station
 discharge_ts <- cdssr::get_telemetry_ts(
-                      abbrev              = "ANDDITCO",     # Site abbreviation from the outputs of get_telemetry_stations()
-                      parameter           = "DISCHRG",      # Desired parameter, identified by the get_reference_tbl() function
+                      abbrev              = "ANDDITCO",     # Site abbreviation
+                      parameter           = "DISCHRG",      # Desired parameter
                       start_date          = "2015-01-01",   # Starting date
                       end_date            = "2022-01-01",   # Ending date
                       timescale           = "day"           # select daily timescale 
