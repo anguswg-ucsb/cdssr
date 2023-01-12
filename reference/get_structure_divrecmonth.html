@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">cdssr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.800</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1.000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Return Structure Monthly Diversion/Release Records</h1>
-      <small class="dont-index">Source: <a href="https://github.com/anguswg-ucsb/cdssr/blob/HEAD/R/get_structure_divrecmonth.R" class="external-link"><code>R/get_structure_divrecmonth.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/anguswg-ucsb/cdssr/blob/HEAD/R/get_structures_divrec_ts.R" class="external-link"><code>R/get_structures_divrec_ts.R</code></a></small>
       <div class="d-none name"><code>get_structure_divrecmonth.Rd</code></div>
     </div>
 
@@ -50,7 +50,7 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_structure_divrecmonth</span><span class="op">(</span></span>
 <span>  wdid <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  wc_identifier <span class="op">=</span> <span class="st">"diversion"</span>,</span>
+<span>  wc_identifier <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  start_date <span class="op">=</span> <span class="st">"1900-01-01"</span>,</span>
 <span>  end_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  api_key <span class="op">=</span> <span class="cn">NULL</span></span>
@@ -64,7 +64,7 @@
 
 
 <dt>wc_identifier</dt>
-<dd><p>character indicating whether "diversion" or "release" should be returned. Defaults to "diversion"</p></dd>
+<dd><p>character indicating whether "diversion" or "release" should be returned. Default is NULL which will return diversions.</p></dd>
 
 
 <dt>start_date</dt>

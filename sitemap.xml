@@ -16,6 +16,9 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/index.html</loc>
   </url>
   <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/align_wcid.html</loc>
+  </url>
+  <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/aoi_error_msg.html</loc>
   </url>
   <url>
@@ -32,6 +35,9 @@
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/check_radius.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/collapse_vect.html</loc>
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/extract_coords.html</loc>
@@ -115,13 +121,13 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_structure_divrecyear.html</loc>
   </url>
   <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_structure_stage.html</loc>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_structure_stage_ts.html</loc>
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_structures.html</loc>
   </url>
   <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_structures_divrec.html</loc>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_structures_divrec_ts.html</loc>
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_sw_stations.html</loc>
@@ -155,6 +161,9 @@
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/parse_aoi.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/parse_date.html</loc>
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/resource_meta.html</loc>
