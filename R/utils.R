@@ -109,6 +109,138 @@ get_resource_meta <- function(
   return(field_tbl)
 }
 
+#' Collapse a list/vector with a given separator into a single string
+#' @description Internal function for generating query string URls
+#' @param x list, or vector to collapse into single string
+#' @param sep character to separate list/vector items by
+#' @return single character string separated by given sep arg
+collapse_vect <- function(
+    x    = NULL,
+    sep  = "%2C+"
+) {
+
+  # if no list/vector given, return NULL
+  if(is.null(x)) {
+
+    return(NULL)
+
+  }
+  # if vect is a list, unlist it
+  if(is.list(x)) {
+
+    x <- unlist(x)
+
+  }
+
+  # collapse list/vector into single string w/ seperator
+  xstring <- paste0(
+    unlist(
+      strsplit(x, " ")
+    ),
+    collapse = sep
+  )
+
+  return(xstring)
+
+}
+
+#' Formats, collapses, and extract dates to build query strings
+#' @description Internal function for generating date query string URls
+#' @param date character date in YYYY-MM-DD format.
+#' @param start logical, whether the given date is the starting or ending date
+#' @param format character, format to convert the date to. Defaults to MM-DD-YYYY.
+#' @param sep character separator to collapse date by. Defaults to "%2F"
+#' @return reformated date string
+parse_date <- function(
+    date   = NULL,
+    start  = TRUE,
+    format = "%m-%d-%Y",
+    sep    = "%2F"
+) {
+
+  # if the given date is the starting date or the ending date
+  if(start){
+
+    if(is.null(date)) {
+
+      date = "1900-01-01"
+
+    }
+
+    # reformat and extract date
+    out_date <- format(as.Date(date, format = "%Y-%m-%d"), format)
+
+    # if an invalid date is given, default to earliest date
+    if(is.na(out_date)) {
+
+      out_date <- format(as.Date("1900-01-01", format = "%Y-%m-%d"), format)
+
+    }
+
+    # collapse date with given seperator
+    out_date <- gsub("-", sep, out_date)
+
+    return(out_date)
+
+  } else {
+
+    if(is.null(date)) {
+
+      date = Sys.Date()
+
+    }
+
+    # reformat and extract date
+    out_date <- format(as.Date(date, format = "%Y-%m-%d"), format)
+
+    # if an invalid date is given, default to earliest date
+    if(is.na(out_date)) {
+
+      out_date <- format(as.Date("1900-01-01", format = "%Y-%m-%d"), format)
+
+    }
+
+    # collapse date with given seperator
+    out_date <- gsub("-", sep, out_date)
+
+    return(out_date)
+  }
+
+}
+
+#' Set wc_identifier name to releases or diversions
+#' @description Internal function for getting correct wc_identifier code for querying
+#' @param x character indicating whether "diversion" or "release" should be returned. Defaults to NULL and thus "diversion"
+#' @return wc_identifier equaling either "diversion" or "release"
+align_wcid <- function(x = NULL) {
+
+  # if no wc_identifier given, return "diversion"
+  if(is.null(x)) {
+
+    x <- "diversion"
+
+    return(x)
+
+  }
+
+  # if wc ID in the diversions list
+  if(x %in% c("diversion", "diversions", "div", "divs", "d")) {
+
+    x <- "diversion"
+
+    return(x)
+  }
+
+  # if wc ID in the releases list
+  if(x %in% c("release", "releases", "rel", "rels", "r")) {
+
+    x <- "release"
+
+    return(x)
+
+  }
+
+}
 
 #' Error message handling for extract_coords function
 #' @description Internal helper function that returns a boilerplate error message used in extract_coords function

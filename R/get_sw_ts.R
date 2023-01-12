@@ -477,7 +477,7 @@ get_sw_ts_wyear <- function(
 
 }
 
-#' Return Surface water timeseries data
+#' Return surface water time series data
 #' @description Make a request to the /surfacewater/surfacewaterts/ endpoints (surfacewatertsday, surfacewatertsmonth, surfacewatertswateryear) to retrieve surface water station timeseries data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
 #' @param abbrev character,	station abbreviation
 #' @param station_number character, surface water station number

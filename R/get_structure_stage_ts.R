@@ -9,7 +9,22 @@
 #' @importFrom dplyr bind_rows rename mutate relocate
 #' @importFrom janitor clean_names
 #' @return dataframe with stage/volume data for CDSS structure of interest
-get_structure_stage <- function(
+#' @export
+#' @examples
+#' #'
+#' # Request endpoint: api/v2/structures/divrec/stagevolume
+#' stage_vol <- get_structure_stage_ts(
+#'                    wdid             =  "0303732",
+#'                    start_date       = "2000-01-01",
+#'                    end_date         = "2005-01-01"
+#'                  )
+#'
+#' # plot stage
+#' plot(stage_vol$stage~stage_vol$datetime, type = "s")
+#'
+#' # plot volume
+#' plot(stage_vol$volume~stage_vol$datetime, type = "s")
+get_structure_stage_ts <- function(
     wdid            = NULL,
     start_date      = "1900-01-01",
     end_date        = Sys.Date(),
@@ -18,21 +33,37 @@ get_structure_stage <- function(
 
   # check if valid WDID was entered
   if(is.null(wdid)) {
-    stop(paste0("Please enter a valid WDID"))
+    stop(paste0("Invalid 'wdid' argument\nPlease enter a valid WDID"))
+  }
+
+  # if more than one WDID is provided, use the first WDID
+  if(length(wdid) > 1) {
+    stop(paste0("Invalid 'wdid' argument\nMultiple WDID query is unsupported by the 'api/v2/structures/divrec/stagevolume/' endpoint\nPlease enter a single valid WDID"))
   }
 
   # Base API URL for Daily Diversion Records
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/stagevolume/?"
 
-  # reformat dates to MM-DD-YYYY and format for API query
-  start <- gsub("-", "%2F", format(as.Date(start_date, '%Y-%m-%d'), "%m-%d-%Y"))
-  end   <- gsub("-", "%2F", format(as.Date(end_date, '%Y-%m-%d'), "%m-%d-%Y"))
+  # reformat and extract valid start date
+  start <- parse_date(
+    date   = start_date,
+    start  = TRUE,
+    format = "%m-%d-%Y",
+    sep    = "%2F"
+  )
 
+  # reformat and extract valid end date
+  end <- parse_date(
+    date   = end_date,
+    start  = FALSE,
+    format = "%m-%d-%Y",
+    sep    = "%2F"
+  )
   # maximum records per page
   page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
-  data_df <- data.frame()
+  data_df    <- data.frame()
 
   # initialize first page index
   page_index <- 1
@@ -41,7 +72,7 @@ get_structure_stage <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving stasge/volume data from CDSS API..."))
+  message(paste0("Retrieving stage/volume data from CDSS API"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {

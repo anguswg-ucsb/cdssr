@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_sw_ts.R
 \name{get_sw_ts}
 \alias{get_sw_ts}
-\title{Return Surface water timeseries data}
+\title{Return surface water time series data}
 \usage{
 get_sw_ts(
   abbrev = NULL,
