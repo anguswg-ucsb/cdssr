@@ -18,6 +18,7 @@ get_structure_divrecday <- function(
     end_date        = Sys.Date(),
     api_key         = NULL
 ) {
+
   # valid parameters
   div_lst <- c("diversion", "diversions", "div", "divs", "d")
   rel_lst <- c("release", "releases", "rel", "rels", "r")
@@ -74,7 +75,7 @@ get_structure_divrecday <- function(
   wc_identifier <- paste0(gsub(":", "%3A",   unlist(strsplit(wc_identifier, " "))), collapse = "+")
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -518,11 +519,11 @@ get_structure_divrecyear <- function(
 
 #' Return diversion/releases record data for administrative structures
 #' @description Make a request to the CDSS API /structures/divrec endpoints to get diversion/releases time series data for administrative structures by wdid, within a given date range (start and end dates) and at a specified temporal resolution.
-#' @param wdid character vector or list of characters indicating WDID code of structure. Only a single WDID can be used when type = "stagevolume".
+#' @param wdid character vector or list of characters indicating WDID code of structure.
 #' @param wc_identifier character indicating whether "diversion" or "release" should be returned. Default is NULL which will return diversions.
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
-#' @param timescale character indicating the type of data to request. Either "day", "month", "year". Default is "day".
+#' @param timescale character indicating the time series time step. Either "day", "month", "year". Default is to return daily time series.
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON

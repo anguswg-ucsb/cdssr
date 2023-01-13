@@ -6,8 +6,7 @@
   #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
   #' @importFrom httr GET content
   #' @importFrom jsonlite fromJSON
-  #' @importFrom dplyr bind_rows mutate `%>%`
-  #' @importFrom janitor clean_names
+  #' @importFrom dplyr bind_rows `%>%`
   #' @return dataframe of climate data frost dates data
   get_climate_frostdates <- function(
       station_number      = NULL,
@@ -24,12 +23,22 @@
     # base API URL
     base <- "https://dwr.state.co.us/Rest/GET/api/v2/climatedata/climatestationfrostdates/?"
 
-    # extract start/end years from YYYY-MM-DD for API query
-    start_year <- format(as.Date(start_date, format="%Y-%m-%d"),"%Y")
-    end_year   <- format(as.Date(end_date, format="%Y-%m-%d"),"%Y")
+    # reformat and extract valid start date
+    start <- parse_date(
+      date   = start_date,
+      start  = TRUE,
+      format = "%Y"
+      )
+
+    # reformat and extract valid end date
+    end <- parse_date(
+      date   = end_date,
+      start  = FALSE,
+      format = "%Y"
+      )
 
     # maximum records per page
-    page_size  <- 50000
+    page_size  <- 500000
 
     # initialize empty dataframe to store data from multiple pages
     data_df    <-  data.frame()
@@ -41,7 +50,7 @@
     more_pages <- TRUE
 
     # print message
-    message(paste0("Retrieving climate station frost date data from CDSS API..."))
+    message(paste0("Retrieving climate station frost date data"))
 
     # while more pages are available, send get requests to CDSS API
     while (more_pages) {
@@ -98,9 +107,8 @@
       )
 
       # Tidy data
-      cdss_data <-
-        cdss_data %>%
-        janitor::clean_names()
+      # set clean names
+      names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
       # bind data from this page
       data_df <- dplyr::bind_rows(data_df, cdss_data)

@@ -9,8 +9,7 @@
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows rename mutate
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows
 #' @return dataframe of groundwater wells within the given query specifications
 #' @export
 #' @examples
@@ -28,9 +27,6 @@ get_gw_wl_wells <- function(
     wellid              = NULL,
     api_key             = NULL
 ) {
-
-  # Base API
-  base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/waterlevels/wells/?"
 
   # if no inputs given, stop function
   if(all(is.null(division), is.null(county), is.null(designated_basin), is.null(water_district), is.null(management_district), is.null(wellid))) {
@@ -58,8 +54,11 @@ get_gw_wl_wells <- function(
 
   }
 
+  # Base API
+  base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/waterlevels/wells/?"
+
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df = data.frame()
@@ -71,7 +70,7 @@ get_gw_wl_wells <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Downloading data from CDSS API...\nSearching groundwater water levels wells"))
+  message(paste0("Retrieving groundwater water level wells"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -133,13 +132,11 @@ get_gw_wl_wells <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names() %>%
-      dplyr::mutate(
-        datetime       = as.POSIXct(measurement_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
-      )
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+    # set datetime column
+    cdss_data$datetime <-  as.POSIXct(cdss_data$measurement_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -169,8 +166,7 @@ get_gw_wl_wells <- function(
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows rename mutate
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows
 #' @return dataframe of groundwater wells within the given query specifications
 #' @export
 #' @examples
@@ -190,21 +186,33 @@ get_gw_wl_wellmeasures <- function(
 
   # if no Well ID given, stop function
   if(is.null(wellid)) {
-    stop(paste0("Please enter a valid Well ID"))
+    stop(paste0("Invalid 'wellid' argument"))
   }
 
   # Base URL groundwater/waterlevels/wellmeasurements/
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/waterlevels/wellmeasurements/?"
 
-  # reformat dates to MM-DD-YYYY and format for API query
-  start <- gsub("-", "%2F", format(as.Date(start_date, '%Y-%m-%d'), "%m-%d-%Y"))
-  end   <- gsub("-", "%2F", format(as.Date(end_date, '%Y-%m-%d'), "%m-%d-%Y"))
+  # reformat and extract valid start date
+  start <- parse_date(
+    date   = start_date,
+    start  = TRUE,
+    format = "%m-%d-%Y",
+    sep    = "%2F"
+  )
+
+  # reformat and extract valid end date
+  end <- parse_date(
+    date   = end_date,
+    start  = FALSE,
+    format = "%m-%d-%Y",
+    sep    = "%2F"
+  )
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
-  data_df = data.frame()
+  data_df    <- data.frame()
 
   # initialize first page index
   page_index <- 1
@@ -212,8 +220,7 @@ get_gw_wl_wellmeasures <- function(
   # Loop through pages until there are no more pages to get
   more_pages <- TRUE
 
-  message(paste0("Downloading data from CDSS API...\nGroundwater well measurements"))
-  # message(paste0("Downloading data from CDSS API...\n---------------------------------\nGroundwater well measurements"))
+  message(paste0("Retrieving groundwater well measurements"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -224,7 +231,6 @@ get_gw_wl_wellmeasures <- function(
       "format=json&dateFormat=spaceSepToSeconds",
       "&min-measurementDate=", start,
       "&max-measurementDate=", end,
-      # "&min-modified=", end,
       "&wellId=", wellid,
       "&pageSize=", page_size,
       "&pageIndex=", page_index
@@ -270,13 +276,11 @@ get_gw_wl_wellmeasures <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names() %>%
-      dplyr::mutate(
-        datetime       = as.POSIXct(measurement_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
-      )
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+    # set datetime column
+    cdss_data$datetime <-  as.POSIXct(cdss_data$measurement_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -309,8 +313,7 @@ get_gw_wl_wellmeasures <- function(
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows rename mutate
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows
 #' @return dataframe of groundwater wells within the given query specifications
 #' @export
 #' @examples
@@ -328,9 +331,6 @@ get_gw_gplogs_wells <- function(
     wellid              = NULL,
     api_key             = NULL
 ) {
-
-  # base API URL
-  base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/geophysicallogs/wells/?"
 
   # if no inputs given, stop function
   if(all(is.null(division), is.null(county), is.null(designated_basin), is.null(water_district), is.null(management_district), is.null(wellid))) {
@@ -358,8 +358,11 @@ get_gw_gplogs_wells <- function(
 
   }
 
+  # base API URL
+  base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/geophysicallogs/wells/?"
+
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df = data.frame()
@@ -371,9 +374,9 @@ get_gw_gplogs_wells <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Downloading data from CDSS API...\nSearching groundwater geophysical log wells"))
+  message(paste0("Retrieving groundwater geophysical log wells"))
 
-  # while more pages are avaliable, send get requests to CDSS API
+  # while more pages are available, send get requests to CDSS API
   while (more_pages) {
 
     # Construct query URL w/o API key
@@ -433,13 +436,11 @@ get_gw_gplogs_wells <- function(
       }
     )
 
-    # Tidy geophysicallogs wells data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names() %>%
-      dplyr::mutate(
-        datetime       = as.POSIXct(log_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
-      )
+    # set clean names
+    names(cdss_data)   <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+    # set datetime column
+    cdss_data$datetime <- as.POSIXct(cdss_data$log_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -467,8 +468,7 @@ get_gw_gplogs_wells <- function(
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows rename mutate
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows
 #' @return dataframe of groundwater geophysical log picks for a given well ID
 #' @export
 #' @examples
@@ -482,16 +482,16 @@ get_gw_gplogs_geologpicks <- function(
     api_key             = NULL
 ) {
 
+  # if no inputs given, stop function
+  if(all(is.null(wellid))) {
+    stop(paste0("Invalid 'wellid' argument"))
+  }
+
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/geophysicallogs/geoplogpicks/?"
 
-  # if no inputs given, stop function
-  if(all(is.null(wellid))) {
-    stop(paste0("Please enter a valid 'wellid'"))
-  }
-
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df = data.frame()
@@ -503,7 +503,7 @@ get_gw_gplogs_geologpicks <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Downloading data from CDSS API..."))
+  message(paste0("Retrieving groundwater geophysical log wells geologpicks"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -556,10 +556,8 @@ get_gw_gplogs_geologpicks <- function(
       }
     )
 
-    # Tidy geophysicallogs picks wells data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
+    # set clean names
+    names(cdss_data)   <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)

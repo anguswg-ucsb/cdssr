@@ -9,8 +9,7 @@
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of climate data station daily timeseries data
 get_climate_ts_day <- function(
     station_number      = NULL,
@@ -20,6 +19,13 @@ get_climate_ts_day <- function(
     end_date            = Sys.Date(),
     api_key             = NULL
 ) {
+
+  # check if valid parameters are given
+  if(all(is.null(station_number), is.null(site_id))) {
+
+    stop(paste0("Invalid 'station_number' or 'site_id' arguments"))
+
+  }
 
   # check if parameter is valid
   if(!param %in% c("Evap", "FrostDate",  "MaxTemp", "MeanTemp", "MinTemp", "Precip",
@@ -31,27 +37,30 @@ get_climate_ts_day <- function(
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/climatedata/climatestationtsday/?"
 
+  # format multiple site_id query string
+  site_id <- collapse_vect(
+    x   = site_id,
+    sep = "%2C+"
+  )
 
-  # format multiple USGS ID query string
-  if(!is.null(site_id)) {
+  # reformat and extract valid start date
+  start <- parse_date(
+    date   = start_date,
+    start  = TRUE,
+    format = "%m-%d-%Y",
+    sep    = "%2F"
+  )
 
-    # if USGS IDs are in a list, unlist to a character vector
-    if(is.list(site_id) == TRUE) {
-
-      site_id <- unlist(site_id)
-
-    }
-
-    site_id <- paste0(unlist(strsplit(site_id, " ")), collapse = "%2C+")
-
-  }
-
-  # reformat dates to MM-DD-YYYY and format for API query
-  start <- gsub("-", "%2F", format(as.Date(start_date, '%Y-%m-%d'), "%m-%d-%Y"))
-  end   <- gsub("-", "%2F", format(as.Date(end_date, '%Y-%m-%d'), "%m-%d-%Y"))
+  # reformat and extract valid end date
+  end <- parse_date(
+    date   = end_date,
+    start  = FALSE,
+    format = "%m-%d-%Y",
+    sep    = "%2F"
+  )
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -63,8 +72,7 @@ get_climate_ts_day <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving climate timeseries data from CDSS API..."))
-  message(paste0("Parameter: ", param))
+  message(paste0("Retrieving daily climate timeseries data (", param, ")"))
 
   # while more pages are available, send get requests to CDSS API
   while (more_pages) {
@@ -73,7 +81,6 @@ get_climate_ts_day <- function(
     url <- paste0(
       base,
       "format=json&dateFormat=spaceSepToSeconds",
-      # "&fields=abbrev%2Cparameter%2C", date_field, "%2CmeasValue%2CmeasUnit",
       "&min-measDate=", start,
       "&max-measDate=", end,
       "&stationNum=", station_number,
@@ -125,13 +132,11 @@ get_climate_ts_day <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names() %>%
-      dplyr::mutate(
-        datetime   = as.POSIXct(meas_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
-      )
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+    # set datetime column
+    cdss_data$datetime <-  as.POSIXct(cdss_data$meas_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -165,8 +170,7 @@ get_climate_ts_day <- function(
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of climate data station monthly timeseries data
 get_climate_ts_month <- function(
     station_number      = NULL,
@@ -176,6 +180,13 @@ get_climate_ts_month <- function(
     end_date            = Sys.Date(),
     api_key             = NULL
 ) {
+
+  # check if valid parameters are given
+  if(all(is.null(station_number), is.null(site_id))) {
+
+    stop(paste0("Invalid 'station_number' or 'site_id' arguments"))
+
+  }
 
   # check if parameter is valid
   if(!param %in% c("Evap", "FrostDate",  "MaxTemp", "MeanTemp", "MinTemp", "Precip",
@@ -187,27 +198,30 @@ get_climate_ts_month <- function(
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/climatedata/climatestationtsmonth/?"
 
+  # format multiple site_id query string
+  site_id <- collapse_vect(
+    x   = site_id,
+    sep = "%2C+"
+  )
 
-  # format multiple USGS ID query string
-  if(!is.null(site_id)) {
+  # reformat and extract valid start date
+  start_year <- parse_date(
+    date   = start_date,
+    start  = TRUE,
+    format = "%Y",
+    sep    = "%2F"
+  )
 
-    # if USGS IDs are in a list, unlist to a character vector
-    if(is.list(site_id) == TRUE) {
-
-      site_id <- unlist(site_id)
-
-    }
-
-    site_id <- paste0(unlist(strsplit(site_id, " ")), collapse = "%2C+")
-
-  }
-
-  # extract start/end years from YYYY-MM-DD for API query
-  start_year <- format(as.Date(start_date, format="%Y-%m-%d"),"%Y")
-  end_year   <- format(as.Date(end_date, format="%Y-%m-%d"),"%Y")
+  # reformat and extract valid end date
+  end_year <- parse_date(
+    date   = end_date,
+    start  = FALSE,
+    format = "%Y",
+    sep    = "%2F"
+  )
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -219,8 +233,7 @@ get_climate_ts_month <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving climate timeseries data from CDSS API..."))
-  message(paste0("Parameter: ", param))
+  message(paste0("Retrieving monthly climate timeseries data (", param, ")"))
 
   # while more pages are available, send get requests to CDSS API
   while (more_pages) {
@@ -281,15 +294,25 @@ get_climate_ts_month <- function(
     )
 
     # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names() %>%
-      dplyr::mutate(
-        datetime = dplyr::case_when(                                                                                    # make POSIXct date
-          cal_month_num <= 9 ~ as.POSIXct(paste0(cal_year, "-0", cal_month_num, "-01"),  format="%Y-%m-%d", tz = "UTC"),    # add "0" in front of 1 digit months
-          TRUE               ~ as.POSIXct(paste0(cal_year, "-", cal_month_num, "-01"),  format="%Y-%m-%d", tz = "UTC")
-        )
-      )
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+    # set datetime column
+    cdss_data$datetime <-  as.POSIXct(
+                                paste0(cdss_data$cal_year, "-",
+                                       ifelse(cdss_data$cal_month_num > 9, cdss_data$cal_month_num, paste0("0", cdss_data$cal_month_num)),
+                                       "-01"),
+                                format="%Y-%m-%d", tz = "UTC"
+                                )
+    # Tidy data
+    # cdss_data2 <-
+    #   cdss_data %>%
+    #   dplyr::mutate(
+    #     datetime = dplyr::case_when(                                                                                    # make POSIXct date
+    #       cal_month_num <= 9 ~ as.POSIXct(paste0(cal_year, "-0", cal_month_num, "-01"),  format="%Y-%m-%d", tz = "UTC"),    # add "0" in front of 1 digit months
+    #       TRUE               ~ as.POSIXct(paste0(cal_year, "-", cal_month_num, "-01"),  format="%Y-%m-%d", tz = "UTC")
+    #     )
+    #   )
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -319,7 +342,7 @@ get_climate_ts_month <- function(
 #' @param param character climate variable. One of: "Evap", "FrostDate",  "MaxTemp", "MeanTemp", "MinTemp", "Precip", "Snow", "SnowDepth", "SnowSWE", "Solar","VP", "Wind"
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
-#' @param timescale character indicating data type to return, either "day" or "month". Default is "day".
+#' @param timescale character indicating the time series time step. Either "day", "month", "year". Default is to return daily time series.
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
@@ -357,14 +380,41 @@ get_climate_ts <- function(
     param               = NULL,
     start_date          = "1900-01-01",
     end_date            = Sys.Date(),
-    timescale           = "day",
+    timescale           = NULL,
     api_key             = NULL
 ) {
+
+  # list of valid timescales
+  day_lst       <- c("day", "days", "daily", "d")
+  month_lst     <- c("month", "months", "monthly", "mon", "mons", "m")
+  timescale_lst <- c(day_lst, month_lst)
+
+  # check if type is NULL, default timescale to "day"
+  if(is.null(timescale)) {
+
+    # set timescale to "day"
+    timescale = "day"
+
+  }
+
+  # convert timescale to lowercase
+  timescale <- tolower(timescale)
+
+  # check if type is correctly inputed
+  if(!timescale %in% timescale_lst) {
+
+    stop(paste0("Invalid `timescale` argument: ", timescale,
+                "\n Please enter one of the following valid timescales:\n",
+                paste(c(day_lst), collapse = ", "),  "\n",
+                paste(c(month_lst), collapse = ", ")
+                )
+    )
+  }
 
   # check which timescale to request data for
 
   # request daily climate timeseries data
-  if(timescale == "day") {
+  if(timescale %in% day_lst) {
 
     climate_ts <-
       get_climate_ts_day(
@@ -379,7 +429,7 @@ get_climate_ts <- function(
   }
 
   # request monthly climate timeseries data
-  if(timescale == "month") {
+  if(timescale %in% month_lst) {
 
     climate_ts <-
       get_climate_ts_month(

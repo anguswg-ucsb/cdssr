@@ -8,8 +8,7 @@
 #' @return dataframe of call services by WDID
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @export
 get_call_analysis_wdid <- function(
     wdid                = NULL,
@@ -21,18 +20,30 @@ get_call_analysis_wdid <- function(
 
   # check if valid wdid and admin_no were given
   if(all(is.null(wdid), is.null(admin_no))) {
-    stop(paste0("Please enter a valid 'wdid' and 'admin_no' to retrieve call analysis data"))
+    stop(paste0("Invalid 'wdid' and 'admin_no' arguments"))
   }
 
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/analysisservices/callanalysisbywdid/?"
 
-  # reformat dates to MM-DD-YYYY and format for API query
-  start <- gsub("-", "%2F", format(as.Date(start_date, '%Y-%m-%d'), "%m-%d-%Y"))
-  end   <- gsub("-", "%2F", format(as.Date(end_date, '%Y-%m-%d'), "%m-%d-%Y"))
+  # reformat and extract valid start date
+  start <- parse_date(
+    date   = start_date,
+    start  = TRUE,
+    format = "%m-%d-%Y",
+    sep    = "%2F"
+  )
+
+  # reformat and extract valid end date
+  end <- parse_date(
+    date   = end_date,
+    start  = FALSE,
+    format = "%m-%d-%Y",
+    sep    = "%2F"
+  )
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -44,7 +55,7 @@ get_call_analysis_wdid <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving call anaylsis by WDID from CDSS API..."))
+  message(paste0("Retrieving call anaylsis by WDID"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -101,10 +112,8 @@ get_call_analysis_wdid <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -135,8 +144,7 @@ get_call_analysis_wdid <- function(
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of source route framework
 #' @export
 get_source_route_framework <- function(
@@ -148,14 +156,14 @@ get_source_route_framework <- function(
 
   # check if valid division, gnis_name or water_district was given
   if(all(is.null(division), is.null(gnis_name), is.null(water_district))) {
-    stop(paste0("Please enter a valid 'division', 'gnis_name', or 'water_district' to retreive DWR source route framework data"))
+    stop(paste0("Invalid'division', 'gnis_name', or 'water_district' arguments"))
   }
 
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/analysisservices/watersourcerouteframework/?"
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -167,9 +175,9 @@ get_source_route_framework <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving DWR source route frameworks from CDSS API..."))
+  message(paste0("Retrieving DWR source route frameworks"))
 
-  # while more pages are avaliable, send get requests to CDSS API
+  # while more pages are available, send get requests to CDSS API
   while (more_pages) {
 
     # Construct query URL w/o API key
@@ -222,10 +230,8 @@ get_source_route_framework <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)

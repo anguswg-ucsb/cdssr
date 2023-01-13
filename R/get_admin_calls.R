@@ -9,8 +9,7 @@
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows rename mutate relocate
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of administrative calls data
 #' @export
 #' @examples
@@ -39,6 +38,13 @@ get_admin_calls <- function(
   api_key             = NULL
   ) {
 
+  # check if valid parameters are given
+  if(all(is.null(division), is.null(location_wdid), is.null(call_number))) {
+
+    stop(paste0("Invalid `division`, 'location_wdid', or 'call_number' arguments"))
+
+  }
+
   # whether to retrieve active or historical admin calls.
   if(active == TRUE) {
 
@@ -52,29 +58,33 @@ get_admin_calls <- function(
 
   }
 
-  # format multiple location WDID query string
-  if(!is.null(location_wdid)) {
+    # format multiple location WDID query string
+    location_wdid <- collapse_vect(
+      x   = location_wdid,
+      sep = "%2C+"
+    )
 
-    # if location WDIDs are in a list, unlist to a character vector
-    if(is.list(location_wdid) == TRUE) {
+    # reformat and extract valid start date
+    start <- parse_date(
+      date   = start_date,
+      start  = TRUE,
+      format = "%m-%d-%Y",
+      sep    = "%2F"
+    )
 
-      location_wdid <- unlist(location_wdid)
-
-    }
-
-    location_wdid <- paste0(unlist(strsplit(location_wdid, " ")), collapse = "%2C+")
-
-  }
-
-    # reformat dates to MM-DD-YYYY and format for API query
-    start <- gsub("-", "%2F", format(as.Date(start_date, '%Y-%m-%d'), "%m-%d-%Y"))
-    end   <- gsub("-", "%2F", format(as.Date(end_date, '%Y-%m-%d'), "%m-%d-%Y"))
+    # reformat and extract valid end date
+    end <- parse_date(
+      date   = end_date,
+      start  = FALSE,
+      format = "%m-%d-%Y",
+      sep    = "%2F"
+      )
 
     # maximum records per page
-    page_size  <- 50000
+    page_size  <- 500000
 
     # initialize empty dataframe to store data from multiple pages
-    data_df <- data.frame()
+    data_df    <- data.frame()
 
     # initialize first page index
     page_index <- 1
@@ -83,9 +93,9 @@ get_admin_calls <- function(
     more_pages <- TRUE
 
     # print message
-    message(paste0("Retrieving Administrative calls (", ifelse(active, "ACTIVE", "HISTORICAL"), ")", " data from CDSS API..."))
+    message(paste0("Retrieving Administrative calls (", ifelse(active, "ACTIVE", "HISTORICAL"), ")", " data"))
 
-    # while more pages are avaliable, send get requests to CDSS API
+    # while more pages are available, send get requests to CDSS API
     while (more_pages) {
 
       # Construct query URL w/o API key
@@ -151,15 +161,13 @@ get_admin_calls <- function(
         }
       )
 
-      # Tidy data
-      cdss_data <-
-        cdss_data %>%
-        janitor::clean_names() %>%
-        dplyr::mutate(
-          active         = active,
-          datetime       = as.POSIXct(date_time_set, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
-          priority_date  = as.POSIXct(priority_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
-        )
+      # set clean names
+      names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+      # add extra columns
+      cdss_data$active        <- active
+      cdss_data$datetime      <- as.POSIXct(cdss_data$date_time_set, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
+      cdss_data$priority_date <- as.POSIXct(cdss_data$priority_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
       # bind data from this page
       data_df <- dplyr::bind_rows(data_df, cdss_data)

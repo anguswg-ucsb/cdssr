@@ -11,8 +11,7 @@
 #' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of climate data station info
 #' @examples
 #' # get climate stations in Adams County, CO
@@ -34,22 +33,21 @@ get_climate_stations <- function(
     api_key             = NULL
 ) {
 
+  # check if valid parameters are given
+  if(all(is.null(aoi), is.null(county), is.null(division), is.null(station_name), is.null(site_id), is.null(water_district))) {
+
+    stop(paste0("Invalid `aoi`, 'county', 'division', 'station_name', 'site_id', or 'water_district' arguments"))
+
+  }
+
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/climatedata/climatestations/?"
 
-  # format multiple Site ID query string
-  if(!is.null(site_id)) {
-
-    # if USGS IDs are in a list, unlist to a character vector
-    if(is.list(site_id) == TRUE) {
-
-      site_id <- unlist(site_id)
-
-    }
-
-    site_id <- paste0(unlist(strsplit(site_id, " ")), collapse = "%2C+")
-
-  }
+  # format multiple site_id query string
+  site_id <- collapse_vect(
+    x   = site_id,
+    sep = "%2C+"
+  )
 
   # check and extract spatial data from 'aoi' and 'radius' args for location search query
   aoi_lst <- check_aoi(
@@ -63,8 +61,7 @@ get_climate_stations <- function(
   radius <- aoi_lst$radius
 
   # maximum records per page
-  page_size  <- 50000
-  # page_size  <- 100
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -76,7 +73,7 @@ get_climate_stations <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving climate station data from CDSS API..."))
+  message(paste0("Retrieving climate station data"))
 
   # if location based search
   if(all(!is.null(lng), !is.null(lat))) {
@@ -152,13 +149,12 @@ get_climate_stations <- function(
     )
 
     # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names() %>%
-      dplyr::mutate(
-        start_date   = as.POSIXct(start_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
-        end_date     = as.POSIXct(end_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
-      )
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+    # add extra columns
+    cdss_data$start_date   <- as.POSIXct(cdss_data$start_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
+    cdss_data$end_date     <- as.POSIXct(cdss_data$end_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
