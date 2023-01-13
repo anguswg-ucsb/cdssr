@@ -106,8 +106,7 @@
 <span class="r-in"><span>  end_date    <span class="op">=</span> <span class="st">"2020-01-01"</span>,</span></span>
 <span class="r-in"><span>  timescale   <span class="op">=</span> <span class="st">"day"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Retrieving climate timeseries data from CDSS API...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Parameter: MaxTemp</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Retrieving daily climate timeseries data (MaxTemp)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># plot daily maximum temp at climate station</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">daily_maxtemp</span><span class="op">$</span><span class="va">value</span><span class="op">~</span><span class="va">daily_maxtemp</span><span class="op">$</span><span class="va">datetime</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span></span>
@@ -121,8 +120,7 @@
 <span class="r-in"><span>  end_date    <span class="op">=</span> <span class="st">"2022-01-01"</span>,</span></span>
 <span class="r-in"><span>  timescale   <span class="op">=</span> <span class="st">"month"</span></span></span>
 <span class="r-in"><span>   <span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Retrieving climate timeseries data from CDSS API...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Parameter: Precip</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Retrieving monthly climate timeseries data (Precip)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="co"># plot daily max temp at climate station</span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">monthly_precip</span><span class="op">$</span><span class="va">avg_value</span><span class="op">~</span><span class="va">monthly_precip</span><span class="op">$</span><span class="va">datetime</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span></span>
