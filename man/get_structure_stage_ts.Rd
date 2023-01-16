@@ -27,10 +27,9 @@ dataframe with stage/volume data for CDSS structure of interest
 Make a request to the api/v2/structures/divrec/stagevolume/ endpoint to retrieve structure stage/volume data for a specified WDID within a specified date range.
 }
 \examples{
-#'
 # Request endpoint: api/v2/structures/divrec/stagevolume
 stage_vol <- get_structure_stage_ts(
-                   wdid             =  "0303732",
+                   wdid             = "0303732",
                    start_date       = "2000-01-01",
                    end_date         = "2005-01-01"
                  )

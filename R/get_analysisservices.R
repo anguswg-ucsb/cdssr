@@ -43,7 +43,7 @@ get_call_analysis_wdid <- function(
   )
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -163,7 +163,7 @@ get_source_route_framework <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/analysisservices/watersourcerouteframework/?"
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()

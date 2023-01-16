@@ -36,5 +36,14 @@ get_structures(
 dataframe of administrative structures
 }
 \description{
-Make a request to the api/v2/structures endpoint to locate administrative structures via a spatial search or by division, county, water_district, GNIS, or WDID.
+Make a request to the /structures endpoint to locate administrative structures via a spatial search or by division, county, water_district, GNIS, or WDID.
+}
+\examples{
+# Request endpoint: api/v2/structures/
+divrec_structures <- get_structures(
+                           county = "Boulder"
+                           )
+
+# plot administrative structure locations
+plot(divrec_structures$latdecdeg~divrec_structures$longdecdeg)
 }

@@ -58,7 +58,7 @@ get_sw_ts_day <- function(
   )
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -215,7 +215,7 @@ get_sw_ts_month <- function(
   )
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -388,7 +388,7 @@ get_sw_ts_wyear <- function(
   )
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()

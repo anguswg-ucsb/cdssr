@@ -58,7 +58,7 @@ get_gw_wl_wells <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/waterlevels/wells/?"
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df = data.frame()
@@ -209,7 +209,7 @@ get_gw_wl_wellmeasures <- function(
   )
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <- data.frame()
@@ -362,7 +362,7 @@ get_gw_gplogs_wells <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/geophysicallogs/wells/?"
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df = data.frame()
@@ -491,7 +491,7 @@ get_gw_gplogs_geologpicks <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/geophysicallogs/geoplogpicks/?"
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df = data.frame()

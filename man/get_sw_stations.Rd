@@ -46,6 +46,6 @@ Make a request to the /surfacewater/surfacewaterstations endpoint to locate surf
 sw_stations <- get_sw_stations(
                     county = "Larimer"
                     )
- # plot latitude/longitude of surface water stations
- plot(sw_stations$latitude~sw_stations$longitude)
+# plot latitude/longitude of surface water stations
+plot(sw_stations$latitude~sw_stations$longitude)
 }

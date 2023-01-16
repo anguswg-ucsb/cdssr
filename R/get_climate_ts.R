@@ -59,7 +59,7 @@ get_climate_ts_day <- function(
   )
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -71,7 +71,7 @@ get_climate_ts_day <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving daily climate timeseries data (", param, ")"))
+  message(paste0("Retrieving daily climate time series data (", param, ")"))
 
   # while more pages are available, send get requests to CDSS API
   while (more_pages) {
@@ -219,7 +219,7 @@ get_climate_ts_month <- function(
   )
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -231,7 +231,7 @@ get_climate_ts_month <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving monthly climate timeseries data (", param, ")"))
+  message(paste0("Retrieving monthly climate time series data (", param, ")"))
 
   # while more pages are available, send get requests to CDSS API
   while (more_pages) {

@@ -38,7 +38,7 @@
       )
 
     # maximum records per page
-    page_size  <- 500000
+    page_size  <- 50000
 
     # initialize empty dataframe to store data from multiple pages
     data_df    <-  data.frame()

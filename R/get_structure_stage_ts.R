@@ -10,10 +10,9 @@
 #' @return dataframe with stage/volume data for CDSS structure of interest
 #' @export
 #' @examples
-#' #'
 #' # Request endpoint: api/v2/structures/divrec/stagevolume
 #' stage_vol <- get_structure_stage_ts(
-#'                    wdid             =  "0303732",
+#'                    wdid             = "0303732",
 #'                    start_date       = "2000-01-01",
 #'                    end_date         = "2005-01-01"
 #'                  )

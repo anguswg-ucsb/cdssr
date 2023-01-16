@@ -73,7 +73,7 @@ get_structure_divrecday <- function(
   wc_identifier <- paste0(gsub(":", "%3A",   unlist(strsplit(wc_identifier, " "))), collapse = "+")
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -245,7 +245,7 @@ get_structure_divrecmonth<- function(
   wc_identifier <- paste0(gsub(":", "%3A",   unlist(strsplit(wc_identifier, " "))), collapse = "+")
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df = data.frame()
@@ -538,7 +538,7 @@ get_structure_divrecyear <- function(
 #'                    wc_identifier    = "diversion",
 #'                    start_date       = "2000-01-01",
 #'                    end_date         = "2005-01-01",
-#'                    timescale        = "day"
+#'                    timescale        = "month"
 #'                  )
 #'
 #' # plot monthly diversion record

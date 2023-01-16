@@ -18,8 +18,8 @@
 #' sw_stations <- get_sw_stations(
 #'                     county = "Larimer"
 #'                     )
-#'  # plot latitude/longitude of surface water stations
-#'  plot(sw_stations$latitude~sw_stations$longitude)
+#' # plot latitude/longitude of surface water stations
+#' plot(sw_stations$latitude~sw_stations$longitude)
 #' @export
 get_sw_stations <- function(
     aoi                 = NULL,
@@ -67,7 +67,7 @@ get_sw_stations <- function(
   radius <- aoi_lst$radius
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()

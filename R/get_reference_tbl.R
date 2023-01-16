@@ -15,7 +15,7 @@ get_ref_county <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/county/?"
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -128,7 +128,7 @@ get_ref_waterdistricts <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/waterdistrict/?"
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -234,7 +234,7 @@ get_ref_waterdivisions <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/waterdivision/?"
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -337,7 +337,7 @@ get_ref_managementdistricts <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/managementdistrict/?"
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -441,7 +441,7 @@ get_ref_designatedbasins <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/designatedbasin/?"
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -545,7 +545,7 @@ get_ref_telemetry_params <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/telemetryparams/?"
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -649,7 +649,7 @@ get_ref_climate_params <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/climatestationmeastype/?"
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -753,7 +753,7 @@ get_ref_divrectypes <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/divrectypes/?"
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -857,7 +857,7 @@ get_ref_stationflags<- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/stationflags/?"
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()

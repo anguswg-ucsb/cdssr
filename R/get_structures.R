@@ -1,5 +1,5 @@
 #' Return list of administrative structures
-#' @description Make a request to the api/v2/structures endpoint to locate administrative structures via a spatial search or by division, county, water_district, GNIS, or WDID.
+#' @description Make a request to the /structures endpoint to locate administrative structures via a spatial search or by division, county, water_district, GNIS, or WDID.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
 #' @param radius numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
 #' @param county character, indicating the county to query
@@ -13,6 +13,14 @@
 #' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of administrative structures
 #' @export
+#' @examples
+#' # Request endpoint: api/v2/structures/
+#' divrec_structures <- get_structures(
+#'                            county = "Boulder"
+#'                            )
+#'
+#' # plot administrative structure locations
+#' plot(divrec_structures$latdecdeg~divrec_structures$longdecdeg)
 get_structures <- function(
     aoi                 = NULL,
     radius              = NULL,
@@ -59,7 +67,7 @@ get_structures <- function(
   }
 
   # maximum records per page
-  page_size  <- 500000
+  page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <- data.frame()

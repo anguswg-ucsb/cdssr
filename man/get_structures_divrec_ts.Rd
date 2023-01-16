@@ -51,7 +51,7 @@ divrecord_month <- get_structures_divrec_ts(
                    wc_identifier    = "diversion",
                    start_date       = "2000-01-01",
                    end_date         = "2005-01-01",
-                   timescale        = "day"
+                   timescale        = "month"
                  )
 
 # plot monthly diversion record
