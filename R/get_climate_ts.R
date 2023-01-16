@@ -6,7 +6,6 @@
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
-#' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr bind_rows `%>%`
@@ -167,7 +166,6 @@ get_climate_ts_day <- function(
 #' @param start_date character date to request data start point YYYY-MM-DD
 #' @param end_date character date to request data end point YYYY-MM-DD
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
-#' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr bind_rows `%>%`
@@ -293,7 +291,6 @@ get_climate_ts_month <- function(
       }
     )
 
-    # Tidy data
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
@@ -305,7 +302,7 @@ get_climate_ts_month <- function(
                                 format="%Y-%m-%d", tz = "UTC"
                                 )
     # Tidy data
-    # cdss_data2 <-
+    # cdss_data <-
     #   cdss_data %>%
     #   dplyr::mutate(
     #     datetime = dplyr::case_when(                                                                                    # make POSIXct date
@@ -346,8 +343,7 @@ get_climate_ts_month <- function(
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of climate station timeseries data
 #' @examples
 #' # Retrieve daily maximum temperatures

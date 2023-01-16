@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_sw_ts.R
 \name{get_sw_ts_day}
 \alias{get_sw_ts_day}
-\title{Return daily surface water timeseries data}
+\title{Return daily surface water time series data}
 \usage{
 get_sw_ts_day(
   abbrev = NULL,
@@ -27,8 +27,8 @@ get_sw_ts_day(
 \item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
 \value{
-dataframe of surface water station daily timeseries data
+dataframe of surface water station daily time series data
 }
 \description{
-Make a request to the /surfacewater/surfacewatertsday endpoint to retrieve surface water stations daily timeseries data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
+Make a request to the /surfacewater/surfacewatertsday endpoint to retrieve surface water stations daily time series data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
 }

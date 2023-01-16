@@ -8,7 +8,6 @@
 #' @param site_id character vector or list of characters of climate station site IDs
 #' @param water_district numeric, indicating the water district to query
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
-#' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr bind_rows `%>%`
@@ -36,7 +35,7 @@ get_climate_stations <- function(
   # check if valid parameters are given
   if(all(is.null(aoi), is.null(county), is.null(division), is.null(station_name), is.null(site_id), is.null(water_district))) {
 
-    stop(paste0("Invalid `aoi`, 'county', 'division', 'station_name', 'site_id', or 'water_district' arguments"))
+    stop(paste0("Invalid 'aoi', county', 'division', 'station_name', 'site_id', or 'water_district' arguments"))
 
   }
 

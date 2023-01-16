@@ -4,8 +4,7 @@
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of Colorado counties
 get_ref_county <- function(
     county              = NULL,
@@ -16,7 +15,7 @@ get_ref_county <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/county/?"
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -28,7 +27,7 @@ get_ref_county <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving county reference table from CDSS API..."))
+  message(paste0("Retrieving county reference table"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -86,10 +85,8 @@ get_ref_county <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -119,8 +116,7 @@ get_ref_county <- function(
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of Colorado water districts, indicating the division the water district is in and its name
 get_ref_waterdistricts <- function(
     division            = NULL,
@@ -132,7 +128,7 @@ get_ref_waterdistricts <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/waterdistrict/?"
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -144,7 +140,7 @@ get_ref_waterdistricts <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving water districts reference table from CDSS API..."))
+  message(paste0("Retrieving water districts reference table"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -197,10 +193,8 @@ get_ref_waterdistricts <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -229,8 +223,7 @@ get_ref_waterdistricts <- function(
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of Colorado water divisions and water division names
 get_ref_waterdivisions <- function(
     division            = NULL,
@@ -241,7 +234,7 @@ get_ref_waterdivisions <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/waterdivision/?"
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -253,7 +246,7 @@ get_ref_waterdivisions <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving water division reference table from CDSS API..."))
+  message(paste0("Retrieving water division reference table"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -304,10 +297,8 @@ get_ref_waterdivisions <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -335,8 +326,7 @@ get_ref_waterdivisions <- function(
 #' @param management_district character, (optional) indicating the management district to query, if no management district is given, dataframe of all management districts is returned
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.#' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of Colorado management districts
 get_ref_managementdistricts <- function(
     management_district  = NULL,
@@ -347,7 +337,7 @@ get_ref_managementdistricts <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/managementdistrict/?"
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -359,7 +349,7 @@ get_ref_managementdistricts <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving management districts reference table from CDSS API..."))
+  message(paste0("Retrieving management districts reference table"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -410,10 +400,8 @@ get_ref_managementdistricts <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -442,8 +430,7 @@ get_ref_managementdistricts <- function(
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of Colorado designated basins
 get_ref_designatedbasins <- function(
     designated_basin    = NULL,
@@ -454,7 +441,7 @@ get_ref_designatedbasins <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/designatedbasin/?"
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -466,7 +453,7 @@ get_ref_designatedbasins <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving designated basin reference table from CDSS API..."))
+  message(paste0("Retrieving designated basin reference table"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -517,10 +504,8 @@ get_ref_designatedbasins <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -549,8 +534,7 @@ get_ref_designatedbasins <- function(
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of telemetry station parameters
 get_ref_telemetry_params <- function(
     param      = NULL,
@@ -561,7 +545,7 @@ get_ref_telemetry_params <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/telemetryparams/?"
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -573,7 +557,7 @@ get_ref_telemetry_params <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving telemetry parameter reference table from CDSS API..."))
+  message(paste0("Retrieving telemetry parameter reference table"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -624,10 +608,8 @@ get_ref_telemetry_params <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -656,8 +638,7 @@ get_ref_telemetry_params <- function(
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of climate station parameters
 get_ref_climate_params <- function(
     param      = NULL,
@@ -668,7 +649,7 @@ get_ref_climate_params <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/climatestationmeastype/?"
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -680,7 +661,7 @@ get_ref_climate_params <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving climate parameter reference table from CDSS API..."))
+  message(paste0("Retrieving climate parameter reference table"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -731,10 +712,8 @@ get_ref_climate_params <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -763,8 +742,7 @@ get_ref_climate_params <- function(
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of diversion record types
 get_ref_divrectypes <- function(
     divrectype  = NULL,
@@ -775,7 +753,7 @@ get_ref_divrectypes <- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/divrectypes/?"
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -787,7 +765,7 @@ get_ref_divrectypes <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving diversion record types reference table from CDSS API..."))
+  message(paste0("Retrieving diversion record types reference table"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -838,10 +816,8 @@ get_ref_divrectypes <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -870,8 +846,7 @@ get_ref_divrectypes <- function(
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of station flags and flag descriptions
 get_ref_stationflags<- function(
     flag     = NULL,
@@ -882,7 +857,7 @@ get_ref_stationflags<- function(
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/stationflags/?"
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -894,7 +869,7 @@ get_ref_stationflags<- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving station flags reference table from CDSS API..."))
+  message(paste0("Retrieving station flags reference table"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -945,10 +920,8 @@ get_ref_stationflags<- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -977,8 +950,7 @@ get_ref_stationflags<- function(
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of CDSS endpoint Reference Table
 #' @examples
 #' # Retrieve station flag reference table

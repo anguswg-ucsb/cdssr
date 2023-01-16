@@ -25,18 +25,18 @@ get_sw_ts(
 
 \item{end_date}{character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.}
 
-\item{timescale}{character indicating data type to return, either "day", "month", or "wateryear". Default is "day".}
+\item{timescale}{character indicating the time series time step. Either "day", "month", "year". Default is to return daily time series.}
 
 \item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
 \value{
-dataframe of surface water station timeseries data
+dataframe of surface water station time series data
 }
 \description{
-Make a request to the /surfacewater/surfacewaterts/ endpoints (surfacewatertsday, surfacewatertsmonth, surfacewatertswateryear) to retrieve surface water station timeseries data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
+Make a request to the /surfacewater/surfacewaterts/ endpoints (surfacewatertsday, surfacewatertsmonth, surfacewatertswateryear) to retrieve surface water station time series data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
 }
 \examples{
-# Retrieve surface water daily timeseries
+# Retrieve surface water daily time series
 sw_ts_day <-
  get_sw_ts(
   abbrev     = "CLAFTCCO",
@@ -48,7 +48,7 @@ sw_ts_day <-
 # plot daily flow
 plot(sw_ts_day$value~sw_ts_day$datetime, type = "s")
 
-# Retrieve surface water monthly timeseries
+# Retrieve surface water monthly time series
 sw_ts_month <-
  get_sw_ts(
   abbrev     = "CLAFTCCO",
@@ -57,9 +57,9 @@ sw_ts_month <-
   timescale  = "month"
   )
 # plot average monthly flow
-plot(sw_ts_month$avg_q_cfs~sw_ts_month$datetime, type = "s")
+plot(sw_ts_month$avg_qcfs~sw_ts_month$datetime, type = "s")
 
-# Retrieve surface water water year timeseries
+# Retrieve surface water water year time series
 sw_ts_year <-
  get_sw_ts(
   abbrev     = "CLAFTCCO",
@@ -69,5 +69,5 @@ sw_ts_year <-
   )
 
 # plot average water year flow
-plot(sw_ts_year$avg_q_cfs~sw_ts_year$water_year, type = "s")
+plot(sw_ts_year$avg_qcfs~sw_ts_year$water_year, type = "s")
 }

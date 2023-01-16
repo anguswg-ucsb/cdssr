@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_sw_ts.R
 \name{get_sw_ts_month}
 \alias{get_sw_ts_month}
-\title{Return monthly surface water timeseries data}
+\title{Return monthly surface water time series data}
 \usage{
 get_sw_ts_month(
   abbrev = NULL,
@@ -27,8 +27,8 @@ get_sw_ts_month(
 \item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
 \value{
-dataframe of surface water station monthly timeseries data
+dataframe of surface water station monthly time series data
 }
 \description{
-Make a request to the /surfacewater/surfacewatertsmonth endpoint to retrieve surface water stations monthly timeseries data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
+Make a request to the /surfacewater/surfacewatertsmonth endpoint to retrieve surface water stations monthly time series data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
 }

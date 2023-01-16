@@ -1,5 +1,5 @@
-#' Return daily surface water timeseries data
-#' @description Make a request to the /surfacewater/surfacewatertsday endpoint to retrieve surface water stations daily timeseries data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
+#' Return daily surface water time series data
+#' @description Make a request to the /surfacewater/surfacewatertsday endpoint to retrieve surface water stations daily time series data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
 #' @param abbrev character vector or list of characters of station abbreviation
 #' @param station_number character, surface water station number
 #' @param usgs_id character vector or list of characters of USGS Site IDs
@@ -8,9 +8,8 @@
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
-#' @return dataframe of surface water station daily timeseries data
+#' @importFrom dplyr bind_rows `%>%`
+#' @return dataframe of surface water station daily time series data
 get_sw_ts_day <- function(
     abbrev              = NULL,
     station_number      = NULL,
@@ -20,43 +19,46 @@ get_sw_ts_day <- function(
     api_key             = NULL
 ) {
 
+  # check if valid parameters are given
+  if(all(is.null(abbrev), is.null(station_number), is.null(usgs_id))) {
+
+    stop(paste0("Invalid 'abbrev', station_number', or 'usgs_id' arguments"))
+
+  }
+
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/surfacewater/surfacewatertsday/?"
 
-  # format multiple abbrev query
-  if(!is.null(abbrev)) {
+  # format multiple abbrev query string
+  abbrev <- collapse_vect(
+    x   = abbrev,
+    sep = "%2C+"
+  )
 
-    # if abbreviations are in a list, unlist to a character vector
-    if(is.list(abbrev) == TRUE) {
+  # format multiple usgs_id query string
+  usgs_id <- collapse_vect(
+    x   = usgs_id,
+    sep = "%2C+"
+  )
 
-      abbrev <- unlist(abbrev)
+  # reformat and extract valid start date
+  start <- parse_date(
+    date   = start_date,
+    start  = TRUE,
+    format = "%m-%d-%Y",
+    sep    = "%2F"
+  )
 
-    }
-
-    abbrev <- paste0(unlist(strsplit(abbrev, " ")), collapse = "%2C+")
-
-  }
-
-  # format multiple USGS ID query string
-  if(!is.null(usgs_id)) {
-
-    # if USGS IDs are in a list, unlist to a character vector
-    if(is.list(usgs_id) == TRUE) {
-
-      usgs_id <- unlist(usgs_id)
-
-    }
-
-    usgs_id <- paste0(unlist(strsplit(usgs_id, " ")), collapse = "%2C+")
-
-  }
-
-  # reformat dates to MM-DD-YYYY and format for API query
-  start <- gsub("-", "%2F", format(as.Date(start_date, '%Y-%m-%d'), "%m-%d-%Y"))
-  end   <- gsub("-", "%2F", format(as.Date(end_date, '%Y-%m-%d'), "%m-%d-%Y"))
+  # reformat and extract valid end date
+  end <- parse_date(
+    date   = end_date,
+    start  = FALSE,
+    format = "%m-%d-%Y",
+    sep    = "%2F"
+  )
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -68,7 +70,7 @@ get_sw_ts_day <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving surface water timeseries data from CDSS API..."))
+  message(paste0("Retrieving daily surface water time series data"))
 
   # while more pages are available, send get requests to CDSS API
   while (more_pages) {
@@ -77,7 +79,6 @@ get_sw_ts_day <- function(
     url <- paste0(
       base,
       "format=json&dateFormat=spaceSepToSeconds",
-      # "&fields=abbrev%2Cparameter%2C", date_field, "%2CmeasValue%2CmeasUnit",
       "&abbrev=", abbrev,
       "&min-measDate=", start,
       "&max-measDate=", end,
@@ -110,7 +111,7 @@ get_sw_ts_day <- function(
 
       },
       error = function(e) {
-        message(paste0("Error in surface water daily timeseries query"))
+        message(paste0("Error in surface water daily time series query"))
         message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nStart date: ", start_date,
@@ -129,13 +130,11 @@ get_sw_ts_day <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names() %>%
-      dplyr::mutate(
-        datetime   = as.POSIXct(meas_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
-      )
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+    # set datetime column
+    cdss_data$datetime      <- as.POSIXct(cdss_data$meas_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -157,8 +156,9 @@ get_sw_ts_day <- function(
   return(data_df)
 
 }
-#' Return monthly surface water timeseries data
-#' @description Make a request to the /surfacewater/surfacewatertsmonth endpoint to retrieve surface water stations monthly timeseries data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
+
+#' Return monthly surface water time series data
+#' @description Make a request to the /surfacewater/surfacewatertsmonth endpoint to retrieve surface water stations monthly time series data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
 #' @param abbrev character vector or list of characters of station abbreviation
 #' @param station_number character, surface water station number
 #' @param usgs_id character vector or list of characters of USGS Site IDs
@@ -167,9 +167,8 @@ get_sw_ts_day <- function(
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate case_when `%>%`
-#' @importFrom janitor clean_names
-#' @return dataframe of surface water station monthly timeseries data
+#' @importFrom dplyr bind_rows `%>%`
+#' @return dataframe of surface water station monthly time series data
 get_sw_ts_month <- function(
     abbrev              = NULL,
     station_number      = NULL,
@@ -179,43 +178,44 @@ get_sw_ts_month <- function(
     api_key             = NULL
 ) {
 
+  # check if valid parameters are given
+  if(all(is.null(abbrev), is.null(station_number), is.null(usgs_id))) {
+
+    stop(paste0("Invalid 'abbrev', station_number', or 'usgs_id' arguments"))
+
+  }
+
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/surfacewater/surfacewatertsmonth/?"
 
-  # format multiple abbrev query
-  if(!is.null(abbrev)) {
+  # format multiple abbrev query string
+  abbrev <- collapse_vect(
+    x   = abbrev,
+    sep = "%2C+"
+  )
 
-    # if abbreviations are in a list, unlist to a character vector
-    if(is.list(abbrev) == TRUE) {
+  # format multiple usgs_id query string
+  usgs_id <- collapse_vect(
+    x   = usgs_id,
+    sep = "%2C+"
+  )
 
-      abbrev <- unlist(abbrev)
+  # reformat and extract valid start date
+  start_year <- parse_date(
+    date   = start_date,
+    start  = TRUE,
+    format = "%Y"
+  )
 
-    }
-
-    abbrev <- paste0(unlist(strsplit(abbrev, " ")), collapse = "%2C+")
-
-  }
-
-  # format multiple USGS ID query string
-  if(!is.null(usgs_id)) {
-
-    # if USGS IDs are in a list, unlist to a character vector
-    if(is.list(usgs_id) == TRUE) {
-
-      usgs_id <- unlist(usgs_id)
-
-    }
-
-    usgs_id <- paste0(unlist(strsplit(usgs_id, " ")), collapse = "%2C+")
-
-  }
-
-  # extract start/end years from YYYY-MM-DD for API query
-  start_year <- format(as.Date(start_date, format="%Y-%m-%d"),"%Y")
-  end_year   <- format(as.Date(end_date, format="%Y-%m-%d"),"%Y")
+  # reformat and extract valid end date
+  end_year <- parse_date(
+    date   = end_date,
+    start  = FALSE,
+    format = "%Y"
+  )
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -227,7 +227,7 @@ get_sw_ts_month <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving surface water timeseries data from CDSS API..."))
+  message(paste0("Retrieving monthly surface water time series data"))
 
   # while more pages are available, send get requests to CDSS API
   while (more_pages) {
@@ -236,7 +236,6 @@ get_sw_ts_month <- function(
     url <- paste0(
       base,
       "format=json&dateFormat=spaceSepToSeconds",
-      # "&fields=abbrev%2Cparameter%2C", date_field, "%2CmeasValue%2CmeasUnit",
       "&abbrev=", abbrev,
       "&min-calYear=", start_year,
       "&max-calYear=", end_year,
@@ -269,7 +268,7 @@ get_sw_ts_month <- function(
 
       },
       error = function(e) {
-        message(paste0("Error in surface water monthly timeseries query"))
+        message(paste0("Error in surface water monthly time series query"))
         message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nStart date: ", start_date,
@@ -288,16 +287,27 @@ get_sw_ts_month <- function(
       }
     )
 
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+    # set datetime column
+    cdss_data$datetime <-  as.POSIXct(
+                                  paste0(cdss_data$cal_year, "-",
+                                         ifelse(cdss_data$cal_mon_num > 9, cdss_data$cal_mon_num, paste0("0", cdss_data$cal_mon_num)),
+                                         "-01"),
+                                  format="%Y-%m-%d", tz = "UTC"
+                                  )
+
     # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names() %>%
-      dplyr::mutate(
-        datetime = dplyr::case_when(                                                                                    # make POSIXct date
-          cal_mon_num <= 9 ~ as.POSIXct(paste0(cal_year, "-0", cal_mon_num, "-01"),  format="%Y-%m-%d", tz = "UTC"),    # add "0" in front of 1 digit months
-          TRUE             ~ as.POSIXct(paste0(cal_year, "-", cal_mon_num, "-01"),  format="%Y-%m-%d", tz = "UTC")
-        )
-      )
+    # cdss_data <-
+    #   cdss_data %>%
+    #   janitor::clean_names() %>%
+    #   dplyr::mutate(
+    #     datetime = dplyr::case_when(                                                                                    # make POSIXct date
+    #       cal_mon_num <= 9 ~ as.POSIXct(paste0(cal_year, "-0", cal_mon_num, "-01"),  format="%Y-%m-%d", tz = "UTC"),    # add "0" in front of 1 digit months
+    #       TRUE             ~ as.POSIXct(paste0(cal_year, "-", cal_mon_num, "-01"),  format="%Y-%m-%d", tz = "UTC")
+    #     )
+    #   )
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -320,8 +330,8 @@ get_sw_ts_month <- function(
 
 }
 
-#' Return water year surface water timeseries data
-#' @description Make a request to the /surfacewater/surfacewatertswateryear endpoint to retrieve surface water stations water year timeseries data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
+#' Return water year surface water time series data
+#' @description Make a request to the /surfacewater/surfacewatertswateryear endpoint to retrieve surface water stations water year time series data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
 #' @param abbrev character vector or list of characters of station abbreviation
 #' @param station_number character, surface water station number
 #' @param usgs_id character vector or list of characters of USGS Site IDs
@@ -330,9 +340,8 @@ get_sw_ts_month <- function(
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
-#' @return dataframe of annual surface water station timeseries data
+#' @importFrom dplyr bind_rows `%>%`
+#' @return dataframe of annual surface water station time series data
 get_sw_ts_wyear <- function(
     abbrev              = NULL,
     station_number      = NULL,
@@ -342,43 +351,44 @@ get_sw_ts_wyear <- function(
     api_key             = NULL
 ) {
 
+  # check if valid parameters are given
+  if(all(is.null(abbrev), is.null(station_number), is.null(usgs_id))) {
+
+    stop(paste0("Invalid 'abbrev', station_number', or 'usgs_id' arguments"))
+
+  }
+
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/surfacewater/surfacewatertswateryear/?"
 
-  # format multiple abbrev query
-  if(!is.null(abbrev)) {
+  # format multiple abbrev query string
+  abbrev <- collapse_vect(
+    x   = abbrev,
+    sep = "%2C+"
+  )
 
-    # if abbreviations are in a list, unlist to a character vector
-    if(is.list(abbrev) == TRUE) {
+  # format multiple usgs_id query string
+  usgs_id <- collapse_vect(
+    x   = usgs_id,
+    sep = "%2C+"
+  )
 
-      abbrev <- unlist(abbrev)
+  # reformat and extract valid start date
+  start_year <- parse_date(
+    date   = start_date,
+    start  = TRUE,
+    format = "%Y"
+  )
 
-    }
-
-    abbrev <- paste0(unlist(strsplit(abbrev, " ")), collapse = "%2C+")
-
-  }
-
-  # format multiple USGS ID query string
-  if(!is.null(usgs_id)) {
-
-    # if USGS IDs are in a list, unlist to a character vector
-    if(is.list(usgs_id) == TRUE) {
-
-      usgs_id <- unlist(usgs_id)
-
-    }
-
-    usgs_id <- paste0(unlist(strsplit(usgs_id, " ")), collapse = "%2C+")
-
-  }
-
-  # extract start/end years from YYYY-MM-DD for API query
-  start_year <- format(as.Date(start_date, format="%Y-%m-%d"),"%Y")
-  end_year   <- format(as.Date(end_date, format="%Y-%m-%d"),"%Y")
+  # reformat and extract valid end date
+  end_year <- parse_date(
+    date   = end_date,
+    start  = FALSE,
+    format = "%Y"
+  )
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -390,7 +400,7 @@ get_sw_ts_wyear <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving surface water water year timeseries data from CDSS API..."))
+  message(paste0("Retrieving yearly surface water water year time series data"))
 
   # while more pages are available, send get requests to CDSS API
   while (more_pages) {
@@ -399,7 +409,6 @@ get_sw_ts_wyear <- function(
     url <- paste0(
       base,
       "format=json&dateFormat=spaceSepToSeconds",
-      # "&fields=abbrev%2Cparameter%2C", date_field, "%2CmeasValue%2CmeasUnit",
       "&abbrev=", abbrev,
       "&min-waterYear=", start_year,
       "&max-waterYear=", end_year,
@@ -432,7 +441,7 @@ get_sw_ts_wyear <- function(
 
       },
       error = function(e) {
-        message(paste0("Error in surface water water year timeseries query"))
+        message(paste0("Error in surface water water year time series query"))
         message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nStart date: ", start_date,
@@ -451,10 +460,8 @@ get_sw_ts_wyear <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -478,21 +485,20 @@ get_sw_ts_wyear <- function(
 }
 
 #' Return surface water time series data
-#' @description Make a request to the /surfacewater/surfacewaterts/ endpoints (surfacewatertsday, surfacewatertsmonth, surfacewatertswateryear) to retrieve surface water station timeseries data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
+#' @description Make a request to the /surfacewater/surfacewaterts/ endpoints (surfacewatertsday, surfacewatertsmonth, surfacewatertswateryear) to retrieve surface water station time series data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
 #' @param abbrev character,	station abbreviation
 #' @param station_number character, surface water station number
 #' @param usgs_id character, USGS Site ID
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
-#' @param timescale character indicating data type to return, either "day", "month", or "wateryear". Default is "day".
+#' @param timescale character indicating the time series time step. Either "day", "month", "year". Default is to return daily time series.
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
-#' @return dataframe of surface water station timeseries data
+#' @importFrom dplyr bind_rows `%>%`
+#' @return dataframe of surface water station time series data
 #' @examples
-#' # Retrieve surface water daily timeseries
+#' # Retrieve surface water daily time series
 #' sw_ts_day <-
 #'  get_sw_ts(
 #'   abbrev     = "CLAFTCCO",
@@ -504,7 +510,7 @@ get_sw_ts_wyear <- function(
 #' # plot daily flow
 #' plot(sw_ts_day$value~sw_ts_day$datetime, type = "s")
 #'
-#' # Retrieve surface water monthly timeseries
+#' # Retrieve surface water monthly time series
 #' sw_ts_month <-
 #'  get_sw_ts(
 #'   abbrev     = "CLAFTCCO",
@@ -513,9 +519,9 @@ get_sw_ts_wyear <- function(
 #'   timescale  = "month"
 #'   )
 #' # plot average monthly flow
-#' plot(sw_ts_month$avg_q_cfs~sw_ts_month$datetime, type = "s")
+#' plot(sw_ts_month$avg_qcfs~sw_ts_month$datetime, type = "s")
 #'
-#' # Retrieve surface water water year timeseries
+#' # Retrieve surface water water year time series
 #' sw_ts_year <-
 #'  get_sw_ts(
 #'   abbrev     = "CLAFTCCO",
@@ -525,7 +531,7 @@ get_sw_ts_wyear <- function(
 #'   )
 #'
 #' # plot average water year flow
-#' plot(sw_ts_year$avg_q_cfs~sw_ts_year$water_year, type = "s")
+#' plot(sw_ts_year$avg_qcfs~sw_ts_year$water_year, type = "s")
 #' @export
 get_sw_ts <- function(
     abbrev              = NULL,
@@ -537,10 +543,39 @@ get_sw_ts <- function(
     api_key             = NULL
 ) {
 
+  # list of valid timescales
+  day_lst       <- c("day", "days", "daily", "d")
+  month_lst     <- c("month", "months", "monthly", "mon", "mons", "m")
+  year_lst      <- c('wyear', 'water_year', 'wyears', 'water_years', 'wateryear', 'wateryears', 'wy', 'year', 'years', 'yearly', 'annual', 'annually', 'yr', 'y')
+  timescale_lst <- c(day_lst, month_lst, year_lst)
+
+  # check if type is NULL, default timescale to "day"
+  if(is.null(timescale)) {
+
+    # set timescale to "day"
+    timescale = "day"
+
+  }
+
+  # convert timescale to lowercase
+  timescale <- tolower(timescale)
+
+  # check if type is correctly inputed
+  if(!timescale %in% timescale_lst) {
+
+    stop(paste0("Invalid `timescale` argument: ", timescale,
+                "\n Please enter one of the following valid timescales:\n",
+                paste(c(day_lst), collapse = ", "),  "\n",
+                paste(c(month_lst), collapse = ", "),"\n",
+                paste(c(year_lst), collapse = ", "))
+    )
+  }
+
+
   # check which timescale to request data for
 
-  # request surface water daily timeseries data
-  if(timescale == "day") {
+  # request surface water daily time series data
+  if(timescale %in% day_lst) {
 
     sw_ts <-
       get_sw_ts_day(
@@ -554,8 +589,8 @@ get_sw_ts <- function(
 
   }
 
-  # request surface water monthly timeseries data
-  if(timescale == "month") {
+  # request surface water monthly time series data
+  if(timescale %in% month_lst) {
 
     sw_ts <-
       get_sw_ts_month(
@@ -569,8 +604,8 @@ get_sw_ts <- function(
 
     }
 
-  # request surface water wateryear timeseries data
-  if(timescale == "wateryear") {
+  # request surface water wateryear time series data
+  if(timescale %in% year_lst) {
 
     sw_ts <-
       get_sw_ts_wyear(
@@ -584,12 +619,9 @@ get_sw_ts <- function(
 
   }
 
-  # return timeseries dataframe
+  # return time series dataframe
   return(sw_ts)
 
 
 }
-
-
-
 

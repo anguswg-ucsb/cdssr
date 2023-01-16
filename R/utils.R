@@ -357,7 +357,6 @@ parse_aoi <- function(aoi) {
 #' Extract lat/long coordinates from an AOI
 #' @description Internal helper function. Checks that an AOI is of valid type and then extracts the latitude/longitude of the point or centroid of the given polygon.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
-#' @importFrom sf st_coordinates st_centroid st_geometry_type
 #' @importFrom terra crs project is.points is.polygons is.lines vect centroids crds
 #' @importFrom dplyr `%>%`
 #' @return dataframe with lat/long columns

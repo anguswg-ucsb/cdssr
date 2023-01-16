@@ -7,7 +7,9 @@
 #' @param water_district numeric, indicating the water district to query
 #' @param wdid character, indicating WDID code of structure
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
-#'
+#' @importFrom httr GET content
+#' @importFrom jsonlite fromJSON
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of water right net amounts
 #' @export
 #'
@@ -45,7 +47,7 @@ get_water_rights_netamount <- function(
 
   # check if valid wdid and admin_no were given
   if(all(is.null(aoi), is.null(county), is.null(division), is.null(water_district), is.null(wdid))) {
-    stop(paste0("Please enter a valid 'aoi', 'county', 'division', 'water_district' or 'wdid' to retrieve water rights net amounts data"))
+    stop(paste0("Invalid 'aoi', 'county', 'division', 'water_district' or 'wdid' arguments"))
   }
 
   # base URL
@@ -63,7 +65,7 @@ get_water_rights_netamount <- function(
   radius <- aoi_lst$radius
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -75,7 +77,7 @@ get_water_rights_netamount <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving water rights net amounts data from CDSS API..."))
+  message(paste0("Retrieving water rights net amounts data"))
 
   # if location based search
   if(all(!is.null(lng), !is.null(lat))) {
@@ -148,10 +150,8 @@ get_water_rights_netamount <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -189,7 +189,9 @@ get_water_rights_netamount <- function(
 #' @param water_district numeric, indicating the water district to query
 #' @param wdid character, indicating WDID code of structure
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
-#'
+#' @importFrom httr GET content
+#' @importFrom jsonlite fromJSON
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of water right transactions
 #' @export
 #'
@@ -229,7 +231,7 @@ get_water_rights_trans <- function(
 
   # check if valid wdid and admin_no were given
   if(all(is.null(aoi), is.null(county), is.null(division), is.null(water_district), is.null(wdid))) {
-    stop(paste0("Please enter a valid 'aoi', 'county', 'division', 'water_district' or 'wdid' to retrieve water rights net amounts data"))
+    stop(paste0("Invalid 'aoi', 'county', 'division', 'water_district' or 'wdid' arguments"))
   }
 
   # base URL
@@ -247,7 +249,7 @@ get_water_rights_trans <- function(
   radius <- aoi_lst$radius
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -259,7 +261,7 @@ get_water_rights_trans <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving water rights transactions data from CDSS API..."))
+  message(paste0("Retrieving water rights transactions data"))
 
   # if location based search
   if(all(!is.null(lng), !is.null(lat))) {
@@ -332,10 +334,8 @@ get_water_rights_trans <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)

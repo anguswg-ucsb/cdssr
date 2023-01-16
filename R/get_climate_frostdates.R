@@ -106,7 +106,6 @@
         }
       )
 
-      # Tidy data
       # set clean names
       names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 

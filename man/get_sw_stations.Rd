@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_sw_stations.R
 \name{get_sw_stations}
 \alias{get_sw_stations}
-\title{Return Surface Water Station info}
+\title{Return Surface Water Station information}
 \usage{
 get_sw_stations(
   aoi = NULL,

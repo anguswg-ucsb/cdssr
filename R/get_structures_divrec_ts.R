@@ -1,6 +1,5 @@
 #' Return Structure Daily Diversion/Release Records
 #' @description     Make a request to the api/v2/structures/divrec/divrecday/ endpoint to retrieve daily structure diversion/release data for a specified WDID within a specified date range.
-
 #' @param wdid character vector or list of characters indicating WDID code of structure
 #' @param wc_identifier character indicating whether "diversion" or "release" should be returned. Default is NULL which will return diversions.
 #' @param start_date character date to request data start point YYYY-MM-DD. Default start date is "1900-01-01".
@@ -8,8 +7,7 @@
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe with diversion or flow data for CDSS structure of interest
 get_structure_divrecday <- function(
     wdid            = NULL,
@@ -87,7 +85,7 @@ get_structure_divrecday <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving daily ", wc_identifier, " data from CDSS API"))
+  message(paste0("Retrieving daily ", wc_identifier, " data"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -143,13 +141,11 @@ get_structure_divrecday <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names() %>%
-      dplyr::mutate(
-        datetime   = as.POSIXct(data_meas_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
-      )
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+    # set datetime column
+    cdss_data$datetime <-  as.POSIXct(cdss_data$data_meas_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -183,8 +179,7 @@ get_structure_divrecday <- function(
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe with monthly structure data for the CDSS structure of interest
 get_structure_divrecmonth<- function(
     wdid            = NULL,
@@ -250,7 +245,7 @@ get_structure_divrecmonth<- function(
   wc_identifier <- paste0(gsub(":", "%3A",   unlist(strsplit(wc_identifier, " "))), collapse = "+")
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df = data.frame()
@@ -262,7 +257,7 @@ get_structure_divrecmonth<- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving monthly ", wc_identifier, " data from CDSS API"))
+  message(paste0("Retrieving monthly ", wc_identifier, " data"))
 
   # while more pages are available, send get requests to CDSS API
   while (more_pages) {
@@ -318,16 +313,14 @@ get_structure_divrecmonth<- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names() %>%
-      dplyr::mutate(
-        datetime = as.Date(paste0(data_meas_date, "-01"))
-      )
+    # set clean names
+    names(cdss_data)   <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+    # set datetime column
+    cdss_data$datetime <- as.Date(paste0(cdss_data$data_meas_date, "-01"))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df            <- dplyr::bind_rows(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -355,8 +348,7 @@ get_structure_divrecmonth<- function(
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe with yearly structure data for the CDSS structure of interest
 get_structure_divrecyear <- function(
     wdid            = NULL,
@@ -488,11 +480,8 @@ get_structure_divrecyear <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
-
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -527,8 +516,7 @@ get_structure_divrecyear <- function(
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows rename mutate
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe with diversion records data for CDSS structure of interest
 #' @export
 #' @examples

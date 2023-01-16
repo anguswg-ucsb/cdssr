@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_sw_ts.R
 \name{get_sw_ts_wyear}
 \alias{get_sw_ts_wyear}
-\title{Return water year surface water timeseries data}
+\title{Return water year surface water time series data}
 \usage{
 get_sw_ts_wyear(
   abbrev = NULL,
@@ -27,8 +27,8 @@ get_sw_ts_wyear(
 \item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
 \value{
-dataframe of annual surface water station timeseries data
+dataframe of annual surface water station time series data
 }
 \description{
-Make a request to the /surfacewater/surfacewatertswateryear endpoint to retrieve surface water stations water year timeseries data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
+Make a request to the /surfacewater/surfacewatertswateryear endpoint to retrieve surface water stations water year time series data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
 }

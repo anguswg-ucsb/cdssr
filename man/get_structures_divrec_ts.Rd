@@ -14,7 +14,7 @@ get_structures_divrec_ts(
 )
 }
 \arguments{
-\item{wdid}{character vector or list of characters indicating WDID code of structure. Only a single WDID can be used when type = "stagevolume".}
+\item{wdid}{character vector or list of characters indicating WDID code of structure.}
 
 \item{wc_identifier}{character indicating whether "diversion" or "release" should be returned. Default is NULL which will return diversions.}
 
@@ -22,7 +22,7 @@ get_structures_divrec_ts(
 
 \item{end_date}{character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.}
 
-\item{timescale}{character indicating the type of data to request. Either "day", "month", "year". Default is "day".}
+\item{timescale}{character indicating the time series time step. Either "day", "month", "year". Default is to return daily time series.}
 
 \item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }

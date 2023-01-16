@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_telemetry_stations.R
 \name{get_telemetry_stations}
 \alias{get_telemetry_stations}
-\title{Return Telemetry Station info}
+\title{Return Telemetry Station information}
 \usage{
 get_telemetry_stations(
   aoi = NULL,

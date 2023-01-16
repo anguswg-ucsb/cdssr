@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_telemetry_ts.R
 \name{get_telemetry_ts}
 \alias{get_telemetry_ts}
-\title{Return Telemetry station timeseries data}
+\title{Return Telemetry station time series data}
 \usage{
 get_telemetry_ts(
   abbrev = NULL,
@@ -30,10 +30,10 @@ get_telemetry_ts(
 \item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
 \value{
-dataframe with telemetry station timeseries data
+dataframe with telemetry station time series data
 }
 \description{
-Make a request to the /telemetrystations/telemetrytimeseries endpoint to retrieve raw, hourly, or daily telemetry station timeseries data by station abbreviations, within a given date range (start and end dates).
+Make a request to the /telemetrystations/telemetrytimeseries endpoint to retrieve raw, hourly, or daily telemetry station time series data by station abbreviations, within a given date range (start and end dates).
 }
 \examples{
 # Retrieve daily discharge for CLAFTCCO telemetry station
@@ -48,5 +48,5 @@ ts <- get_telemetry_ts(
 ts
 
 # Plot daily discharge data
-plot(ts$value~ts$datetime, type = "l")
+plot(ts$meas_value~ts$datetime, type = "l")
 }

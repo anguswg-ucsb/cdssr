@@ -8,11 +8,9 @@
 #' @param water_district numeric, indicating the water district to query
 #' @param wdid character vector or list of characters indicating WDID code of structure
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS. Defaults to NULL.
-#' @importFrom sf st_coordinates st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr bind_rows `%>%`
-#' @importFrom janitor clean_names
 #' @return dataframe of administrative structures
 #' @export
 get_structures <- function(
@@ -26,22 +24,21 @@ get_structures <- function(
     api_key             = NULL
 ) {
 
+  # check if valid parameters are given
+  if(all(is.null(aoi), is.null(county), is.null(division), is.null(gnis_id), is.null(water_district), is.null(wdid))) {
+
+    stop(paste0("Invalid 'aoi', 'county', 'division', 'gnis_id', 'water_district', or 'wdid' arguments"))
+
+  }
+
   # Base API URL
   base <- paste0("https://dwr.state.co.us/Rest/GET/api/v2/structures/?")
 
-  # format multiple USGS ID query string
-  if(!is.null(wdid)) {
-
-    # if USGS IDs are in a list, unlist to a character vector
-    if(is.list(wdid) == TRUE) {
-
-      wdid <- unlist(wdid)
-
-    }
-
-    wdid <- paste0(unlist(strsplit(wdid, " ")), collapse = "%2C+")
-
-  }
+  # format multiple WDID query string
+  wdid <- collapse_vect(
+    x   = wdid,
+    sep = "%2C+"
+  )
 
   # check and extract spatial data from 'aoi' and 'radius' args
   aoi_lst <- check_aoi(
@@ -54,11 +51,6 @@ get_structures <- function(
   lng    <- aoi_lst$lng
   radius <- aoi_lst$radius
 
-  # if no inputs given, stop function
-  if(all(is.null(county), is.null(division), is.null(water_district), is.null(gnis_id), is.null(wdid), is.null(lat), is.null(lng))) {
-    stop(paste0("Please enter one of:\nAOI\nCounty\nDivision\nWater District\nGNIS ID\nWell ID"))
-  }
-
   # format county name
   if(!is.null(county)) {
 
@@ -67,7 +59,7 @@ get_structures <- function(
   }
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <- data.frame()
@@ -79,7 +71,7 @@ get_structures <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retreiving administrative structures from CDSS API..."))
+  message(paste0("Retreiving administrative structures"))
 
   # if location based search
   if(all(!is.null(lng), !is.null(lat))) {
@@ -153,11 +145,8 @@ get_structures <- function(
       }
     )
 
-
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names()
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)

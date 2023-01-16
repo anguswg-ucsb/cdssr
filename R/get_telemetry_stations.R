@@ -1,4 +1,4 @@
-#' Return Telemetry Station info
+#' Return Telemetry Station information
 #' @description Make a request to the telemetrystations/telemetrystation/ endpoint to locate telemetry stations by AOI, station abbreviations, county, division, station abbreviation, GNIS ID, USGS Station ID, or WDID
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
 #' @param radius numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
@@ -10,11 +10,9 @@
 #' @param water_district numeric, indicating the water district to query
 #' @param wdid character indicating WDID code of structure
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
-#' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of telemetry station info
 #' @examples
 #' # Retrieve telemetry stations within a county
@@ -38,22 +36,21 @@ get_telemetry_stations <- function(
     api_key             = NULL
 ) {
 
+  # check if valid parameters are given
+  if(all(is.null(aoi),is.null(abbrev), is.null(county), is.null(division), is.null(gnis_id), is.null(usgs_id), is.null(water_district),  is.null(wdid))) {
+
+    stop(paste0("Invalid 'aoi', 'abbrev', 'county', 'division', 'gnis_id', 'usgs_id', 'water_district', or 'wdid' arguments"))
+
+  }
+
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/telemetrystations/telemetrystation/?"
 
-  # format multiple Site ID query string
-  if(!is.null(abbrev)) {
-
-    # if USGS IDs are in a list, unlist to a character vector
-    if(is.list(abbrev) == TRUE) {
-
-      abbrev <- unlist(abbrev)
-
-    }
-
-    abbrev <- paste0(unlist(strsplit(abbrev, " ")), collapse = "%2C+")
-
-  }
+  # format multiple abbrev query string
+  abbrev <- collapse_vect(
+    x   = abbrev,
+    sep = "%2C+"
+  )
 
   # check and extract spatial data from 'aoi' and 'radius' args for location search query
   aoi_lst <- check_aoi(
@@ -67,7 +64,7 @@ get_telemetry_stations <- function(
   radius <- aoi_lst$radius
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -79,7 +76,7 @@ get_telemetry_stations <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving telemetry station data from CDSS API..."))
+  message(paste0("Retrieving telemetry station data"))
 
   # if location based search
   if(all(!is.null(lng), !is.null(lat))) {
@@ -160,14 +157,23 @@ get_telemetry_stations <- function(
     )
 
     # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names() %>%
-      dplyr::mutate(
-        meas_date_time     = as.POSIXct(meas_date_time, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
-        station_por_start  = as.POSIXct(station_por_start, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
-        station_por_end    = as.POSIXct(station_por_end, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
-      )
+    # cdss_data <-
+    #   cdss_data %>%
+    #   janitor::clean_names() %>%
+    #   dplyr::mutate(
+    #     meas_date_time     = as.POSIXct(meas_date_time, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
+    #     station_por_start  = as.POSIXct(station_por_start, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
+    #     station_por_end    = as.POSIXct(station_por_end, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
+    #   )
+
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+    # set datetime column
+    cdss_data$meas_date_time     <- as.POSIXct(cdss_data$meas_date_time, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
+    cdss_data$station_por_start  <- as.POSIXct(cdss_data$station_por_start, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
+    cdss_data$station_por_end    <- as.POSIXct(cdss_data$station_por_end, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
+
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)

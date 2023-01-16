@@ -6,8 +6,7 @@
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows rename mutate relocate
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe with stage/volume data for CDSS structure of interest
 #' @export
 #' @examples
@@ -59,6 +58,7 @@ get_structure_stage_ts <- function(
     format = "%m-%d-%Y",
     sep    = "%2F"
   )
+
   # maximum records per page
   page_size  <- 50000
 
@@ -72,7 +72,7 @@ get_structure_stage_ts <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving stage/volume data from CDSS API"))
+  message(paste0("Retrieving stage/volume data"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -127,17 +127,11 @@ get_structure_stage_ts <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-        janitor::clean_names() %>%
-        dplyr::rename(
-          "date"     = "data_meas_date"
-          ) %>%
-      dplyr::mutate(
-        datetime   = as.POSIXct(date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
-      ) %>%
-      dplyr::relocate(wdid, date, datetime, stage, volume)
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+    # set datetime column
+    cdss_data$datetime <-  as.POSIXct(cdss_data$data_meas_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)

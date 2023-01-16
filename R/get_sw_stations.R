@@ -1,4 +1,4 @@
-#' Return Surface Water Station info
+#' Return Surface Water Station information
 #' @description Make a request to the /surfacewater/surfacewaterstations endpoint to locate surface water stations by AOI, station abbreviation, county, division, station name, USGS ID or water_district.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
 #' @param radius numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
@@ -9,11 +9,9 @@
 #' @param usgs_id character vector or list of characters of USGS Site IDs
 #' @param water_district numeric, indicating the water district to query
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
-#' @importFrom sf st_coordinates st_as_sf st_centroid st_geometry_type
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows mutate `%>%`
-#' @importFrom janitor clean_names
+#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of surface water station info
 #' @examples
 #' # Retrieve surface water station info from Larimer county
@@ -35,36 +33,27 @@ get_sw_stations <- function(
     api_key             = NULL
 ) {
 
+  # check if valid parameters are given
+  if(all(is.null(aoi), is.null(abbrev), is.null(county), is.null(division), is.null(station_name), is.null(usgs_id), is.null(water_district))) {
+
+    stop(paste0("Invalid 'aoi', 'abbrev' county', 'division', 'station_name', 'usgs_id', or 'water_district' arguments"))
+
+  }
+
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/surfacewater/surfacewaterstations/?"
 
-  # format multiple abbrev query
-  if(!is.null(abbrev)) {
+  # format multiple abbrev query string
+  abbrev <- collapse_vect(
+    x   = abbrev,
+    sep = "%2C+"
+  )
 
-    # if abbreviations are in a list, unlist to a character vector
-    if(is.list(abbrev) == TRUE) {
-
-      abbrev <- unlist(abbrev)
-
-    }
-
-    abbrev <- paste0(unlist(strsplit(abbrev, " ")), collapse = "%2C+")
-
-  }
-
-  # format multiple USGS ID query string
-  if(!is.null(usgs_id)) {
-
-    # if USGS IDs are in a list, unlist to a character vector
-    if(is.list(usgs_id) == TRUE) {
-
-      usgs_id <- unlist(usgs_id)
-
-    }
-
-    usgs_id <- paste0(unlist(strsplit(usgs_id, " ")), collapse = "%2C+")
-
-  }
+  # format multiple usgs_id query string
+  usgs_id <- collapse_vect(
+    x   = usgs_id,
+    sep = "%2C+"
+  )
 
   # check and extract spatial data from 'aoi' and 'radius' args for location search query
   aoi_lst <- check_aoi(
@@ -78,7 +67,7 @@ get_sw_stations <- function(
   radius <- aoi_lst$radius
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <-  data.frame()
@@ -90,7 +79,7 @@ get_sw_stations <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving surface water station data from CDSS API..."))
+  message(paste0("Retrieving surface water station data"))
 
   # if location based search
   if(all(!is.null(lng), !is.null(lat))) {
@@ -167,14 +156,12 @@ get_sw_stations <- function(
       }
     )
 
-    # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      janitor::clean_names() %>%
-      dplyr::mutate(
-        start_date   = as.POSIXct(start_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
-        end_date     = as.POSIXct(end_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
-      )
+    # set clean names
+    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+    # set date columns
+    cdss_data$start_date   <- as.POSIXct(cdss_data$start_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
+    cdss_data$end_date     <- as.POSIXct(cdss_data$end_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)

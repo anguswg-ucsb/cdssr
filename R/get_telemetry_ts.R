@@ -1,5 +1,5 @@
-#' Return Telemetry station timeseries data
-#' @description Make a request to the /telemetrystations/telemetrytimeseries endpoint to retrieve raw, hourly, or daily telemetry station timeseries data by station abbreviations, within a given date range (start and end dates).
+#' Return Telemetry station time series data
+#' @description Make a request to the /telemetrystations/telemetrytimeseries endpoint to retrieve raw, hourly, or daily telemetry station time series data by station abbreviations, within a given date range (start and end dates).
 #' @param abbrev character indicating station abbreviation
 #' @param parameter character indicating which parameter should be retrieved. Default is "DISCHRG" (discharge), all parameters are not avaliable at all telemetry stations.
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
@@ -9,9 +9,8 @@
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows rename mutate
-#' @importFrom janitor clean_names
-#' @return dataframe with telemetry station timeseries data
+#' @importFrom dplyr bind_rows `%>%`
+#' @return dataframe with telemetry station time series data
 #' @export
 #' @examples
 #' # Retrieve daily discharge for CLAFTCCO telemetry station
@@ -26,7 +25,7 @@
 #' ts
 #'
 #' # Plot daily discharge data
-#' plot(ts$value~ts$datetime, type = "l")
+#' plot(ts$meas_value~ts$datetime, type = "l")
 get_telemetry_ts <- function(
     abbrev              = NULL,
     parameter           = "DISCHRG",
@@ -40,19 +39,31 @@ get_telemetry_ts <- function(
   # check if valid abbreviation was given
   if(is.null(abbrev)) {
 
-    stop(paste0("Please enter a valid Telemetry station abbreviation"))
+    stop(paste0("Invalid 'abbrev' argument"))
 
   }
 
   # Base API URL for Daily Diversion Records
   base <- paste0("https://dwr.state.co.us/Rest/GET/api/v2/telemetrystations/telemetrytimeseries", timescale, "/?")
 
-  # reformat dates to MM-DD-YYYY and format for API query
-  start <- gsub("-", "%2F", format(as.Date(start_date, '%Y-%m-%d'), "%m-%d-%Y"))
-  end   <- gsub("-", "%2F", format(as.Date(end_date, '%Y-%m-%d'), "%m-%d-%Y"))
+  # reformat and extract valid start date
+  start <- parse_date(
+    date   = start_date,
+    start  = TRUE,
+    format = "%m-%d-%Y",
+    sep    = "%2F"
+  )
+
+  # reformat and extract valid end date
+  end <- parse_date(
+    date   = end_date,
+    start  = FALSE,
+    format = "%m-%d-%Y",
+    sep    = "%2F"
+  )
 
   # maximum records per page
-  page_size  <- 50000
+  page_size  <- 500000
 
   # initialize empty dataframe to store data from multiple pages
   data_df    <- data.frame()
@@ -64,10 +75,7 @@ get_telemetry_ts <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Downloading data from CDSS API...\nTelemetry station abbreviation: ", abbrev,
-                 "\nParameter: ", parameter,
-                 "\nTimescale: ", timescale)
-          )
+  message(paste0("Retrieving telemetry station time series data (",timescale, " - ", parameter, ")"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -141,36 +149,50 @@ get_telemetry_ts <- function(
     # Standardize names
     if(timescale == "raw") {
 
+      # set clean names
+      names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+      # set datetime column
+      cdss_data$datetime   <- as.POSIXct(cdss_data$meas_date_time, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
+      cdss_data$timescale  <- timescale
+
       # rename columns for raw data return
-      cdss_data <-
-        cdss_data %>%
-        dplyr::rename(
-          "date"  = "measDateTime",
-          "value" = "measValue",
-          "unit"  = "measUnit"
-          )
+      # cdss_data <-
+      #   cdss_data %>%
+      #   dplyr::rename(
+      #     "date"  = "measDateTime",
+      #     "value" = "measValue",
+      #     "unit"  = "measUnit"
+      #     )
 
     } else {
 
+      # set clean names
+      names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+      # set datetime column
+      cdss_data$datetime   <- as.POSIXct(cdss_data$meas_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
+      cdss_data$timescale  <- timescale
+
       # rename columns for hour and day data return
-      cdss_data <-
-        cdss_data %>%
-        dplyr::rename(
-          "date"  = "measDate",
-          "value" = "measValue",
-          "unit"  = "measUnit"
-          )
+      # cdss_data <-
+      #   cdss_data %>%
+      #   dplyr::rename(
+      #     "date"  = "measDate",
+      #     "value" = "measValue",
+      #     "unit"  = "measUnit"
+      #     )
 
     }
 
     # Tidy data
-    cdss_data <-
-      cdss_data %>%
-      dplyr::mutate(
-        datetime   = as.POSIXct(date, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
-        timescale  = timescale
-      ) %>%
-      janitor::clean_names()
+    # cdss_data <-
+    #   cdss_data %>%
+    #   dplyr::mutate(
+    #     datetime   = as.POSIXct(date, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
+    #     timescale  = timescale
+    #   ) %>%
+    #   janitor::clean_names()
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -192,5 +214,3 @@ get_telemetry_ts <- function(
   return(data_df)
 
 }
-
-

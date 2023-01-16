@@ -10,7 +10,7 @@ get_climate_ts(
   param = NULL,
   start_date = "1900-01-01",
   end_date = Sys.Date(),
-  timescale = "day",
+  timescale = NULL,
   api_key = NULL
 )
 }
@@ -25,7 +25,7 @@ get_climate_ts(
 
 \item{end_date}{character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.}
 
-\item{timescale}{character indicating data type to return, either "day" or "month". Default is "day".}
+\item{timescale}{character indicating the time series time step. Either "day", "month", "year". Default is to return daily time series.}
 
 \item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
