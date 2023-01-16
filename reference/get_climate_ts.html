@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">cdssr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1.000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1.100</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +54,7 @@
 <span>  param <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  start_date <span class="op">=</span> <span class="st">"1900-01-01"</span>,</span>
 <span>  end_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  timescale <span class="op">=</span> <span class="st">"day"</span>,</span>
+<span>  timescale <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  api_key <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -82,7 +82,7 @@
 
 
 <dt>timescale</dt>
-<dd><p>character indicating data type to return, either "day" or "month". Default is "day".</p></dd>
+<dd><p>character indicating the time series time step. Either "day", "month", "year". Default is to return daily time series.</p></dd>
 
 
 <dt>api_key</dt>
