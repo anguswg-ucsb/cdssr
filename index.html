@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="index.html">cdssr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1.200</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2.000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -297,7 +297,7 @@
 <span><span class="va">telemetry_params</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_reference_tbl.html">get_reference_tbl</a></span><span class="op">(</span></span>
 <span>  table_name <span class="op">=</span> <span class="st">"telemetryparams"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Retrieving telemetry parameter reference table from CDSS API...</span></span></code></pre></div>
+<span><span class="co">#&gt; Retrieving telemetry parameter reference table</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 46 × 1</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    parameter</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    </span></span>
@@ -381,7 +381,7 @@
 <span><span class="va">stations</span> <span class="op">&lt;-</span> <span class="fu">cdssr</span><span class="fu">::</span><span class="fu"><a href="reference/get_telemetry_stations.html">get_telemetry_stations</a></span><span class="op">(</span></span>
 <span>  county <span class="op">=</span> <span class="st">"Boulder"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Retrieving telemetry station data from CDSS API...</span></span></code></pre></div>
+<span><span class="co">#&gt; Retrieving telemetry station data</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 110 × 35</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    divis…¹ water…² county stati…³ data_…⁴ data_…⁵ water…⁶ gnis_id strea…⁷ abbrev</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;int&gt;   &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt; </span></span>
@@ -452,7 +452,7 @@
 <span>  aoi    <span class="op">=</span> <span class="fu">AOI</span><span class="fu">::</span><span class="fu">aoi_get</span><span class="op">(</span>county <span class="op">=</span> <span class="st">"Boulder"</span>, state <span class="op">=</span> <span class="st">"CO"</span><span class="op">)</span>,</span>
 <span>  radius <span class="op">=</span> <span class="fl">15</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Retrieving telemetry station data from CDSS API...</span></span>
+<span><span class="co">#&gt; Retrieving telemetry station data</span></span>
 <span><span class="co">#&gt; Location search: </span></span>
 <span><span class="co">#&gt; Latitude: 40.0843975</span></span>
 <span><span class="co">#&gt; Longitude: -105.345242774525</span></span>
@@ -557,24 +557,22 @@
 <span>                      end_date            <span class="op">=</span> <span class="st">"2022-01-01"</span>,   <span class="co"># Ending date</span></span>
 <span>                      timescale           <span class="op">=</span> <span class="st">"day"</span>           <span class="co"># select daily timescale </span></span>
 <span>                               <span class="op">)</span></span>
-<span><span class="co">#&gt; Downloading data from CDSS API...</span></span>
-<span><span class="co">#&gt; Telemetry station abbreviation: ANDDITCO</span></span>
-<span><span class="co">#&gt; Parameter: DISCHRG</span></span>
-<span><span class="co">#&gt; Timescale: day</span></span></code></pre></div>
+<span><span class="co">#&gt; Retrieving telemetry station time series data (day - DISCHRG)</span></span></code></pre></div>
 <div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 572 × 7</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    abbrev   parameter date               value unit  datetime            times…¹</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt; &lt;dttm&gt;              &lt;chr&gt;  </span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 ANDDITCO DISCHRG   2020-05-07 00:00:…  3.05 cfs   2020-05-07 00:00:00 day    </span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 ANDDITCO DISCHRG   2020-05-08 00:00:…  3.04 cfs   2020-05-08 00:00:00 day    </span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 ANDDITCO DISCHRG   2020-05-09 00:00:…  2.98 cfs   2020-05-09 00:00:00 day    </span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 ANDDITCO DISCHRG   2020-05-10 00:00:…  2.95 cfs   2020-05-10 00:00:00 day    </span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 ANDDITCO DISCHRG   2020-05-11 00:00:…  2.95 cfs   2020-05-11 00:00:00 day    </span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 ANDDITCO DISCHRG   2020-05-12 00:00:…  2.95 cfs   2020-05-12 00:00:00 day    </span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 ANDDITCO DISCHRG   2020-05-13 00:00:…  2.95 cfs   2020-05-13 00:00:00 day    </span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 ANDDITCO DISCHRG   2020-05-14 00:00:…  2.95 cfs   2020-05-14 00:00:00 day    </span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 ANDDITCO DISCHRG   2020-05-15 00:00:…  2.95 cfs   2020-05-15 00:00:00 day    </span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 ANDDITCO DISCHRG   2020-05-16 00:00:…  2.95 cfs   2020-05-16 00:00:00 day    </span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 562 more rows, and abbreviated variable name ¹​timescale</span></span></code></pre></div>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    abbrev   parameter meas_date      meas_…¹ meas_…² datetime            times…³</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;   &lt;dttm&gt;              &lt;chr&gt;  </span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 ANDDITCO DISCHRG   2020-05-07 00…    3.05 cfs     2020-05-07 00:00:00 day    </span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 ANDDITCO DISCHRG   2020-05-08 00…    3.04 cfs     2020-05-08 00:00:00 day    </span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 ANDDITCO DISCHRG   2020-05-09 00…    2.98 cfs     2020-05-09 00:00:00 day    </span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 ANDDITCO DISCHRG   2020-05-10 00…    2.95 cfs     2020-05-10 00:00:00 day    </span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 ANDDITCO DISCHRG   2020-05-11 00…    2.95 cfs     2020-05-11 00:00:00 day    </span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 ANDDITCO DISCHRG   2020-05-12 00…    2.95 cfs     2020-05-12 00:00:00 day    </span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 ANDDITCO DISCHRG   2020-05-13 00…    2.95 cfs     2020-05-13 00:00:00 day    </span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 ANDDITCO DISCHRG   2020-05-14 00…    2.95 cfs     2020-05-14 00:00:00 day    </span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 ANDDITCO DISCHRG   2020-05-15 00…    2.95 cfs     2020-05-15 00:00:00 day    </span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 ANDDITCO DISCHRG   2020-05-16 00…    2.95 cfs     2020-05-16 00:00:00 day    </span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 562 more rows, and abbreviated variable names ¹​meas_value, ²​meas_unit,</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ³​timescale</span></span></code></pre></div>
 <p><img src="https://cdsspy-images.s3.us-west-1.amazonaws.com/discharge_timeseries_plot2.png"></p>
 <p><br><br></p>
 </div>
@@ -597,7 +595,7 @@
 <span>  aoi    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">105.3578</span>, <span class="fl">40.09244</span><span class="op">)</span>,</span>
 <span>  radius <span class="op">=</span> <span class="fl">5</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Retreiving administrative structures from CDSS API...</span></span>
+<span><span class="co">#&gt; Retreiving administrative structures</span></span>
 <span><span class="co">#&gt; Location search: </span></span>
 <span><span class="co">#&gt; Latitude: 40.09244</span></span>
 <span><span class="co">#&gt; Longitude: -105.3578</span></span>
@@ -618,7 +616,7 @@
 <span>                        end_date       <span class="op">=</span> <span class="st">"2022-01-01"</span>,</span>
 <span>                        timescale      <span class="op">=</span> <span class="st">"month"</span></span>
 <span>                        <span class="op">)</span></span>
-<span><span class="co">#&gt; Retrieving monthly diversion data from CDSS API</span></span></code></pre></div>
+<span><span class="co">#&gt; Retrieving monthly diversion data</span></span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 495 × 12</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    wdid  water…¹ wc_id…² meas_…³ meas_…⁴ data_…⁵ data_…⁶ meas_…⁷ obs_c…⁸ appro…⁹</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  </span></span>
@@ -691,8 +689,7 @@
 <span>  start_date <span class="op">=</span> <span class="st">"1990-01-01"</span>,</span>
 <span>  end_date   <span class="op">=</span> <span class="st">"2022-01-01"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Downloading data from CDSS API...</span></span>
-<span><span class="co">#&gt; Groundwater well measurements</span></span></code></pre></div>
+<span><span class="co">#&gt; Retrieving groundwater well measurements</span></span></code></pre></div>
 <div class="sourceCode" id="cb18"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1,469 × 18</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    well_id well_name      divis…¹ water…² county manag…³ desig…⁴ publi…⁵ measu…⁶</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;int&gt; &lt;chr&gt;            &lt;int&gt;   &lt;int&gt; &lt;chr&gt;  &lt;lgl&gt;   &lt;lgl&gt;   &lt;chr&gt;   &lt;chr&gt;  </span></span>

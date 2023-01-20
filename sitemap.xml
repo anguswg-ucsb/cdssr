@@ -34,6 +34,9 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/check_aoi.html</loc>
   </url>
   <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/check_args.html</loc>
+  </url>
+  <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/check_radius.html</loc>
   </url>
   <url>
@@ -44,6 +47,9 @@
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_admin_calls.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_call_analysis_gnisid.html</loc>
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_call_analysis_wdid.html</loc>
@@ -109,6 +115,9 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_resource_meta.html</loc>
   </url>
   <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_source_route_analysis.html</loc>
+  </url>
+  <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_source_route_framework.html</loc>
   </url>
   <url>
@@ -158,6 +167,9 @@
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://anguswg-ucsb.github.io/cdssr/reference/null_convert.html</loc>
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/parse_aoi.html</loc>

@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">cdssr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1.200</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2.000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,11 +62,11 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>division</dt>
-<dd><p>numeric, indicating the water division to query</p></dd>
+<dd><p>character or numeric, indicating the water division to query</p></dd>
 
 
 <dt>location_wdid</dt>
-<dd><p>numeric, call location structure WDID</p></dd>
+<dd><p>character or numeric, call location structure WDID</p></dd>
 
 
 <dt>call_number</dt>
@@ -112,8 +112,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4       31811      CALL 2022-12-01 08:00:00                 NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5       31814      CALL 2022-12-19 08:00:00                 NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6       31817      CALL 2022-12-30 08:00:00                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7       31823      CALL 2023-01-04 08:00:00                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8       31829      CALL 2023-01-11 08:00:00                 NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       31829      CALL 2023-01-11 08:00:00                 NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       31830      CALL 2023-01-19 12:00:00                 NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9       31831      CALL 2023-01-19 12:00:00                 NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       water_source_name location_wdid location_wdid_streammile</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1           CLEAR CREEK       0700553                    15.19</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         RALSTON CREEK       0704459                     9.91</span>
@@ -121,17 +122,19 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4   SOUTH BOULDER CREEK       0600564                     9.76</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5     SAINT VRAIN CREEK       0500526                    31.62</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6    SOUTH PLATTE RIVER       0100829                    94.89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    SOUTH PLATTE RIVER       0100513                   146.94</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    BIG THOMPSON RIVER       0400524                    36.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    location_structure_name priority_wdid priority_structure_name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1              CROKE CANAL       0700553             CROKE CANAL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2               TUCKER RES       0704459              TUCKER RES</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3              WINDSOR RES       0303738             WINDSOR RES</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4          COMMUNITY DITCH       0600564         COMMUNITY DITCH</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5           HIGHLAND DITCH       0504032          HIGHLAND RES 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      PREWITT INLET CANAL       0100829     PREWITT INLET CANAL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 JACKSON LAKE INLET DITCH       0100503         RIVERSIDE CANAL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        HOME SUPPLY DITCH       0400524       HOME SUPPLY DITCH</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    BIG THOMPSON RIVER       0400524                    36.05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    SOUTH PLATTE RIVER       0100507                   154.23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    SOUTH PLATTE RIVER       0200802                   237.77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       location_structure_name priority_wdid     priority_structure_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 CROKE CANAL       0700553                 CROKE CANAL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  TUCKER RES       0704459                  TUCKER RES</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                 WINDSOR RES       0303738                 WINDSOR RES</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4             COMMUNITY DITCH       0600564             COMMUNITY DITCH</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5              HIGHLAND DITCH       0504032              HIGHLAND RES 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6         PREWITT INLET CANAL       0100829         PREWITT INLET CANAL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7           HOME SUPPLY DITCH       0400524           HOME SUPPLY DITCH</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                 BIJOU CANAL       0100507                 BIJOU CANAL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 BURLINGTON D RIVER HEADGATE       0200802 BURLINGTON D RIVER HEADGATE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   priority_admin_number priority_order_number priority_date priority_number</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                 19055                     0    1902-03-04                </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                  7092                     0    1869-06-01                </span>
@@ -139,8 +142,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4                 12941                     0    1885-06-06                </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5                 11642                     0    1881-11-15                </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6                 22059                     0    1910-05-25                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                 21031                     0    1907-08-01                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8                 11355                     0    1881-02-01                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                 11355                     0    1881-02-01                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                 21564                     0    1909-01-15                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                 21562                     0    1909-01-13                </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   bounding_wdid bounding_structure_name</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1            NA                      NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2            NA                      NA</span>
@@ -150,6 +154,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6            NA                      NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7            NA                      NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8            NA                      NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9            NA                      NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                             set_comments release_comment</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                                    AFEECTS DISTRICT 7               NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                                     AFEECTS DISTICT 7               NA</span>
@@ -157,8 +162,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4                                     AFFECTS DISTRICT 6              NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5                                     AFFECTS DISTRICT 5              NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6                                     AFFECTS DISTRICT 1              NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7              AFFECTS DISTRICTS 1,2,3,4,5,6,7,8,9,23,80              NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 AFFECTS BIG THOMPSON RIVER U/S OF HOME SUPPLY HEADGATE              NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 AFFECTS BIG THOMPSON RIVER U/S OF HOME SUPPLY HEADGATE              NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                        AFFECTS DISTRICTS 1,2,3,4,5,6,7              NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                            AFFECTS DISTRICTS 8,9,23,80              NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   division location_structure_latitude location_structure_longitude</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        1                    39.76862                    -105.1936</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        1                    39.82831                    -105.1980</span>
@@ -166,8 +172,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4        1                    39.93241                    -105.2807</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5        1                    40.21540                    -105.2593</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6        1                    40.37977                    -103.4783</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        1                    40.30741                    -104.2500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        1                    40.42458                    -105.2107</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        1                    40.42458                    -105.2107</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        1                    40.31717                    -104.3767</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        1                    39.79019                    -104.9694</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   bounding_structure_latitude bounding_structure_longitude            modified</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                          NA                           NA 2022-11-01 06:40:05</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                          NA                           NA 2022-11-01 06:41:09</span>
@@ -175,8 +182,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4                          NA                           NA 2022-12-15 11:41:50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5                          NA                           NA 2022-12-19 06:41:37</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6                          NA                           NA 2022-12-30 07:31:47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                          NA                           NA 2023-01-04 07:30:56</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8                          NA                           NA 2023-01-11 07:36:00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                          NA                           NA 2023-01-11 07:36:00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                          NA                           NA 2023-01-19 09:58:32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                          NA                           NA 2023-01-19 09:59:41</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                          more_information active</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 https://dwr.state.co.us/Tools/AdministrativeCalls/31755   TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 https://dwr.state.co.us/Tools/AdministrativeCalls/31756   TRUE</span>
@@ -184,8 +192,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 https://dwr.state.co.us/Tools/AdministrativeCalls/31811   TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 https://dwr.state.co.us/Tools/AdministrativeCalls/31814   TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 https://dwr.state.co.us/Tools/AdministrativeCalls/31817   TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 https://dwr.state.co.us/Tools/AdministrativeCalls/31823   TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 https://dwr.state.co.us/Tools/AdministrativeCalls/31829   TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 https://dwr.state.co.us/Tools/AdministrativeCalls/31829   TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 https://dwr.state.co.us/Tools/AdministrativeCalls/31830   TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 https://dwr.state.co.us/Tools/AdministrativeCalls/31831   TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              datetime</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 2022-11-01 08:00:00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 2022-11-01 08:00:00</span>
@@ -193,8 +202,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 2022-12-01 08:00:00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 2022-12-19 08:00:00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 2022-12-30 08:00:00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 2023-01-04 08:00:00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 2023-01-11 08:00:00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 2023-01-11 08:00:00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 2023-01-19 12:00:00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 2023-01-19 12:00:00</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Retrieve HISTORICAL administrative calls</span></span></span>
 <span class="r-in"><span><span class="va">historic_calls</span> <span class="op">&lt;-</span> <span class="fu">get_admin_calls</span><span class="op">(</span></span></span>
