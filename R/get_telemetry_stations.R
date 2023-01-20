@@ -1,3 +1,4 @@
+utils::globalVariables(c("."))
 #' Return Telemetry Station information
 #' @description Make a request to the telemetrystations/telemetrystation/ endpoint to locate telemetry stations by AOI, station abbreviations, county, division, station abbreviation, GNIS ID, USGS Station ID, or WDID
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
@@ -37,14 +38,35 @@ get_telemetry_stations <- function(
 ) {
 
   # check if valid parameters are given
-  if(all(is.null(aoi),is.null(abbrev), is.null(county), is.null(division), is.null(gnis_id), is.null(usgs_id), is.null(water_district),  is.null(wdid))) {
+  # if(all(is.null(aoi),is.null(abbrev), is.null(county), is.null(division), is.null(gnis_id), is.null(usgs_id), is.null(water_district),  is.null(wdid))) {
+  #
+  #   stop(paste0("Invalid 'aoi', 'abbrev', 'county', 'division', 'gnis_id', 'usgs_id', 'water_district', or 'wdid' arguments"))
+  #
+  # }
 
-    stop(paste0("Invalid 'aoi', 'abbrev', 'county', 'division', 'gnis_id', 'usgs_id', 'water_district', or 'wdid' arguments"))
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
 
   }
 
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/telemetrystations/telemetrystation/?"
+
+  # convert arguments to characters if necessary
+  division        <- null_convert(division)
+  gnis_id         <- null_convert(gnis_id)
+  usgs_id         <- null_convert(usgs_id)
+  water_district  <- null_convert(water_district)
+  wdid            <- null_convert(wdid)
 
   # format multiple abbrev query string
   abbrev <- collapse_vect(
@@ -133,7 +155,7 @@ get_telemetry_stations <- function(
       },
       error = function(e) {
         message(paste0("Error in telemetry station query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nStation Abbreviation: ", abbrev,
                        "\nCounty: ", county,
@@ -155,16 +177,6 @@ get_telemetry_stations <- function(
 
       }
     )
-
-    # Tidy data
-    # cdss_data <-
-    #   cdss_data %>%
-    #   janitor::clean_names() %>%
-    #   dplyr::mutate(
-    #     meas_date_time     = as.POSIXct(meas_date_time, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
-    #     station_por_start  = as.POSIXct(station_por_start, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
-    #     station_por_end    = as.POSIXct(station_por_end, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
-    #   )
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))

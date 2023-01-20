@@ -1,3 +1,4 @@
+utils::globalVariables(c("."))
 #' Return daily surface water time series data
 #' @description Make a request to the /surfacewater/surfacewatertsday endpoint to retrieve surface water stations daily time series data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
 #' @param abbrev character vector or list of characters of station abbreviation
@@ -20,14 +21,31 @@ get_sw_ts_day <- function(
 ) {
 
   # check if valid parameters are given
-  if(all(is.null(abbrev), is.null(station_number), is.null(usgs_id))) {
+  # if(all(is.null(abbrev), is.null(station_number), is.null(usgs_id))) {
+  #
+  #   stop(paste0("Invalid 'abbrev', station_number', or 'usgs_id' arguments"))
+  #
+  # }
 
-    stop(paste0("Invalid 'abbrev', station_number', or 'usgs_id' arguments"))
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key", "start_date", "end_date"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
 
   }
 
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/surfacewater/surfacewatertsday/?"
+
+  # convert arguments to characters if necessary
+  station_number  <- null_convert(station_number)
 
   # format multiple abbrev query string
   abbrev <- collapse_vect(
@@ -112,7 +130,7 @@ get_sw_ts_day <- function(
       },
       error = function(e) {
         message(paste0("Error in surface water daily time series query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nStart date: ", start_date,
                        "\nEnd date: ", end_date,
@@ -179,14 +197,31 @@ get_sw_ts_month <- function(
 ) {
 
   # check if valid parameters are given
-  if(all(is.null(abbrev), is.null(station_number), is.null(usgs_id))) {
+  # if(all(is.null(abbrev), is.null(station_number), is.null(usgs_id))) {
+  #
+  #   stop(paste0("Invalid 'abbrev', station_number', or 'usgs_id' arguments"))
+  #
+  # }
 
-    stop(paste0("Invalid 'abbrev', station_number', or 'usgs_id' arguments"))
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key", "start_date", "end_date"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
 
   }
 
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/surfacewater/surfacewatertsmonth/?"
+
+  # convert arguments to characters if necessary
+  station_number  <- null_convert(station_number)
 
   # format multiple abbrev query string
   abbrev <- collapse_vect(
@@ -269,7 +304,7 @@ get_sw_ts_month <- function(
       },
       error = function(e) {
         message(paste0("Error in surface water monthly time series query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nStart date: ", start_date,
                        "\nEnd date: ", end_date,
@@ -297,17 +332,6 @@ get_sw_ts_month <- function(
                                          "-01"),
                                   format="%Y-%m-%d", tz = "UTC"
                                   )
-
-    # Tidy data
-    # cdss_data <-
-    #   cdss_data %>%
-    #   janitor::clean_names() %>%
-    #   dplyr::mutate(
-    #     datetime = dplyr::case_when(                                                                                    # make POSIXct date
-    #       cal_mon_num <= 9 ~ as.POSIXct(paste0(cal_year, "-0", cal_mon_num, "-01"),  format="%Y-%m-%d", tz = "UTC"),    # add "0" in front of 1 digit months
-    #       TRUE             ~ as.POSIXct(paste0(cal_year, "-", cal_mon_num, "-01"),  format="%Y-%m-%d", tz = "UTC")
-    #     )
-    #   )
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -352,14 +376,31 @@ get_sw_ts_wyear <- function(
 ) {
 
   # check if valid parameters are given
-  if(all(is.null(abbrev), is.null(station_number), is.null(usgs_id))) {
+  # if(all(is.null(abbrev), is.null(station_number), is.null(usgs_id))) {
+  #
+  #   stop(paste0("Invalid 'abbrev', station_number', or 'usgs_id' arguments"))
+  #
+  # }
 
-    stop(paste0("Invalid 'abbrev', station_number', or 'usgs_id' arguments"))
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key", "start_date", "end_date"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
 
   }
 
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/surfacewater/surfacewatertswateryear/?"
+
+  # convert arguments to characters if necessary
+  station_number  <- null_convert(station_number)
 
   # format multiple abbrev query string
   abbrev <- collapse_vect(
@@ -442,7 +483,7 @@ get_sw_ts_wyear <- function(
       },
       error = function(e) {
         message(paste0("Error in surface water water year time series query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nStart date: ", start_date,
                        "\nEnd date: ", end_date,
@@ -543,17 +584,32 @@ get_sw_ts <- function(
     api_key             = NULL
 ) {
 
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key", "start_date", "end_date", "timescale"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
+
+  }
+
   # list of valid timescales
   day_lst       <- c("day", "days", "daily", "d")
   month_lst     <- c("month", "months", "monthly", "mon", "mons", "m")
-  year_lst      <- c('wyear', 'water_year', 'wyears', 'water_years', 'wateryear', 'wateryears', 'wy', 'year', 'years', 'yearly', 'annual', 'annually', 'yr', 'y')
+  year_lst      <- c('wyear', 'water_year', 'wyears', 'water_years', 'wateryear',
+                     'wateryears', 'wy', 'year', 'years', 'yearly', 'annual', 'annually', 'yr', 'y')
   timescale_lst <- c(day_lst, month_lst, year_lst)
 
   # check if type is NULL, default timescale to "day"
   if(is.null(timescale)) {
 
     # set timescale to "day"
-    timescale = "day"
+    timescale <- "day"
 
   }
 
@@ -563,14 +619,17 @@ get_sw_ts <- function(
   # check if type is correctly inputed
   if(!timescale %in% timescale_lst) {
 
-    stop(paste0("Invalid `timescale` argument: ", timescale,
-                "\n Please enter one of the following valid timescales:\n",
-                paste(c(day_lst), collapse = ", "),  "\n",
-                paste(c(month_lst), collapse = ", "),"\n",
-                paste(c(year_lst), collapse = ", "))
-    )
+    stop(paste0("Invalid `timescale` argument: '", timescale, "'",
+                "\nPlease enter one of the following valid timescales:",
+                "\n", paste0("'", c(day_lst), "'", collapse = ", "),
+                "\n", paste0("'", c(month_lst), "'", collapse = ", "),
+                "\n", paste0("'", c(year_lst), "'", collapse = ", ")
+                )
+         )
   }
 
+  # convert arguments to characters if necessary
+  station_number  <- null_convert(station_number)
 
   # check which timescale to request data for
 

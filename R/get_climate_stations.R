@@ -32,15 +32,35 @@ get_climate_stations <- function(
     api_key             = NULL
 ) {
 
-  # check if valid parameters are given
-  if(all(is.null(aoi), is.null(county), is.null(division), is.null(station_name), is.null(site_id), is.null(water_district))) {
+  # # check if valid parameters are given
+  # if(all(is.null(aoi), is.null(county), is.null(division), is.null(station_name), is.null(site_id), is.null(water_district))) {
+  #
+  #   stop(paste0("Invalid 'aoi', county', 'division', 'station_name', 'site_id', or 'water_district' arguments"))
+  #
+  # }
 
-    stop(paste0("Invalid 'aoi', county', 'division', 'station_name', 'site_id', or 'water_district' arguments"))
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
 
   }
 
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/climatedata/climatestations/?"
+
+  # convert arguments to characters if necessary
+  radius         <- null_convert(radius)
+  division       <- null_convert(division)
+  site_id        <- null_convert(site_id)
+  water_district <- null_convert(water_district)
 
   # format multiple site_id query string
   site_id <- collapse_vect(
@@ -126,7 +146,7 @@ get_climate_stations <- function(
       },
       error = function(e) {
         message(paste0("Error in climate station query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nCounty: ", county,
                        "\nDivision: ", division,

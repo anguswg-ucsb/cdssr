@@ -1,3 +1,4 @@
+utils::globalVariables(c("."))
 #' Return Structure Daily Diversion/Release Records
 #' @description     Make a request to the api/v2/structures/divrec/divrecday/ endpoint to retrieve daily structure diversion/release data for a specified WDID within a specified date range.
 #' @param wdid character vector or list of characters indicating WDID code of structure
@@ -16,6 +17,20 @@ get_structure_divrecday <- function(
     end_date        = Sys.Date(),
     api_key         = NULL
 ) {
+
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key", "wc_identifier", "start_date", "end_date"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
+
+  }
 
   # valid parameters
   div_lst <- c("diversion", "diversions", "div", "divs", "d")
@@ -36,13 +51,11 @@ get_structure_divrecday <- function(
 
   }
 
-  # check if valid WDID was entered
-  if(is.null(wdid)) {
-    stop(paste0("Invalid 'wdid' argument\nPlease enter a valid WDID"))
-  }
-
   # Base API URL for Daily Diversion Records
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/divrecday/?"
+
+  # convert arguments to characters if necessary
+  wdid         <- null_convert(wdid)
 
   # make sure correctly named wc_identifier
   wc_identifier <- align_wcid(x = wc_identifier)
@@ -127,7 +140,7 @@ get_structure_divrecday <- function(
 
         # message(paste0("Error in data retrieval at WDID: ", wdid, "\nPerhaps the URL address is incorrect OR there are no data available.\n"))
         message(paste0("Error in data retrieval at WDID: ", wdid))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\nWDID: ", wdid,
                        "\nStart date: ", start_date,
                        "\nEnd date: ", end_date,
@@ -189,6 +202,20 @@ get_structure_divrecmonth<- function(
     api_key         = NULL
 ) {
 
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key", "wc_identifier", "start_date", "end_date"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
+
+  }
+
   # valid parameters
   div_lst   <- c("diversion", "diversions", "div", "divs", "d")
   rel_lst   <- c("release", "releases", "rel", "rels", "r")
@@ -208,13 +235,11 @@ get_structure_divrecmonth<- function(
 
   }
 
-  # check if valid WDID was entered
-  if(is.null(wdid)) {
-    stop(paste0("Invalid 'wdid' argument\nPlease enter a valid WDID"))
-  }
-
   # Base API URL for Monthly Diversion Records
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/divrecmonth/?"
+
+  # convert arguments to characters if necessary
+  wdid         <- null_convert(wdid)
 
   # make sure correctly named wc_identifier
   wc_identifier <- align_wcid(x = wc_identifier)
@@ -299,7 +324,7 @@ get_structure_divrecmonth<- function(
 
         # message(paste0("Error in data retrieval at WDID: ", wdid, "\nPerhaps the URL address is incorrect OR there are no data available.\n"))
         message(paste0("Error in data retrieval at WDID: ", wdid))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\nWDID: ", wdid,
                        "\nStart date: ", start_date,
                        "\nEnd date: ", end_date,
@@ -358,6 +383,20 @@ get_structure_divrecyear <- function(
     api_key         = NULL
 ) {
 
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key", "wc_identifier", "start_date", "end_date"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
+
+  }
+
   # valid parameters
   div_lst   <- c("diversion", "diversions", "div", "divs", "d")
   rel_lst   <- c("release", "releases", "rel", "rels", "r")
@@ -377,13 +416,11 @@ get_structure_divrecyear <- function(
 
   }
 
-  # check if valid WDID was entered
-  if(is.null(wdid)) {
-    stop(paste0("Invalid 'wdid' argument\nPlease enter a valid WDID"))
-  }
-
   # Base API URL for Monthly Diversion Records
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/divrecyear/?"
+
+  # convert arguments to characters if necessary
+  wdid         <- null_convert(wdid)
 
   # make sure correctly named wc_identifier
   wc_identifier <- align_wcid(x = wc_identifier)
@@ -464,9 +501,8 @@ get_structure_divrecyear <- function(
       },
       error = function(e) {
 
-        # message(paste0("Error in data retrieval at WDID: ", wdid, "\nPerhaps the URL address is incorrect OR there are no data available.\n"))
         message(paste0("Error in data retrieval at WDID: ", wdid))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\nWDID: ", wdid,
                        "\nStart year: ", start_year,
                        "\nEnd year: ", end_year,
@@ -564,6 +600,20 @@ get_structures_divrec_ts <- function(
     api_key         = NULL
 ) {
 
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key", "wc_identifier", "start_date", "end_date", "timescale"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
+
+  }
+
   # list of valid timescales
   day_lst       <- c("day", "days", "daily", "d")
   month_lst     <- c("month", "months", "monthly", "mon", "mons", "m")
@@ -574,23 +624,27 @@ get_structures_divrec_ts <- function(
   if(is.null(timescale)) {
 
     # set timescale to "day"
-    timescale = "day"
+    timescale <- "day"
 
   }
 
   # convert timescale to lowercase
   timescale <- tolower(timescale)
 
-  # check if type is correctly inputed
+  # check if type is correctly provided
   if(!timescale %in% timescale_lst) {
 
-    stop(paste0("Invalid `timescale` argument: ", timescale,
-                "\n Please enter one of the following valid timescales:\n",
-                paste(c(day_lst), collapse = ", "),  "\n",
-                paste(c(month_lst), collapse = ", "),"\n",
-                paste(c(year_lst), collapse = ", "))
+    stop(paste0("Invalid `timescale` argument: '", timescale, "'",
+                "\nPlease enter one of the following valid timescales:",
+                "\n", paste0("'", c(day_lst), "'", collapse = ", "),
+                "\n", paste0("'", c(month_lst), "'", collapse = ", "),
+                "\n", paste0("'", c(year_lst), "'", collapse = ", ")
+                )
          )
   }
+
+  # convert arguments to characters if necessary
+  wdid         <- null_convert(wdid)
 
   # Retrieve daily divrec data
   if(timescale %in% day_lst) {

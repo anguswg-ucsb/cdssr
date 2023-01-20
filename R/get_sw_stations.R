@@ -1,3 +1,4 @@
+utils::globalVariables(c("."))
 #' Return Surface Water Station information
 #' @description Make a request to the /surfacewater/surfacewaterstations endpoint to locate surface water stations by AOI, station abbreviation, county, division, station name, USGS ID or water_district.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
@@ -34,14 +35,33 @@ get_sw_stations <- function(
 ) {
 
   # check if valid parameters are given
-  if(all(is.null(aoi), is.null(abbrev), is.null(county), is.null(division), is.null(station_name), is.null(usgs_id), is.null(water_district))) {
+  # if(all(is.null(aoi), is.null(abbrev), is.null(county), is.null(division), is.null(station_name), is.null(usgs_id), is.null(water_district))) {
+  #
+  #   stop(paste0("Invalid 'aoi', 'abbrev' county', 'division', 'station_name', 'usgs_id', or 'water_district' arguments"))
+  #
+  # }
 
-    stop(paste0("Invalid 'aoi', 'abbrev' county', 'division', 'station_name', 'usgs_id', or 'water_district' arguments"))
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
 
   }
 
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/surfacewater/surfacewaterstations/?"
+
+  # convert arguments to characters if necessary
+  division        <- null_convert(division)
+  station_name    <- null_convert(station_name)
+  water_district  <- null_convert(water_district)
 
   # format multiple abbrev query string
   abbrev <- collapse_vect(
@@ -134,7 +154,7 @@ get_sw_stations <- function(
       },
       error = function(e) {
         message(paste0("Error in surface water station query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nAbbreviation: ", abbrev,
                        "\nCounty: ", county,

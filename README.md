@@ -166,7 +166,7 @@ Let’s locate the parameters available at telemetry stations.
 telemetry_params <- cdssr::get_reference_tbl(
   table_name = "telemetryparams"
   )
-#> Retrieving telemetry parameter reference table from CDSS API...
+#> Retrieving telemetry parameter reference table
 ```
 
     #> # A tibble: 46 × 1
@@ -213,7 +213,7 @@ Well IDs.
 stations <- cdssr::get_telemetry_stations(
   county = "Boulder"
   )
-#> Retrieving telemetry station data from CDSS API...
+#> Retrieving telemetry station data
 ```
 
     #> # A tibble: 110 × 35
@@ -291,7 +291,7 @@ stations <- cdssr::get_telemetry_stations(
   aoi    = AOI::aoi_get(county = "Boulder", state = "CO"),
   radius = 15
   )
-#> Retrieving telemetry station data from CDSS API...
+#> Retrieving telemetry station data
 #> Location search: 
 #> Latitude: 40.0843975
 #> Longitude: -105.345242774525
@@ -365,26 +365,24 @@ discharge_ts <- cdssr::get_telemetry_ts(
                       end_date            = "2022-01-01",   # Ending date
                       timescale           = "day"           # select daily timescale 
                                )
-#> Downloading data from CDSS API...
-#> Telemetry station abbreviation: ANDDITCO
-#> Parameter: DISCHRG
-#> Timescale: day
+#> Retrieving telemetry station time series data (day - DISCHRG)
 ```
 
     #> # A tibble: 572 × 7
-    #>    abbrev   parameter date               value unit  datetime            times…¹
-    #>    <chr>    <chr>     <chr>              <dbl> <chr> <dttm>              <chr>  
-    #>  1 ANDDITCO DISCHRG   2020-05-07 00:00:…  3.05 cfs   2020-05-07 00:00:00 day    
-    #>  2 ANDDITCO DISCHRG   2020-05-08 00:00:…  3.04 cfs   2020-05-08 00:00:00 day    
-    #>  3 ANDDITCO DISCHRG   2020-05-09 00:00:…  2.98 cfs   2020-05-09 00:00:00 day    
-    #>  4 ANDDITCO DISCHRG   2020-05-10 00:00:…  2.95 cfs   2020-05-10 00:00:00 day    
-    #>  5 ANDDITCO DISCHRG   2020-05-11 00:00:…  2.95 cfs   2020-05-11 00:00:00 day    
-    #>  6 ANDDITCO DISCHRG   2020-05-12 00:00:…  2.95 cfs   2020-05-12 00:00:00 day    
-    #>  7 ANDDITCO DISCHRG   2020-05-13 00:00:…  2.95 cfs   2020-05-13 00:00:00 day    
-    #>  8 ANDDITCO DISCHRG   2020-05-14 00:00:…  2.95 cfs   2020-05-14 00:00:00 day    
-    #>  9 ANDDITCO DISCHRG   2020-05-15 00:00:…  2.95 cfs   2020-05-15 00:00:00 day    
-    #> 10 ANDDITCO DISCHRG   2020-05-16 00:00:…  2.95 cfs   2020-05-16 00:00:00 day    
-    #> # … with 562 more rows, and abbreviated variable name ¹​timescale
+    #>    abbrev   parameter meas_date      meas_…¹ meas_…² datetime            times…³
+    #>    <chr>    <chr>     <chr>            <dbl> <chr>   <dttm>              <chr>  
+    #>  1 ANDDITCO DISCHRG   2020-05-07 00…    3.05 cfs     2020-05-07 00:00:00 day    
+    #>  2 ANDDITCO DISCHRG   2020-05-08 00…    3.04 cfs     2020-05-08 00:00:00 day    
+    #>  3 ANDDITCO DISCHRG   2020-05-09 00…    2.98 cfs     2020-05-09 00:00:00 day    
+    #>  4 ANDDITCO DISCHRG   2020-05-10 00…    2.95 cfs     2020-05-10 00:00:00 day    
+    #>  5 ANDDITCO DISCHRG   2020-05-11 00…    2.95 cfs     2020-05-11 00:00:00 day    
+    #>  6 ANDDITCO DISCHRG   2020-05-12 00…    2.95 cfs     2020-05-12 00:00:00 day    
+    #>  7 ANDDITCO DISCHRG   2020-05-13 00…    2.95 cfs     2020-05-13 00:00:00 day    
+    #>  8 ANDDITCO DISCHRG   2020-05-14 00…    2.95 cfs     2020-05-14 00:00:00 day    
+    #>  9 ANDDITCO DISCHRG   2020-05-15 00…    2.95 cfs     2020-05-15 00:00:00 day    
+    #> 10 ANDDITCO DISCHRG   2020-05-16 00…    2.95 cfs     2020-05-16 00:00:00 day    
+    #> # … with 562 more rows, and abbreviated variable names ¹​meas_value, ²​meas_unit,
+    #> #   ³​timescale
 
 ![](https://cdsspy-images.s3.us-west-1.amazonaws.com/discharge_timeseries_plot2.png)
 
@@ -411,7 +409,7 @@ structures <- cdssr::get_structures(
   aoi    = c(-105.3578, 40.09244),
   radius = 5
 )
-#> Retreiving administrative structures from CDSS API...
+#> Retreiving administrative structures
 #> Location search: 
 #> Latitude: 40.09244
 #> Longitude: -105.3578
@@ -432,7 +430,7 @@ diversion_rec <-
                         end_date       = "2022-01-01",
                         timescale      = "month"
                         )
-#> Retrieving monthly diversion data from CDSS API
+#> Retrieving monthly diversion data
 ```
 
     #> # A tibble: 495 × 12
@@ -483,8 +481,7 @@ well_measure <- cdssr::get_gw_wl_wellmeasures(
   start_date = "1990-01-01",
   end_date   = "2022-01-01"
   )
-#> Downloading data from CDSS API...
-#> Groundwater well measurements
+#> Retrieving groundwater well measurements
 ```
 
     #> # A tibble: 1,469 × 18

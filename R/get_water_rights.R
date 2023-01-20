@@ -1,3 +1,4 @@
+utils::globalVariables(c("."))
 #' Return water rights net amounts data
 #' @description Make a request to the /waterrights/netamount endpoint to retrieve water rights net amounts data via a spatial search or by county, division, water district, or WDID, within a given date range (start and end dates). Returns current status of a water right based on all of its court decreed actions.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
@@ -46,12 +47,32 @@ get_water_rights_netamount <- function(
 ) {
 
   # check if valid wdid and admin_no were given
-  if(all(is.null(aoi), is.null(county), is.null(division), is.null(water_district), is.null(wdid))) {
-    stop(paste0("Invalid 'aoi', 'county', 'division', 'water_district' or 'wdid' arguments"))
+  # if(all(is.null(aoi), is.null(county), is.null(division), is.null(water_district), is.null(wdid))) {
+  #   stop(paste0("Invalid 'aoi', 'county', 'division', 'water_district' or 'wdid' arguments"))
+  # }
+  #
+
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
+
   }
 
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/waterrights/netamount/?"
+
+  # convert arguments to characters if necessary
+  division        <- null_convert(division)
+  water_district  <- null_convert(water_district)
+  wdid            <- null_convert(wdid)
 
   # check and extract spatial data from 'aoi' and 'radius' args for location search query
   aoi_lst <- check_aoi(
@@ -130,7 +151,7 @@ get_water_rights_netamount <- function(
       },
       error = function(e) {
         message(paste0("Error in water rights net amounts data query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nCounty: ", county,
                        "\nDivision: ", division,
@@ -230,12 +251,31 @@ get_water_rights_trans <- function(
 ) {
 
   # check if valid wdid and admin_no were given
-  if(all(is.null(aoi), is.null(county), is.null(division), is.null(water_district), is.null(wdid))) {
-    stop(paste0("Invalid 'aoi', 'county', 'division', 'water_district' or 'wdid' arguments"))
+  # if(all(is.null(aoi), is.null(county), is.null(division), is.null(water_district), is.null(wdid))) {
+  #   stop(paste0("Invalid 'aoi', 'county', 'division', 'water_district' or 'wdid' arguments"))
+  # }
+
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
+
   }
 
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/waterrights/transaction/?"
+
+  # convert arguments to characters if necessary
+  division        <- null_convert(division)
+  water_district  <- null_convert(water_district)
+  wdid            <- null_convert(wdid)
 
   # check and extract spatial data from 'aoi' and 'radius' args for location search query
   aoi_lst <- check_aoi(
@@ -314,7 +354,7 @@ get_water_rights_trans <- function(
       },
       error = function(e) {
         message(paste0("Error in water rights transaction data query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nCounty: ", county,
                        "\nDivision: ", division,

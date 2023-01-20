@@ -22,14 +22,17 @@ Makes requests to the /referencetables/ endpoints and returns helpful reference 
 flag_tbl <- get_reference_tbl(
    table_name = "flags"
    )
+
 # Retrieve available telemetry station parameters
 telemetry_params <- get_reference_tbl(
    table_name = "telemetryparams"
    )
+
 # Retrieve available climate station parameters
 climate_params <- get_reference_tbl(
    table_name = "climateparams"
    )
+
 # Retrieve water districts
 water_districts <- get_reference_tbl(
    table_name = "waterdistricts"

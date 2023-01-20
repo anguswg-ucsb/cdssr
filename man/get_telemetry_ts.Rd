@@ -37,7 +37,7 @@ Make a request to the /telemetrystations/telemetrytimeseries endpoint to retriev
 }
 \examples{
 # Retrieve daily discharge for CLAFTCCO telemetry station
-ts <- get_telemetry_ts(
+telem_ts <- get_telemetry_ts(
            abbrev              = "CLAFTCCO",
            parameter           = "DISCHRG",
            start_date          = "2015-01-01",
@@ -45,8 +45,8 @@ ts <- get_telemetry_ts(
            timescale           = "day",
            include_third_party = TRUE
            )
-ts
+telem_ts
 
 # Plot daily discharge data
-plot(ts$meas_value~ts$datetime, type = "l")
+plot(telem_ts$meas_value~telem_ts$datetime, type = "l")
 }

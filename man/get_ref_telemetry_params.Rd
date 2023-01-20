@@ -15,5 +15,5 @@ get_ref_telemetry_params(param = NULL, api_key = NULL)
 dataframe of telemetry station parameters
 }
 \description{
-Make a request to the referencetables/telemetryparams/ endpoint to retrieve a reference table of parameters avaliable at telemetry stations. The reference table functions can help provide information to use while querying other endpoints.
+Make a request to the referencetables/telemetryparams/ endpoint to retrieve a reference table of parameters available at telemetry stations. The reference table functions can help provide information to use while querying other endpoints.
 }

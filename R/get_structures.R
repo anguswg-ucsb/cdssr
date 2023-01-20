@@ -1,3 +1,4 @@
+utils::globalVariables(c("."))
 #' Return list of administrative structures
 #' @description Make a request to the /structures endpoint to locate administrative structures via a spatial search or by division, county, water_district, GNIS, or WDID.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
@@ -33,14 +34,33 @@ get_structures <- function(
 ) {
 
   # check if valid parameters are given
-  if(all(is.null(aoi), is.null(county), is.null(division), is.null(gnis_id), is.null(water_district), is.null(wdid))) {
+  # if(all(is.null(aoi), is.null(county), is.null(division), is.null(gnis_id), is.null(water_district), is.null(wdid))) {
+  #
+  #   stop(paste0("Invalid 'aoi', 'county', 'division', 'gnis_id', 'water_district', or 'wdid' arguments"))
+  #
+  # }
 
-    stop(paste0("Invalid 'aoi', 'county', 'division', 'gnis_id', 'water_district', or 'wdid' arguments"))
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
 
   }
 
   # Base API URL
   base <- paste0("https://dwr.state.co.us/Rest/GET/api/v2/structures/?")
+
+  # convert arguments to characters if necessary
+  division        <- null_convert(division)
+  gnis_id         <- null_convert(gnis_id)
+  water_district  <- null_convert(water_district)
 
   # format multiple WDID query string
   wdid <- collapse_vect(
@@ -135,7 +155,7 @@ get_structures <- function(
       error = function(e) {
 
         message(paste0("Error in administrative structure query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------\nCounty: ", county,
                        "\nDivision: ", division,
                        "\nGNIS ID: ", gnis_id,

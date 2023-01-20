@@ -1,3 +1,5 @@
+utils::globalVariables(c("."))
+
 #' Search for groundwater water level wells
 #' @description Make a request to the groundwater/waterlevels/wells endpoint to retrieve groundwater water level wells data.
 #' @param county character, indicating the county to query
@@ -28,10 +30,29 @@ get_gw_wl_wells <- function(
     api_key             = NULL
 ) {
 
-  # if no inputs given, stop function
-  if(all(is.null(division), is.null(county), is.null(designated_basin), is.null(water_district), is.null(management_district), is.null(wellid))) {
-    stop(paste0("Please enter one of:\nDivision\nCounty\nDesignated Basin\nWater District\nManagement District\nWell ID"))
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
+
   }
+
+  # Base API
+  base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/waterlevels/wells/?"
+
+  # convert arguments to characters if necessary
+  management_district  <- null_convert(management_district)
+  designated_basin     <- null_convert(designated_basin)
+  division             <- null_convert(division)
+  water_district       <- null_convert(water_district)
+  wellid               <- null_convert(wellid)
 
   # format county name
   if(!is.null(county)) {
@@ -53,9 +74,6 @@ get_gw_wl_wells <- function(
     designated_basin <- gsub(" ", "+", toupper(designated_basin))
 
   }
-
-  # Base API
-  base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/waterlevels/wells/?"
 
   # maximum records per page
   page_size  <- 50000
@@ -114,7 +132,7 @@ get_gw_wl_wells <- function(
       error = function(e) {
 
         message(paste0("Error in groundwater water levels wells data search query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nDivision: ", division,
                        "\nWater District: ", water_district,
@@ -184,13 +202,25 @@ get_gw_wl_wellmeasures <- function(
     api_key          = NULL
 ) {
 
-  # if no Well ID given, stop function
-  if(is.null(wellid)) {
-    stop(paste0("Invalid 'wellid' argument"))
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key", "start_date", "end_date"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
+
   }
 
   # Base URL groundwater/waterlevels/wellmeasurements/
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/waterlevels/wellmeasurements/?"
+
+  # convert arguments to characters if necessary
+  wellid  <- null_convert(wellid)
 
   # reformat and extract valid start date
   start <- parse_date(
@@ -260,7 +290,7 @@ get_gw_wl_wellmeasures <- function(
       error = function(e) {
 
         message(paste0("Error in data retrieval of groundwater well measurements"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------\nWell ID: ", wellid,
                        "\nStart date: ", start_date,
                        "\nEnd date: ", end_date
@@ -332,10 +362,29 @@ get_gw_gplogs_wells <- function(
     api_key             = NULL
 ) {
 
-  # if no inputs given, stop function
-  if(all(is.null(division), is.null(county), is.null(designated_basin), is.null(water_district), is.null(management_district), is.null(wellid))) {
-    stop(paste0("Please enter one of:\nDivision\nCounty\nDesignated Basin\nWater District\nManagement District\nWell ID"))
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
+
   }
+
+  # base API URL
+  base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/geophysicallogs/wells/?"
+
+  # convert arguments to characters if necessary
+  management_district  <- null_convert(management_district)
+  designated_basin     <- null_convert(designated_basin)
+  division             <- null_convert(division)
+  water_district       <- null_convert(water_district)
+  wellid               <- null_convert(wellid)
 
   # format county name
   if(!is.null(county)) {
@@ -357,9 +406,6 @@ get_gw_gplogs_wells <- function(
     designated_basin <- gsub(" ", "+", toupper(designated_basin))
 
   }
-
-  # base API URL
-  base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/geophysicallogs/wells/?"
 
   # maximum records per page
   page_size  <- 50000
@@ -418,7 +464,7 @@ get_gw_gplogs_wells <- function(
       error = function(e) {
 
         message(paste0("Error in groundwater geophysical logs well data search query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nDivision: ", division,
                        "\nWater District: ", water_district,
@@ -482,19 +528,31 @@ get_gw_gplogs_geologpicks <- function(
     api_key             = NULL
 ) {
 
-  # if no inputs given, stop function
-  if(all(is.null(wellid))) {
-    stop(paste0("Invalid 'wellid' argument"))
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
+
   }
 
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/geophysicallogs/geoplogpicks/?"
 
+  # convert arguments to characters if necessary
+  wellid     <- null_convert(wellid)
+
   # maximum records per page
   page_size  <- 50000
 
   # initialize empty dataframe to store data from multiple pages
-  data_df = data.frame()
+  data_df    <- data.frame()
 
   # initialize first page index
   page_index <- 1
@@ -505,7 +563,7 @@ get_gw_gplogs_geologpicks <- function(
   # print message
   message(paste0("Retrieving groundwater geophysical log wells geologpicks"))
 
-  # while more pages are avaliable, send get requests to CDSS API
+  # while more pages are available, send get requests to CDSS API
   while (more_pages) {
 
     # Construct query URL w/o API key
@@ -542,7 +600,7 @@ get_gw_gplogs_geologpicks <- function(
       error = function(e) {
 
         message(paste0("Error in groundwater geophysical log picks well data search query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nWell ID: ", wellid)
                 )
@@ -578,139 +636,3 @@ get_gw_gplogs_geologpicks <- function(
   # return final binded dataframe
   return(data_df)
 }
-
-#' #' Return groundwater well measurements or search well water levels/geophysical logs
-#' #' @description Make a request to CDSS API /groundwater endpoints to get well measurement data or to search for groundwater wells (water level wells or geo physical log records)
-#' #' @param type character indicating the type of data to search for. Either "wellmeasurements", "waterlevels", or "geophysicallogs". Default is "wellmeasurements".
-#' #' @param wellid character, indicating the Well ID to query
-#' #' @param start_date character date to request data start point YYYY-MM-DD.
-#' #' @param end_date character date to request data end point YYYY-MM-DD. Default is set to the current date function is run.
-#' #' @param county character, indicating the county to query
-#' #' @param designated_basin character, indicating the  designated basin to query
-#' #' @param division numeric, indicating the water division to query
-#' #' @param management_district character, indicating the management district to query
-#' #' @param water_district numeric, indicating the water district to query
-#' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
-#' #' @importFrom httr GET content
-#' #' @importFrom jsonlite fromJSON
-#' #' @importFrom dplyr bind_rows rename mutate
-#' #' @importFrom janitor clean_names
-#' #' @return dataframe with groundwater well data
-#' #' @examples
-#' #' # Request endpoint: api/v2/groundwater/waterlevels/wellmeasurements
-#' #' well_measure <- get_groundwater(
-#' #' type   = "wellmeasurements",
-#' #'   wellid = 1274
-#' #'  )
-#' #'
-#' #' # plot depth to water
-#' #' plot(well_measure$depth_to_water~well_measure$datetime, type = "l")
-#' #'
-#' #' # Request endpoint: api/v2/groundwater/waterlevels/wells
-#' #' water_levels <- get_groundwater(
-#' #'   type     = "waterlevels",
-#' #'   division = 2
-#' #'  )
-#' #'
-#' #' # number of unique well IDs from query
-#' #' length(unique(water_levels$well_id))
-#' #'
-#' #' # Request endpoint: api/v2/groundwater/geophysicallogs/wells
-#' #' geophysicallogs <- get_groundwater(
-#' #'   type     = "geophysicallogs",
-#' #'   division = 2
-#' #' )
-#' #'
-#' #' # number of unique well IDs from query
-#' #' length(unique(geophysicallogs$well_id))
-#' get_groundwater <- function(
-#'     type                = "wellmeasurements",
-#'     wellid              = NULL,
-#'     start_date          = "1950-01-01",
-#'     end_date            = Sys.Date(),
-#'     county              = NULL,
-#'     designated_basin    = NULL,
-#'     division            = NULL,
-#'     management_district = NULL,
-#'     water_district      = NULL,
-#'     api_key             = NULL
-#' ) {
-#'
-#'   # check if search is orrectly inputed
-#'   if(!type %in% c("wellmeasurements", "waterlevels", "geophysicallogs")) {
-#'
-#'     message(paste0("Please enter correct search type: 'wellmeasurements', 'waterlevels' or 'geophysicallogs'"))
-#'
-#'   }
-#'
-#'   # if groundwater well measurements desired
-#'   if(type == "wellmeasurements") {
-#'     gw_measure <- get_gw_waterlevels_wellmeasures(
-#'                             wellid           = wellid,
-#'                             start_date       = start_date,
-#'                             end_date         = end_date,
-#'                             api_key          = api_key
-#'                             )
-#'
-#'     return(gw_measure)
-#'   }
-#'
-#'   # if groundwater waterlevels well search
-#'   if(type == "waterlevels") {
-#'
-#'     # waterlevels well search
-#'     # gw_waterlevels <- get_groundwater_well_search(
-#'     #                         search              = "waterlevels",
-#'     #                         division            = division,
-#'     #                         county              = county,
-#'     #                         designated_basin    = designated_basin,
-#'     #                         water_district      = water_district,
-#'     #                         management_district = management_district,
-#'     #                         wellid              = wellid,
-#'     #                         api_key             = api_key
-#'     #                       )
-#'
-#'     # waterlevels well search
-#'     gw_waterlevels <- get_gw_waterlevels_wells(
-#'                             division            = division,
-#'                             county              = county,
-#'                             designated_basin    = designated_basin,
-#'                             water_district      = water_district,
-#'                             management_district = management_district,
-#'                             wellid              = wellid,
-#'                             api_key             = api_key
-#'                           )
-#'
-#'     return(gw_waterlevels)
-#'   }
-#'
-#'   # if groundwater geophysicallogs well search
-#'   if(type == "geophysicallogs") {
-#'
-#'     # geophysicallogs well search
-#'     # gw_geophysicallogs <- get_groundwater_well_search(
-#'     #                         search              = "geophysicallogs",
-#'     #                         division            = division,
-#'     #                         county              = county,
-#'     #                         designated_basin    = designated_basin,
-#'     #                         water_district      = water_district,
-#'     #                         management_district = management_district,
-#'     #                         wellid              = wellid,
-#'     #                         api_key             = api_key
-#'     #                       )
-#'
-#'     # geophysicallogs well search
-#'     gw_geophysicallogs <-  get_gw_geophysicallogs_wells(
-#'                               division            = division,
-#'                               county              = county,
-#'                               designated_basin    = designated_basin,
-#'                               water_district      = water_district,
-#'                               management_district = management_district,
-#'                               wellid              = wellid,
-#'                               api_key             = api_key
-#'                             )
-#'
-#'     return(gw_geophysicallogs)
-#'   }
-#'
-#' }

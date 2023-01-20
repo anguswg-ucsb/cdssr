@@ -1,3 +1,5 @@
+utils::globalVariables(c("."))
+
 #' Return county reference table
 #' @description Make a request to the referencetables/county/ endpoint to retrieve a reference table of counties. The reference table functions can help provide information to use while querying other endpoints.
 #' @param county character, (optional) indicating the county to query, if no county is given, entire county dataframe is returned
@@ -29,7 +31,7 @@ get_ref_county <- function(
   # print message
   message(paste0("Retrieving county reference table"))
 
-  # while more pages are avaliable, send get requests to CDSS API
+  # while more pages are available, send get requests to CDSS API
   while (more_pages) {
 
     # Construct query URL w/o API key
@@ -64,16 +66,9 @@ get_ref_county <- function(
       },
       error = function(e) {
         message(paste0("Error in county reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
-                       "\nCounty: ", county,
-                       "\nDivision: ", division,
-                       "\nStation name: ", station_name,
-                       "\nSite ID: ", site_id,
-                       "\nWater District: ", water_district,
-                       "\nLatitude: ", lat,
-                       "\nLongitude: ", lng,
-                       "\nRadius (miles)", radius
+                       "\nCounty: ", county
         ))
         message(paste0('\nHere is the URL address that was queried:\n'))
         message(paste0(url))
@@ -142,7 +137,7 @@ get_ref_waterdistricts <- function(
   # print message
   message(paste0("Retrieving water districts reference table"))
 
-  # while more pages are avaliable, send get requests to CDSS API
+  # while more pages are available, send get requests to CDSS API
   while (more_pages) {
 
     # Construct query URL w/o API key
@@ -178,7 +173,7 @@ get_ref_waterdistricts <- function(
       },
       error = function(e) {
         message(paste0("Error in water districts reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nDivision: ", division,
                        "\nWater District: ", water_district
@@ -248,7 +243,7 @@ get_ref_waterdivisions <- function(
   # print message
   message(paste0("Retrieving water division reference table"))
 
-  # while more pages are avaliable, send get requests to CDSS API
+  # while more pages are available, send get requests to CDSS API
   while (more_pages) {
 
     # Construct query URL w/o API key
@@ -283,7 +278,7 @@ get_ref_waterdivisions <- function(
       },
       error = function(e) {
         message(paste0("Error in water division reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nDivision: ", division
         ))
@@ -351,7 +346,7 @@ get_ref_managementdistricts <- function(
   # print message
   message(paste0("Retrieving management districts reference table"))
 
-  # while more pages are avaliable, send get requests to CDSS API
+  # while more pages are available, send get requests to CDSS API
   while (more_pages) {
 
     # Construct query URL w/o API key
@@ -386,7 +381,7 @@ get_ref_managementdistricts <- function(
       },
       error = function(e) {
         message(paste0("Error in management districts reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nManagement District: ", management_district
         ))
@@ -455,7 +450,7 @@ get_ref_designatedbasins <- function(
   # print message
   message(paste0("Retrieving designated basin reference table"))
 
-  # while more pages are avaliable, send get requests to CDSS API
+  # while more pages are available, send get requests to CDSS API
   while (more_pages) {
 
     # Construct query URL w/o API key
@@ -490,7 +485,7 @@ get_ref_designatedbasins <- function(
       },
       error = function(e) {
         message(paste0("Error in designated basin reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nDesignated Basin: ", designated_basin
         ))
@@ -529,7 +524,7 @@ get_ref_designatedbasins <- function(
 }
 
 #' Return telemetry parameter reference table
-#' @description Make a request to the referencetables/telemetryparams/ endpoint to retrieve a reference table of parameters avaliable at telemetry stations. The reference table functions can help provide information to use while querying other endpoints.
+#' @description Make a request to the referencetables/telemetryparams/ endpoint to retrieve a reference table of parameters available at telemetry stations. The reference table functions can help provide information to use while querying other endpoints.
 #' @param param character, (optional) indicating the parameter to query character, if no parameter is given, all parameter dataframe is returned
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
@@ -559,7 +554,7 @@ get_ref_telemetry_params <- function(
   # print message
   message(paste0("Retrieving telemetry parameter reference table"))
 
-  # while more pages are avaliable, send get requests to CDSS API
+  # while more pages are available, send get requests to CDSS API
   while (more_pages) {
 
     # Construct query URL w/o API key
@@ -594,7 +589,7 @@ get_ref_telemetry_params <- function(
       },
       error = function(e) {
         message(paste0("Error in telemetry parameter reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nParameter ", param
         ))
@@ -663,7 +658,7 @@ get_ref_climate_params <- function(
   # print message
   message(paste0("Retrieving climate parameter reference table"))
 
-  # while more pages are avaliable, send get requests to CDSS API
+  # while more pages are available, send get requests to CDSS API
   while (more_pages) {
 
     # Construct query URL w/o API key
@@ -698,7 +693,7 @@ get_ref_climate_params <- function(
       },
       error = function(e) {
         message(paste0("Error in climate parameter reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nParameter ", param
         ))
@@ -767,7 +762,7 @@ get_ref_divrectypes <- function(
   # print message
   message(paste0("Retrieving diversion record types reference table"))
 
-  # while more pages are avaliable, send get requests to CDSS API
+  # while more pages are available, send get requests to CDSS API
   while (more_pages) {
 
     # Construct query URL w/o API key
@@ -802,7 +797,7 @@ get_ref_divrectypes <- function(
       },
       error = function(e) {
         message(paste0("Error in diversion record types reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nDiversion record type: ", divrectype
         ))
@@ -871,7 +866,7 @@ get_ref_stationflags<- function(
   # print message
   message(paste0("Retrieving station flags reference table"))
 
-  # while more pages are avaliable, send get requests to CDSS API
+  # while more pages are available, send get requests to CDSS API
   while (more_pages) {
 
     # Construct query URL w/o API key
@@ -906,7 +901,7 @@ get_ref_stationflags<- function(
       },
       error = function(e) {
         message(paste0("Error in station flags reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nFlag: ", flag
         ))
@@ -957,14 +952,17 @@ get_ref_stationflags<- function(
 #' flag_tbl <- get_reference_tbl(
 #'    table_name = "flags"
 #'    )
+#'
 #' # Retrieve available telemetry station parameters
 #' telemetry_params <- get_reference_tbl(
 #'    table_name = "telemetryparams"
 #'    )
+#'
 #' # Retrieve available climate station parameters
 #' climate_params <- get_reference_tbl(
 #'    table_name = "climateparams"
 #'    )
+#'
 #' # Retrieve water districts
 #' water_districts <- get_reference_tbl(
 #'    table_name = "waterdistricts"
@@ -975,7 +973,31 @@ get_reference_tbl <- function(
     api_key              = NULL
 ) {
 
-  # check which timescale to request data for
+  # list of available tables
+  tbl_lst <- c("county", "waterdistricts", "waterdivisions", "designatedbasins",
+               "managementdistricts", "telemetryparams", "climateparams", "divrectypes", "flags")
+
+  # check if table_name is a valid table name
+  if(is.null(table_name)) {
+
+    stop(paste0("Invalid `table_name` argument: '", table_name, "'",
+                "\nPlease enter one of the following valid reference tables:",
+                "\n", paste0("'", c(tbl_lst), "'", collapse = "\n")
+    )
+    )
+
+  }
+
+  # check if table_name is a valid table name
+  if(!table_name %in% tbl_lst) {
+
+    stop(paste0("Invalid `table_name` argument: '", table_name, "'",
+                "\nPlease enter one of the following valid reference tables:",
+                "\n", paste0("'", c(tbl_lst), "'", collapse = "\n")
+                )
+         )
+
+  }
 
   # retrieve county reference table
   if(table_name == "county") {

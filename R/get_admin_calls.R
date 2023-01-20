@@ -1,7 +1,9 @@
+utils::globalVariables(c("."))
+
 #' Return active/historic administrative calls data
 #' @description Make a request to the api/v2/administrativecalls endpoints to locate active or historical administrative calls by division, location WDID, or call number within a specified date range.
-#' @param division numeric, indicating the water division to query
-#' @param location_wdid numeric, call location structure WDID
+#' @param division character or numeric, indicating the water division to query
+#' @param location_wdid character or numeric, call location structure WDID
 #' @param call_number numeric, unique call identifier
 #' @param start_date character date to request data start point YYYY-MM-DD
 #' @param end_date character date to request data end point YYYY-MM-DD
@@ -38,25 +40,39 @@ get_admin_calls <- function(
   api_key             = NULL
   ) {
 
-  # check if valid parameters are given
-  if(all(is.null(division), is.null(location_wdid), is.null(call_number))) {
+    # check function arguments for missing/invalid inputs
+    arg_lst <- check_args(
+      arg_lst = as.list(environment()),
+      ignore  = c("api_key", "start_date", "end_date", "active"),
+      f       = "all"
+    )
 
-    stop(paste0("Invalid `division`, 'location_wdid', or 'call_number' arguments"))
+    # if invalid/missing arguments found, stop function
+    if(!is.null(arg_lst)) {
 
-  }
+      stop(arg_lst)
 
-  # whether to retrieve active or historical admin calls.
-  if(active == TRUE) {
+    }
 
-    # Base API URL for Admin calls (ACTIVE)
-    base <- "https://dwr.state.co.us/Rest/GET/api/v2/administrativecalls/active/?"
+    # whether to retrieve active or historical admin calls.
+    if(active == TRUE) {
 
-  } else {
+      # Base API URL for Admin calls (ACTIVE)
+      base <- "https://dwr.state.co.us/Rest/GET/api/v2/administrativecalls/active/?"
 
-    # Base API URL for Admin calls (HISTORICAL)
-    base <- "https://dwr.state.co.us/Rest/GET/api/v2/administrativecalls/historical/?"
+    } else {
 
-  }
+      # Base API URL for Admin calls (HISTORICAL)
+      base <- "https://dwr.state.co.us/Rest/GET/api/v2/administrativecalls/historical/?"
+
+    }
+
+    # convert arguments to characters if necessary
+    division      <- null_convert(division)
+    location_wdid <- null_convert(location_wdid)
+    call_number   <- null_convert(call_number)
+
+    # stopifnot(is.character(division) | is.character(location_wdid) | is.character(call_number))
 
     # format multiple location WDID query string
     location_wdid <- collapse_vect(
@@ -145,9 +161,8 @@ get_admin_calls <- function(
         error = function(e) {
 
           message(paste0("Error in data retrieval of administrative calls"))
-          message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
-          message(paste0("Query:\nMinimum division: ", min_division,
-                         "\nMaximum division: ", max_division,
+          message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
+          message(paste0("Query:\nDivision: ", division,
                          "\nStart date: ", start_date,
                          "\nEnd date: ", end_date,
                          "\nLocation WDID(s): ", location_wdid))
@@ -188,4 +203,3 @@ get_admin_calls <- function(
     # return final binded dataframe
     return(data_df)
 }
-

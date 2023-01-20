@@ -1,4 +1,5 @@
-  #' Return climate stations frost dates
+utils::globalVariables(c("."))
+#' Return climate stations frost dates
   #' @description Make a request to the /climatedata/climatestationfrostdates endpoint to retrieve climate stations frost dates data by station number within a given date range (start and end dates)
   #' @param station_number character, climate data station number
   #' @param start_date character date to request data start point YYYY-MM-DD
@@ -15,13 +16,25 @@
       api_key             = NULL
   ) {
 
-    # check if parameter is valid
-    if(is.null(station_number)) {
-      stop(paste0("Invalid `station_number` argument"))
+    # check function arguments for missing/invalid inputs
+    arg_lst <- check_args(
+      arg_lst = as.list(environment()),
+      ignore  = c("api_key", "start_date", "end_date"),
+      f       = "any"
+    )
+
+    # if invalid/missing arguments found, stop function
+    if(!is.null(arg_lst)) {
+
+      stop(arg_lst)
+
     }
 
     # base API URL
     base <- "https://dwr.state.co.us/Rest/GET/api/v2/climatedata/climatestationfrostdates/?"
+
+    # convert arguments to characters if necessary
+    station_number       <- null_convert(station_number)
 
     # reformat and extract valid start date
     start <- parse_date(
@@ -41,7 +54,7 @@
     page_size  <- 50000
 
     # initialize empty dataframe to store data from multiple pages
-    data_df    <-  data.frame()
+    data_df    <- data.frame()
 
     # initialize first page index
     page_index <- 1
@@ -59,8 +72,8 @@
       url <- paste0(
         base,
         "format=json&dateFormat=spaceSepToSeconds",
-        "&min-calYear=", start_year,
-        "&max-calYear=", end_year,
+        "&min-calYear=", start,
+        "&max-calYear=", end,
         "&stationNum=", station_number,
         "&pageSize=", page_size,
         "&pageIndex=", page_index
@@ -90,7 +103,7 @@
         },
         error = function(e) {
           message(paste0("Error in climate station frost date query"))
-          message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+          message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
           message(paste0("Query:\n----------------------------------",
                          "\nStation number: ", station_number,
                          "\nStart date: ", start_date,

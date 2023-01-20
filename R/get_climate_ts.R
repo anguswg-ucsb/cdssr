@@ -1,3 +1,4 @@
+utils::globalVariables(c("."))
 #' Return daily climate data
 #' @description Make a request to the /climatedata/climatestationtsday endpoint to retrieve climate stations daily time series data by station number, or Site IDs within a given date range (start and end dates)
 #' @param station_number character, climate data station number
@@ -19,10 +20,17 @@ get_climate_ts_day <- function(
     api_key             = NULL
 ) {
 
-  # check if valid parameters are given
-  if(all(is.null(station_number), is.null(site_id))) {
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key", "start_date", "end_date"),
+    f       = "all"
+  )
 
-    stop(paste0("Invalid 'station_number' or 'site_id' arguments"))
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
 
   }
 
@@ -35,6 +43,9 @@ get_climate_ts_day <- function(
 
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/climatedata/climatestationtsday/?"
+
+  # convert arguments to characters if necessary
+  station_number  <- null_convert(station_number)
 
   # format multiple site_id query string
   site_id <- collapse_vect(
@@ -113,7 +124,7 @@ get_climate_ts_day <- function(
       },
       error = function(e) {
         message(paste0("Error in climate data daily timeseries query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nStart date: ", start_date,
                        "\nEnd date: ", end_date,
@@ -179,10 +190,17 @@ get_climate_ts_month <- function(
     api_key             = NULL
 ) {
 
-  # check if valid parameters are given
-  if(all(is.null(station_number), is.null(site_id))) {
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key", "start_date", "end_date"),
+    f       = "all"
+  )
 
-    stop(paste0("Invalid 'station_number' or 'site_id' arguments"))
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
 
   }
 
@@ -195,6 +213,9 @@ get_climate_ts_month <- function(
 
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/climatedata/climatestationtsmonth/?"
+
+  # convert arguments to characters if necessary
+  station_number  <- null_convert(station_number)
 
   # format multiple site_id query string
   site_id <- collapse_vect(
@@ -273,7 +294,7 @@ get_climate_ts_month <- function(
       },
       error = function(e) {
         message(paste0("Error in climate data monthly timeseries query"))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\n----------------------------------",
                        "\nStart date: ", start_date,
                        "\nEnd date: ", end_date,
@@ -380,6 +401,23 @@ get_climate_ts <- function(
     api_key             = NULL
 ) {
 
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key", "start_date", "end_date", "timescale"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
+
+  }
+
+  # convert arguments to characters if necessary
+  station_number  <- null_convert(station_number)
+
   # list of valid timescales
   day_lst       <- c("day", "days", "daily", "d")
   month_lst     <- c("month", "months", "monthly", "mon", "mons", "m")
@@ -389,20 +427,20 @@ get_climate_ts <- function(
   if(is.null(timescale)) {
 
     # set timescale to "day"
-    timescale = "day"
+    timescale <- "day"
 
   }
 
   # convert timescale to lowercase
   timescale <- tolower(timescale)
 
-  # check if type is correctly inputed
+  # check if type is correctly provided
   if(!timescale %in% timescale_lst) {
 
-    stop(paste0("Invalid `timescale` argument: ", timescale,
-                "\n Please enter one of the following valid timescales:\n",
-                paste(c(day_lst), collapse = ", "),  "\n",
-                paste(c(month_lst), collapse = ", ")
+    stop(paste0("Invalid `timescale` argument: '", timescale, "'",
+                "\nPlease enter one of the following valid timescales:",
+                "\n", paste0("'", c(day_lst), "'", collapse = ", "),
+                "\n", paste0("'", c(month_lst), "'", collapse = ", ")
                 )
     )
   }

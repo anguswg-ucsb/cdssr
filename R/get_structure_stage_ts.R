@@ -1,3 +1,4 @@
+utils::globalVariables(c("."))
 #' Return Structure stage/volume Records
 #' @description Make a request to the api/v2/structures/divrec/stagevolume/ endpoint to retrieve structure stage/volume data for a specified WDID within a specified date range.
 #' @param wdid character indicating WDID code of structure
@@ -29,9 +30,18 @@ get_structure_stage_ts <- function(
     api_key         = NULL
 ) {
 
-  # check if valid WDID was entered
-  if(is.null(wdid)) {
-    stop(paste0("Invalid 'wdid' argument\nPlease enter a valid WDID"))
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key", "start_date", "end_date"),
+    f       = "all"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
+
   }
 
   # if more than one WDID is provided, use the first WDID
@@ -41,6 +51,9 @@ get_structure_stage_ts <- function(
 
   # Base API URL for Daily Diversion Records
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/stagevolume/?"
+
+  # convert arguments to characters if necessary
+  wdid    <- null_convert(wdid)
 
   # reformat and extract valid start date
   start <- parse_date(
@@ -110,10 +123,8 @@ get_structure_stage_ts <- function(
 
       },
       error = function(e) {
-
-        # message(paste0("Error in data retrieval at WDID: ", wdid, "\nPerhaps the URL address is incorrect OR there are no data available.\n"))
         message(paste0("Error in data retrieval at WDID: ", wdid))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\nWDID: ", wdid,
                        "\nStart date: ", start_date,
                        "\nEnd date: ", end_date))

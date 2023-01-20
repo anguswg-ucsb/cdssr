@@ -15,9 +15,9 @@ get_admin_calls(
 )
 }
 \arguments{
-\item{division}{numeric, indicating the water division to query}
+\item{division}{character or numeric, indicating the water division to query}
 
-\item{location_wdid}{numeric, call location structure WDID}
+\item{location_wdid}{character or numeric, call location structure WDID}
 
 \item{call_number}{numeric, unique call identifier}
 

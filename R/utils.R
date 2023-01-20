@@ -1,112 +1,81 @@
-#' Locate all CDSS API Endpoints
-#' @description Returns a dataframe with the API endpoints for CDSS REST services
-#' @importFrom magrittr `%>%`
-#' @importFrom rvest read_html html_nodes html_table
-#' @return dataframe with API endpoint names, URLs and descriptions of each CDSS resource
-browse_api <- function() {
-
-  # base CDSS REST API URL
-  base_url <- "https://dwr.state.co.us/Rest/"
-
-  # URL to endpoints
-  catalog_url <- "https://dwr.state.co.us/rest/get/help"
-
-  # URL to endpoints
-  catalog_url  <- url(
-    paste0("https://dwr.state.co.us/rest/get/help"),
-    "rb"
-  )
-
-  # page with table of API endpoints
-  page <- rvest::read_html(catalog_url)
-
-  # close URL connection
-  close(catalog_url)
-
-  # extract endpoint tables
-  api_endpoints <-
-    page %>%
-    rvest::html_nodes("table") %>%
-    rvest::html_table() %>%
-    .[c(3:17)] %>%
-    do.call(rbind, .)
-
-  # add endpoint column
-  api_endpoints$endpoint     <- gsub("GET ", "", api_endpoints$API)
-
-  # add URL column
-  api_endpoints$url          <- paste0(base_url, "GET/", api_endpoints$endpoint)
-
-  # select columns
-  api_endpoints              <- api_endpoints[, c("Url Generator", "Description", "endpoint", "url")]
-
-  # set names
-  names(api_endpoints)       <- c("resource", "description", "endpoint", "url")
-
-  # add URL column
-  api_endpoints$endpoint_url <- paste0("https://dwr.state.co.us/Rest/GET/Help/Api/GET-", gsub("/", "-", api_endpoints$endpoint))
-
-  return(api_endpoints)
-
-}
-
-#' Request meta data for a CDSS API endpoint
-#' @description Returns the names, descriptions, and types for each response field for a given API endpoint
-#' @param endpoint_url character. URL to CDSS API REST Help page detailing the return fields for each endpoint. This URL can be found in the dataframe returned by the browse_api function
-#' @param endpoint_path character. full path name of CDSS API resource
-#' @importFrom magrittr `%>%`
-#' @importFrom rvest read_html html_nodes html_elements html_table
-#' @return dataframe with the endpoint name, field name, a description, the data type, and the endpoint URL
-get_resource_meta <- function(
-    endpoint_url  = NULL,
-    endpoint_path = NULL
+#' Check all arguments of a function for any/all NULL values
+#' @description Internal utils function for checking a function arguments for any/all invalid/missing arguments necessary to the function it is called within
+#' @param arg_lst list of function arguments by calling 'as.list(environment())'
+#' @param ignore character vector of function arguments to ignore NULL check
+#' @param f character, either "any" or "all" to indicate whether to check for "any" or "all" NULL argument. If "any" then if any of the function arguments are NULL, then an error is thrown. If "all" then all relevant arguments must be NULL for an error to be thrown. Defaults to "any"
+#'
+#' @return character error statement with NULL arguments listed, or NULL if no error is thrown by NULL values
+check_args <- function(
+    arg_lst = NULL,
+    ignore  = NULL,
+    f       = "any"
 ) {
 
-  # stop if no URL is given
-  if(any(is.null(endpoint_url), is.null(endpoint_path))) {
+  # if no function arguments are given, throw an error
+  if(is.null(arg_lst)) {
 
-    stop(paste0("\nInvalid 'endpoint_url' and/or 'endpoint_path'.\n Enter a URL of the following structure:\nhttps://dwr.state.co.us/Rest/GET/Help/Api/GET-<insert-name-of-api-resource>"))
+    stop(paste0("provide a list of function arguments by calling 'as.list(environment())', within another function"))
+
+  } else {
+
+    # make sure provided function is either "any" or "all"
+    if(!f %in% c("any", "all")) {
+
+      stop(paste0("Invalid 'f' argument, provide either 'any' or 'all' functions to 'f' argument"))
+
+    }
+
+    # match user provided function
+    f <- match.fun(f)
+
+    # if certain arguments are specifically supposed to be ignored
+    if(!is.null(ignore)) {
+
+      # remove "api_key" from possible arguments
+      args <- arg_lst[!names(arg_lst) %in% ignore]
+      # args <- arg_lst[names(arg_lst) != ignore]
+
+    } else {
+
+      args <- arg_lst
+
+    }
+
+    # if any/all arguments are NULL, return an error statement. Otherwise return NULL if NULL check is passed
+    if(f(sapply(args, is.null))) {
+
+      return(paste0("Invalid or missing ", paste0("'", c(names(args[sapply(args, is.null)])), "'", collapse = ", "), " arguments"))
+
+    } else {
+
+      return(NULL)
+
+
+    }
 
   }
 
-  message(paste0("Getting meta data - ", endpoint_path))
+}
 
-  # Construct URL
-  parse_url  <- url(
-    paste0(endpoint_url),
-    "rb"
-  )
+#' Convert non NULL list/vectors to characters
+#' @description Internal function for converting non NULL lists/vectors to characters. When NULL is provided, NULL is returned.
+#' @param x list, or vector to convert to character
+#' @return character list/vector of the same length as x
+null_convert <- function(x) {
 
-  # read HTML from API Parameter Help page
-  field_page <- rvest::read_html(parse_url)
+  # if NULL is given, return NULL, otherwise convert to character
+  if(is.null(x)) {
 
-  # close URL connection
-  close(parse_url)
+    return(NULL)
 
-  # extract help table detailing endpoint parameters
-  field_tbl <-
-    field_page %>%
-    rvest::html_nodes("table") %>%
-    rvest::html_elements(xpath = "//*[@class = 'help-page-table']") %>%
-    rvest::html_table() %>%
-    do.call(rbind, .)
+  } else {
 
-  # rename columns
-  names(field_tbl) <- tolower(names(field_tbl))
+    x <- as.character(x)
 
-  # add endpoint path column
-  field_tbl$endpoint <- endpoint_path
+    return(x)
 
-  # add endpoint URL column
-  field_tbl$endpoint_url <- endpoint_url
+  }
 
-  # reorder columns
-  field_tbl <- field_tbl[c("endpoint", "name", "description", "type", "endpoint_url")]
-
-  # rename columns
-  names(field_tbl) <- c("endpoint", "name", "description", "type", "endpoint_url")
-
-  return(field_tbl)
 }
 
 #' Collapse a list/vector with a given separator into a single string
@@ -125,6 +94,10 @@ collapse_vect <- function(
     return(NULL)
 
   }
+
+  # convert to character
+  x <- as.character(x)
+
   # if vect is a list, unlist it
   if(is.list(x)) {
 
@@ -718,3 +691,158 @@ aoi_mask <- function(
   }
 
 }
+
+#' Locate all CDSS API Endpoints
+#' @description Returns a dataframe with the API endpoints for CDSS REST services
+#' @importFrom magrittr `%>%`
+#' @importFrom rvest read_html html_nodes html_table
+#' @return dataframe with API endpoint names, URLs and descriptions of each CDSS resource
+browse_api <- function() {
+
+  # base CDSS REST API URL
+  base_url <- "https://dwr.state.co.us/Rest/"
+
+  # URL to endpoints
+  catalog_url <- "https://dwr.state.co.us/rest/get/help"
+
+  # URL to endpoints
+  catalog_url  <- url(
+    paste0("https://dwr.state.co.us/rest/get/help"),
+    "rb"
+  )
+
+  # page with table of API endpoints
+  page <- rvest::read_html(catalog_url)
+
+  # close URL connection
+  close(catalog_url)
+
+  # extract endpoint tables
+  api_endpoints <-
+    page %>%
+    rvest::html_nodes("table") %>%
+    rvest::html_table() %>%
+    .[c(3:17)] %>%
+    do.call(rbind, .)
+
+  # add endpoint column
+  api_endpoints$endpoint     <- gsub("GET ", "", api_endpoints$API)
+
+  # add URL column
+  api_endpoints$url          <- paste0(base_url, "GET/", api_endpoints$endpoint)
+
+  # select columns
+  api_endpoints              <- api_endpoints[, c("Url Generator", "Description", "endpoint", "url")]
+
+  # set names
+  names(api_endpoints)       <- c("resource", "description", "endpoint", "url")
+
+  # add URL column
+  api_endpoints$endpoint_url <- paste0("https://dwr.state.co.us/Rest/GET/Help/Api/GET-", gsub("/", "-", api_endpoints$endpoint))
+
+  return(api_endpoints)
+
+}
+
+#' Request meta data for a CDSS API endpoint
+#' @description Returns the names, descriptions, and types for each response field for a given API endpoint
+#' @param endpoint_url character. URL to CDSS API REST Help page detailing the return fields for each endpoint. This URL can be found in the dataframe returned by the browse_api function
+#' @param endpoint_path character. full path name of CDSS API resource
+#' @importFrom magrittr `%>%`
+#' @importFrom rvest read_html html_nodes html_elements html_table
+#' @return dataframe with the endpoint name, field name, a description, the data type, and the endpoint URL
+get_resource_meta <- function(
+    endpoint_url  = NULL,
+    endpoint_path = NULL
+) {
+
+  # stop if no URL is given
+  if(any(is.null(endpoint_url), is.null(endpoint_path))) {
+
+    stop(paste0("\nInvalid 'endpoint_url' and/or 'endpoint_path'.\n Enter a URL of the following structure:\nhttps://dwr.state.co.us/Rest/GET/Help/Api/GET-<insert-name-of-api-resource>"))
+
+  }
+
+  message(paste0("Getting meta data - ", endpoint_path))
+
+  # Construct URL
+  parse_url  <- url(
+    paste0(endpoint_url),
+    "rb"
+  )
+
+  # read HTML from API Parameter Help page
+  field_page <- rvest::read_html(parse_url)
+
+  # close URL connection
+  close(parse_url)
+
+  # extract help table detailing endpoint parameters
+  field_tbl <-
+    field_page %>%
+    rvest::html_nodes("table") %>%
+    rvest::html_elements(xpath = "//*[@class = 'help-page-table']") %>%
+    rvest::html_table() %>%
+    do.call(rbind, .)
+
+  # rename columns
+  names(field_tbl) <- tolower(names(field_tbl))
+
+  # add endpoint path column
+  field_tbl$endpoint <- endpoint_path
+
+  # add endpoint URL column
+  field_tbl$endpoint_url <- endpoint_url
+
+  # reorder columns
+  field_tbl <- field_tbl[c("endpoint", "name", "description", "type", "endpoint_url")]
+
+  # rename columns
+  names(field_tbl) <- c("endpoint", "name", "description", "type", "endpoint_url")
+
+  return(field_tbl)
+}
+
+
+# convert_args <- function(
+    #     arg_lst = NULL,
+#     ignore  = NULL,
+#     f       = "as.character"
+# ) {
+#
+#   # if no function arguments are given, throw an error
+#   if(is.null(arg_lst)) {
+#
+#     stop(paste0("provide a list of function arguments by calling 'as.list(environment())', within another function"))
+#
+#   } else {
+#
+#     # make sure provided function is "as.character", "as.numeric", or "as.integer"
+#     if(!f %in% c("as.character", "as.numeric", "as.integer")) {
+#
+#       stop(paste0("Invalid 'f' argument, provide either 'as.character', 'as.numeric', or 'as.integer' functions to 'f' argument"))
+#
+#     }
+#
+#     # match user provided function
+#     f <- match.fun(f)
+#
+#     # if certain arguments are specifically supposed to be ignored
+#     if(!is.null(ignore)) {
+#
+#       # remove "api_key" from possible arguments
+#       args <- arg_lst[!names(arg_lst) %in% ignore]
+#
+#     } else {
+#
+#       args <- arg_lst
+#
+#     }
+#
+#     args <- rapply(args, f = f, how = "replace")
+#
+#     return(args)
+#
+#   }
+#
+# }

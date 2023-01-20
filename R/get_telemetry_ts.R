@@ -1,3 +1,4 @@
+utils::globalVariables(c("."))
 #' Return Telemetry station time series data
 #' @description Make a request to the /telemetrystations/telemetrytimeseries endpoint to retrieve raw, hourly, or daily telemetry station time series data by station abbreviations, within a given date range (start and end dates).
 #' @param abbrev character indicating station abbreviation
@@ -14,7 +15,7 @@
 #' @export
 #' @examples
 #' # Retrieve daily discharge for CLAFTCCO telemetry station
-#' ts <- get_telemetry_ts(
+#' telem_ts <- get_telemetry_ts(
 #'            abbrev              = "CLAFTCCO",
 #'            parameter           = "DISCHRG",
 #'            start_date          = "2015-01-01",
@@ -22,10 +23,10 @@
 #'            timescale           = "day",
 #'            include_third_party = TRUE
 #'            )
-#' ts
+#' telem_ts
 #'
 #' # Plot daily discharge data
-#' plot(ts$meas_value~ts$datetime, type = "l")
+#' plot(telem_ts$meas_value~telem_ts$datetime, type = "l")
 get_telemetry_ts <- function(
     abbrev              = NULL,
     parameter           = "DISCHRG",
@@ -37,11 +38,49 @@ get_telemetry_ts <- function(
 ) {
 
   # check if valid abbreviation was given
-  if(is.null(abbrev)) {
+  # if(is.null(abbrev)) {
+  #
+  #   stop(paste0("Invalid 'abbrev' argument"))
+  #
+  # }
 
-    stop(paste0("Invalid 'abbrev' argument"))
+  # check function arguments for missing/invalid inputs
+  arg_lst <- check_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("api_key", "parameter", "start_date", "end_date", "timescale"),
+    f       = "any"
+  )
+
+  # if invalid/missing arguments found, stop function
+  if(!is.null(arg_lst)) {
+
+    stop(arg_lst)
 
   }
+
+  # list of valid timescales
+  timescale_lst <- c("raw", "hour", "day")
+
+  # check if type is NULL, default timescale to "day"
+  if(is.null(timescale)) {
+
+    # set timescale to "day"
+    timescale <- "day"
+
+  }
+
+  # convert timescale to lowercase
+  timescale <- tolower(timescale)
+
+  # check if type is correctly inputted
+  if(!timescale %in% timescale_lst) {
+
+    stop(paste0("Invalid `timescale` argument: ", timescale,
+                "\nPlease enter one of the following valid timescales:\n",
+                paste0("'", c(timescale_lst), "'", collapse = ", ")
+                )
+      )
+    }
 
   # Base API URL for Daily Diversion Records
   base <- paste0("https://dwr.state.co.us/Rest/GET/api/v2/telemetrystations/telemetrytimeseries", timescale, "/?")
@@ -80,24 +119,24 @@ get_telemetry_ts <- function(
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
 
-    # Set correct name of date field for querying raw data
-    if(timescale == "raw") {
-
-      # raw date field name
-      date_field <- "measDateTime"
-
-    } else {
-
-      # hour and day date field name
-      date_field <- "measDate"
-
-    }
+    # # Set correct name of date field for querying raw data
+    # if(timescale == "raw") {
+    #
+    #   # raw date field name
+    #   date_field <- "measDateTime"
+    #
+    # } else {
+    #
+    #   # hour and day date field name
+    #   date_field <- "measDate"
+    #
+    # }
 
     # Construct query URL w/o API key
     url <- paste0(
       base,
       "format=json&dateFormat=spaceSepToSeconds",
-      "&fields=abbrev%2Cparameter%2C", date_field, "%2CmeasValue%2CmeasUnit",
+      # "&fields=abbrev%2Cparameter%2C", date_field, "%2CmeasValue%2CmeasUnit",
       "&abbrev=", abbrev,
       "&endDate=", end,
       "&startDate=", start,
@@ -131,7 +170,7 @@ get_telemetry_ts <- function(
       error = function(e) {
 
         message(paste0("Error in data retrieval at telemetry station: ", abbrev))
-        message(paste0("Perhaps the URL address is incorrect OR there are no data available."))
+        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
         message(paste0("Query:\nTelemetry station: ", abbrev,
                        "\nStart date: ", start_date,
                        "\nEnd date: ", end_date,
@@ -156,14 +195,6 @@ get_telemetry_ts <- function(
       cdss_data$datetime   <- as.POSIXct(cdss_data$meas_date_time, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
       cdss_data$timescale  <- timescale
 
-      # rename columns for raw data return
-      # cdss_data <-
-      #   cdss_data %>%
-      #   dplyr::rename(
-      #     "date"  = "measDateTime",
-      #     "value" = "measValue",
-      #     "unit"  = "measUnit"
-      #     )
 
     } else {
 
@@ -174,25 +205,8 @@ get_telemetry_ts <- function(
       cdss_data$datetime   <- as.POSIXct(cdss_data$meas_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
       cdss_data$timescale  <- timescale
 
-      # rename columns for hour and day data return
-      # cdss_data <-
-      #   cdss_data %>%
-      #   dplyr::rename(
-      #     "date"  = "measDate",
-      #     "value" = "measValue",
-      #     "unit"  = "measUnit"
-      #     )
 
     }
-
-    # Tidy data
-    # cdss_data <-
-    #   cdss_data %>%
-    #   dplyr::mutate(
-    #     datetime   = as.POSIXct(date, format="%Y-%m-%d %H:%M:%S", tz = "UTC"),
-    #     timescale  = timescale
-    #   ) %>%
-    #   janitor::clean_names()
 
     # bind data from this page
     data_df <- dplyr::bind_rows(data_df, cdss_data)
