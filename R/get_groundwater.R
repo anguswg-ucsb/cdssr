@@ -11,7 +11,6 @@ utils::globalVariables(c("."))
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows
 #' @return dataframe of groundwater wells within the given query specifications
 #' @export
 #' @examples
@@ -30,9 +29,12 @@ get_gw_wl_wells <- function(
     api_key             = NULL
 ) {
 
+  # list of function inputs
+  input_args <- as.list(environment())
+
   # check function arguments for missing/invalid inputs
   arg_lst <- check_args(
-    arg_lst = as.list(environment()),
+    arg_lst = input_args,
     ignore  = c("api_key"),
     f       = "all"
   )
@@ -116,39 +118,30 @@ get_gw_wl_wells <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
+    tryCatch({
 
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      },
-      error = function(e) {
+    },
+    error = function(e) {
 
-        message(paste0("Error in groundwater water levels wells data search query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\n----------------------------------",
-                       "\nDivision: ", division,
-                       "\nWater District: ", water_district,
-                       "\nDesignated Basin: ", designated_basin,
-                       "\nManagement District: ", management_district,
-                       "\nCounty: ", county,
-                       "\nWell ID: ", wellid))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
 
-      }
-    )
+      stop()
+
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
@@ -157,7 +150,7 @@ get_gw_wl_wells <- function(
     cdss_data$datetime <-  as.POSIXct(cdss_data$measurement_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -184,7 +177,6 @@ get_gw_wl_wells <- function(
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows
 #' @return dataframe of groundwater wells within the given query specifications
 #' @export
 #' @examples
@@ -202,9 +194,12 @@ get_gw_wl_wellmeasures <- function(
     api_key          = NULL
 ) {
 
+  # list of function inputs
+  input_args <- as.list(environment())
+
   # check function arguments for missing/invalid inputs
   arg_lst <- check_args(
-    arg_lst = as.list(environment()),
+    arg_lst = input_args,
     ignore  = c("api_key", "start_date", "end_date"),
     f       = "all"
   )
@@ -274,37 +269,30 @@ get_gw_wl_wellmeasures <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
+    tryCatch({
 
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      },
-      error = function(e) {
+    },
+    error = function(e) {
 
-        message(paste0("Error in data retrieval of groundwater well measurements"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\n----------------------------------\nWell ID: ", wellid,
-                       "\nStart date: ", start_date,
-                       "\nEnd date: ", end_date
-                       )
-                )
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
 
-      }
-    )
+      stop()
+
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
@@ -313,7 +301,7 @@ get_gw_wl_wellmeasures <- function(
     cdss_data$datetime <-  as.POSIXct(cdss_data$measurement_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -343,7 +331,6 @@ get_gw_wl_wellmeasures <- function(
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows
 #' @return dataframe of groundwater wells within the given query specifications
 #' @export
 #' @examples
@@ -362,9 +349,12 @@ get_gw_gplogs_wells <- function(
     api_key             = NULL
 ) {
 
+  # list of function inputs
+  input_args <- as.list(environment())
+
   # check function arguments for missing/invalid inputs
   arg_lst <- check_args(
-    arg_lst = as.list(environment()),
+    arg_lst = input_args,
     ignore  = c("api_key"),
     f       = "all"
   )
@@ -448,39 +438,30 @@ get_gw_gplogs_wells <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
+    tryCatch({
 
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      },
-      error = function(e) {
+    },
+    error = function(e) {
 
-        message(paste0("Error in groundwater geophysical logs well data search query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\n----------------------------------",
-                       "\nDivision: ", division,
-                       "\nWater District: ", water_district,
-                       "\nDesignated Basin: ", designated_basin,
-                       "\nManagement District: ", management_district,
-                       "\nCounty: ", county,
-                       "\nWell ID: ", wellid))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
 
-      }
-    )
+      stop()
+
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data)   <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
@@ -489,7 +470,7 @@ get_gw_gplogs_wells <- function(
     cdss_data$datetime <- as.POSIXct(cdss_data$log_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -514,7 +495,6 @@ get_gw_gplogs_wells <- function(
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows
 #' @return dataframe of groundwater geophysical log picks for a given well ID
 #' @export
 #' @examples
@@ -528,9 +508,12 @@ get_gw_gplogs_geologpicks <- function(
     api_key             = NULL
 ) {
 
+  # list of function inputs
+  input_args <- as.list(environment())
+
   # check function arguments for missing/invalid inputs
   arg_lst <- check_args(
-    arg_lst = as.list(environment()),
+    arg_lst = input_args,
     ignore  = c("api_key"),
     f       = "all"
   )
@@ -584,41 +567,36 @@ get_gw_gplogs_geologpicks <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
+    tryCatch({
 
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      },
-      error = function(e) {
+    },
+    error = function(e) {
 
-        message(paste0("Error in groundwater geophysical log picks well data search query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\n----------------------------------",
-                       "\nWell ID: ", wellid)
-                )
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
 
-      }
-    )
+      stop()
+
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data)   <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {

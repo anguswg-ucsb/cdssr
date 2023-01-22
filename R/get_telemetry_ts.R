@@ -10,7 +10,6 @@ utils::globalVariables(c("."))
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe with telemetry station time series data
 #' @export
 #' @examples
@@ -37,16 +36,12 @@ get_telemetry_ts <- function(
     api_key             = NULL
 ) {
 
-  # check if valid abbreviation was given
-  # if(is.null(abbrev)) {
-  #
-  #   stop(paste0("Invalid 'abbrev' argument"))
-  #
-  # }
+  # list of function inputs
+  input_args <- as.list(environment())
 
   # check function arguments for missing/invalid inputs
   arg_lst <- check_args(
-    arg_lst = as.list(environment()),
+    arg_lst = input_args,
     ignore  = c("api_key", "parameter", "start_date", "end_date", "timescale"),
     f       = "any"
   )
@@ -119,19 +114,6 @@ get_telemetry_ts <- function(
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
 
-    # # Set correct name of date field for querying raw data
-    # if(timescale == "raw") {
-    #
-    #   # raw date field name
-    #   date_field <- "measDateTime"
-    #
-    # } else {
-    #
-    #   # hour and day date field name
-    #   date_field <- "measDate"
-    #
-    # }
-
     # Construct query URL w/o API key
     url <- paste0(
       base,
@@ -155,35 +137,30 @@ get_telemetry_ts <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+    tryCatch({
+
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
       },
       error = function(e) {
 
-        message(paste0("Error in data retrieval at telemetry station: ", abbrev))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\nTelemetry station: ", abbrev,
-                       "\nStart date: ", start_date,
-                       "\nEnd date: ", end_date,
-                       "\nParameter: ", parameter))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
+        # error message handler
+        message(
+          query_error(
+            arg_lst = input_args,
+            ignore  = c("url", "e"),
+            url     = url,
+            e_msg   = e
+            )
+          )
+
         stop()
 
-      }
-    )
+        })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # Standardize names
     if(timescale == "raw") {
@@ -209,7 +186,8 @@ get_telemetry_ts <- function(
     }
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
+    # data_df <- dplyr::bind_rows(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {

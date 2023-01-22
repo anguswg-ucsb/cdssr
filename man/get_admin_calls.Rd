@@ -25,7 +25,7 @@ get_admin_calls(
 
 \item{end_date}{character date to request data end point YYYY-MM-DD}
 
-\item{active}{logical, whether to get active or historical administrative calls. Default iS TRUE and will retrieve active administrative calls.}
+\item{active}{logical, whether to get active or historical administrative calls. Default is TRUE, which will retrieve active administrative calls.}
 
 \item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }

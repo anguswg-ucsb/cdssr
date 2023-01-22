@@ -10,11 +10,11 @@ utils::globalVariables(c("."))
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of water right net amounts
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Water right net amounts within a county
 #' county_net <- get_water_rights_netamount(county = "Adams")
 #'
@@ -36,6 +36,7 @@ utils::globalVariables(c("."))
 #'                   )
 #'
 #'  aoi_net
+#'  }
 get_water_rights_netamount <- function(
     aoi                 = NULL,
     radius              = NULL,
@@ -46,15 +47,12 @@ get_water_rights_netamount <- function(
     api_key             = NULL
 ) {
 
-  # check if valid wdid and admin_no were given
-  # if(all(is.null(aoi), is.null(county), is.null(division), is.null(water_district), is.null(wdid))) {
-  #   stop(paste0("Invalid 'aoi', 'county', 'division', 'water_district' or 'wdid' arguments"))
-  # }
-  #
+  # list of function inputs
+  input_args <- as.list(environment())
 
   # check function arguments for missing/invalid inputs
   arg_lst <- check_args(
-    arg_lst = as.list(environment()),
+    arg_lst = input_args,
     ignore  = c("api_key"),
     f       = "all"
   )
@@ -137,45 +135,36 @@ get_water_rights_netamount <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+    tryCatch({
 
-      },
-      error = function(e) {
-        message(paste0("Error in water rights net amounts data query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\n----------------------------------",
-                       "\nCounty: ", county,
-                       "\nDivision: ", division,
-                       "\nWater district: ", water_district,
-                       "\nWDID: ", wdid,
-                       "\nLatitude: ", lat,
-                       "\nLongitude: ", lng,
-                       "\nRadius ", radius
-        ))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      }
-    )
+    },
+    error = function(e) {
+
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
+
+      stop()
+
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -212,12 +201,11 @@ get_water_rights_netamount <- function(
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of water right transactions
 #' @export
 #'
 #' @examples
-#'
+#' \dontrun{
 #' # Water right transactions within a county
 #' county_wr <- get_water_rights_trans(county = "Adams")
 #'
@@ -239,7 +227,7 @@ get_water_rights_netamount <- function(
 #'                   radius = 20
 #'                   )
 #' aoi_wr
-#'
+#' }
 get_water_rights_trans <- function(
     aoi                 = NULL,
     radius              = NULL,
@@ -250,14 +238,12 @@ get_water_rights_trans <- function(
     api_key             = NULL
 ) {
 
-  # check if valid wdid and admin_no were given
-  # if(all(is.null(aoi), is.null(county), is.null(division), is.null(water_district), is.null(wdid))) {
-  #   stop(paste0("Invalid 'aoi', 'county', 'division', 'water_district' or 'wdid' arguments"))
-  # }
+  # list of function inputs
+  input_args <- as.list(environment())
 
   # check function arguments for missing/invalid inputs
   arg_lst <- check_args(
-    arg_lst = as.list(environment()),
+    arg_lst = input_args,
     ignore  = c("api_key"),
     f       = "all"
   )
@@ -340,45 +326,36 @@ get_water_rights_trans <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+    tryCatch({
 
-      },
-      error = function(e) {
-        message(paste0("Error in water rights transaction data query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\n----------------------------------",
-                       "\nCounty: ", county,
-                       "\nDivision: ", division,
-                       "\nWater district: ", water_district,
-                       "\nWDID: ", wdid,
-                       "\nLatitude: ", lat,
-                       "\nLongitude: ", lng,
-                       "\nRadius ", radius
-        ))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      }
-    )
+    },
+    error = function(e) {
+
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
+
+      stop()
+
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {

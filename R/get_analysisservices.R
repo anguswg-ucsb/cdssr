@@ -10,7 +10,6 @@ utils::globalVariables(c("."))
 #' @return dataframe of call services by WDID
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @export
 get_call_analysis_wdid <- function(
     wdid                = NULL,
@@ -20,9 +19,12 @@ get_call_analysis_wdid <- function(
     api_key             = NULL
 ) {
 
+  # list of function inputs
+  input_args <- as.list(environment())
+
   # check function arguments for missing/invalid inputs
   arg_lst <- check_args(
-    arg_lst = as.list(environment()),
+    arg_lst = input_args,
     ignore  = c("api_key", "start_date", "end_date"),
     f       = "any"
   )
@@ -96,41 +98,37 @@ get_call_analysis_wdid <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+    tryCatch({
 
-      },
-      error = function(e) {
-        message(paste0("Error in call anaylsis by WDID query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\nAdmin number: ", admin_no,
-                       "\nWDID: ", wdid,
-                       "\nStart date: ", start_date,
-                       "\nEnd date: ", end_date
-        ))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      }
-    )
+    },
+    error = function(e) {
+
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
+
+      stop()
+
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
+    # data_df <- dplyr::bind_rows(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -161,7 +159,6 @@ get_call_analysis_wdid <- function(
 #' @return dataframe of call services by GNIS ID
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @export
 get_call_analysis_gnisid <- function(
     gnis_id             = NULL,
@@ -172,9 +169,12 @@ get_call_analysis_gnisid <- function(
     api_key             = NULL
 ) {
 
+  # list of function inputs
+  input_args <- as.list(environment())
+
   # check function arguments for missing/invalid inputs
   arg_lst <- check_args(
-    arg_lst = as.list(environment()),
+    arg_lst = input_args,
     ignore  = c("api_key", "start_date", "end_date"),
     f       = "any"
   )
@@ -250,36 +250,30 @@ get_call_analysis_gnisid <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+    tryCatch({
 
-      },
-      error = function(e) {
-        message(paste0("Error in call anaylsis by GNIS ID query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\nGNIS ID: ", gnis_id,
-                       "\nAdmin number: ", admin_no,
-                       "\nStream mile: ", stream_mile,
-                       "\nStart date: ", start_date,
-                       "\nEnd date: ", end_date
-        ))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      }
-    )
+    },
+    error = function(e) {
+
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
+
+      stop()
+
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
@@ -288,7 +282,8 @@ get_call_analysis_gnisid <- function(
     cdss_data$datetime      <- as.POSIXct(cdss_data$analysis_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
+    # data_df <- dplyr::bind_rows(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -316,7 +311,6 @@ get_call_analysis_gnisid <- function(
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of water source route framework
 #' @export
   get_source_route_framework <- function(
@@ -326,9 +320,12 @@ get_call_analysis_gnisid <- function(
     api_key             = NULL
 ) {
 
+  # list of function inputs
+  input_args <- as.list(environment())
+
   # check function arguments for missing/invalid inputs
   arg_lst <- check_args(
-    arg_lst = as.list(environment()),
+    arg_lst = input_args,
     ignore  = c("api_key"),
     f       = "all"
   )
@@ -386,40 +383,36 @@ get_call_analysis_gnisid <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+    tryCatch({
+
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
       },
       error = function(e) {
-        message(paste0("Error in DWR source route framework query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\nDivision: ", division,
-                       "\nGNIS name: ", gnis_name,
-                       "\nWater district: ", water_district
-        ))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
 
-      }
-    )
+        # error message handler
+        message(
+          query_error(
+            arg_lst = input_args,
+            ignore  = c("url", "e"),
+            url     = url,
+            e_msg   = e
+          )
+        )
+
+       stop()
+      })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
+    # data_df <- dplyr::bind_rows(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -448,7 +441,6 @@ get_call_analysis_gnisid <- function(
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of water source route framework analysis
 #' @export
 get_source_route_analysis<- function(
@@ -459,9 +451,12 @@ get_source_route_analysis<- function(
     api_key             = NULL
 ) {
 
+  # list of function inputs
+  input_args <- as.list(environment())
+
   # check function arguments for missing/invalid inputs
   arg_lst <- check_args(
-    arg_lst = as.list(environment()),
+    arg_lst = input_args,
     ignore  = c("api_key"),
     f       = "any"
   )
@@ -521,41 +516,35 @@ get_source_route_analysis<- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+    tryCatch({
 
-      },
-      error = function(e) {
-        message(paste0("Error in DWR source route analysis"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\nLower Terminus GNIS ID: ", lt_gnis_id,
-                       "\nLower Terminus Stream mile: ", lt_stream_mile,
-                       "\nUpper Terminus GNIS ID: ", ut_gnis_id,
-                       "\nUpper Terminus Stream mile: ", ut_stream_mile
-        ))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      }
-    )
+    },
+    error = function(e) {
+
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
+
+      stop()
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {

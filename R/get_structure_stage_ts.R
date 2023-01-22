@@ -7,7 +7,6 @@ utils::globalVariables(c("."))
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe with stage/volume data for CDSS structure of interest
 #' @export
 #' @examples
@@ -30,9 +29,12 @@ get_structure_stage_ts <- function(
     api_key         = NULL
 ) {
 
+  # list of function inputs
+  input_args <- as.list(environment())
+
   # check function arguments for missing/invalid inputs
   arg_lst <- check_args(
-    arg_lst = as.list(environment()),
+    arg_lst = input_args,
     ignore  = c("api_key", "start_date", "end_date"),
     f       = "all"
   )
@@ -109,42 +111,39 @@ get_structure_stage_ts <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
+    tryCatch({
 
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      },
-      error = function(e) {
-        message(paste0("Error in data retrieval at WDID: ", wdid))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\nWDID: ", wdid,
-                       "\nStart date: ", start_date,
-                       "\nEnd date: ", end_date))
-        message(paste0('Here is the URL address that was queried:'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(e)
-        stop()
+    },
+    error = function(e) {
 
-      }
-    )
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
+
+      stop()
+
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
-    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+    names(cdss_data)   <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # set datetime column
-    cdss_data$datetime <-  as.POSIXct(cdss_data$data_meas_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
+    cdss_data$datetime <- as.POSIXct(cdss_data$data_meas_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df            <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {

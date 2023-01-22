@@ -6,12 +6,14 @@ utils::globalVariables(c("."))
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of Colorado counties
 get_ref_county <- function(
     county              = NULL,
     api_key             = NULL
 ) {
+
+  # list of function inputs
+  input_args <- as.list(environment())
 
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/county/?"
@@ -52,39 +54,35 @@ get_ref_county <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+    tryCatch({
 
-      },
-      error = function(e) {
-        message(paste0("Error in county reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\n----------------------------------",
-                       "\nCounty: ", county
-        ))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      }
-    )
+    },
+    error = function(e) {
+
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
+
+      stop()
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -111,13 +109,15 @@ get_ref_county <- function(
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of Colorado water districts, indicating the division the water district is in and its name
 get_ref_waterdistricts <- function(
     division            = NULL,
     water_district      = NULL,
     api_key             = NULL
 ) {
+
+  # list of function inputs
+  input_args <- as.list(environment())
 
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/waterdistrict/?"
@@ -159,40 +159,35 @@ get_ref_waterdistricts <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+    tryCatch({
 
-      },
-      error = function(e) {
-        message(paste0("Error in water districts reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\n----------------------------------",
-                       "\nDivision: ", division,
-                       "\nWater District: ", water_district
-        ))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      }
-    )
+    },
+    error = function(e) {
+
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
+
+      stop()
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -218,12 +213,14 @@ get_ref_waterdistricts <- function(
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of Colorado water divisions and water division names
 get_ref_waterdivisions <- function(
     division            = NULL,
     api_key             = NULL
 ) {
+
+  # list of function inputs
+  input_args <- as.list(environment())
 
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/waterdivision/?"
@@ -264,39 +261,35 @@ get_ref_waterdivisions <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+    tryCatch({
 
-      },
-      error = function(e) {
-        message(paste0("Error in water division reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\n----------------------------------",
-                       "\nDivision: ", division
-        ))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      }
-    )
+    },
+    error = function(e) {
+
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
+
+      stop()
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -321,12 +314,14 @@ get_ref_waterdivisions <- function(
 #' @param management_district character, (optional) indicating the management district to query, if no management district is given, dataframe of all management districts is returned
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.#' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of Colorado management districts
 get_ref_managementdistricts <- function(
     management_district  = NULL,
     api_key              = NULL
 ) {
+
+  # list of function inputs
+  input_args <- as.list(environment())
 
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/managementdistrict/?"
@@ -367,39 +362,35 @@ get_ref_managementdistricts <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+    tryCatch({
 
-      },
-      error = function(e) {
-        message(paste0("Error in management districts reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\n----------------------------------",
-                       "\nManagement District: ", management_district
-        ))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      }
-    )
+    },
+    error = function(e) {
+
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
+
+      stop()
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -425,12 +416,14 @@ get_ref_managementdistricts <- function(
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of Colorado designated basins
 get_ref_designatedbasins <- function(
     designated_basin    = NULL,
     api_key             = NULL
 ) {
+
+  # list of function inputs
+  input_args <- as.list(environment())
 
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/designatedbasin/?"
@@ -471,39 +464,35 @@ get_ref_designatedbasins <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+    tryCatch({
 
-      },
-      error = function(e) {
-        message(paste0("Error in designated basin reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\n----------------------------------",
-                       "\nDesignated Basin: ", designated_basin
-        ))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      }
-    )
+    },
+    error = function(e) {
+
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
+
+      stop()
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -529,12 +518,14 @@ get_ref_designatedbasins <- function(
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of telemetry station parameters
 get_ref_telemetry_params <- function(
     param      = NULL,
     api_key    = NULL
 ) {
+
+  # list of function inputs
+  input_args <- as.list(environment())
 
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/telemetryparams/?"
@@ -575,39 +566,35 @@ get_ref_telemetry_params <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+    tryCatch({
 
-      },
-      error = function(e) {
-        message(paste0("Error in telemetry parameter reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\n----------------------------------",
-                       "\nParameter ", param
-        ))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      }
-    )
+    },
+    error = function(e) {
+
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
+
+      stop()
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -633,12 +620,14 @@ get_ref_telemetry_params <- function(
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of climate station parameters
 get_ref_climate_params <- function(
     param      = NULL,
     api_key    = NULL
 ) {
+
+  # list of function inputs
+  input_args <- as.list(environment())
 
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/climatestationmeastype/?"
@@ -679,39 +668,35 @@ get_ref_climate_params <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+    tryCatch({
 
-      },
-      error = function(e) {
-        message(paste0("Error in climate parameter reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\n----------------------------------",
-                       "\nParameter ", param
-        ))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      }
-    )
+    },
+    error = function(e) {
+
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
+
+      stop()
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -737,12 +722,14 @@ get_ref_climate_params <- function(
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of diversion record types
 get_ref_divrectypes <- function(
     divrectype  = NULL,
     api_key     = NULL
 ) {
+
+  # list of function inputs
+  input_args <- as.list(environment())
 
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/divrectypes/?"
@@ -783,39 +770,35 @@ get_ref_divrectypes <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+    tryCatch({
 
-      },
-      error = function(e) {
-        message(paste0("Error in diversion record types reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\n----------------------------------",
-                       "\nDiversion record type: ", divrectype
-        ))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      }
-    )
+    },
+    error = function(e) {
+
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
+
+      stop()
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -841,12 +824,14 @@ get_ref_divrectypes <- function(
 #' @param api_key character, (optional). If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of station flags and flag descriptions
 get_ref_stationflags<- function(
     flag     = NULL,
     api_key  = NULL
 ) {
+
+  # list of function inputs
+  input_args <- as.list(environment())
 
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/referencetables/stationflags/?"
@@ -887,39 +872,35 @@ get_ref_stationflags<- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+    tryCatch({
 
-      },
-      error = function(e) {
-        message(paste0("Error in station flags reference table query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\n----------------------------------",
-                       "\nFlag: ", flag
-        ))
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      }
-    )
+    },
+    error = function(e) {
+
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
+
+      stop()
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
@@ -945,7 +926,6 @@ get_ref_stationflags<- function(
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of CDSS endpoint Reference Table
 #' @examples
 #' # Retrieve station flag reference table

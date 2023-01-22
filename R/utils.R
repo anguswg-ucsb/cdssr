@@ -78,6 +78,100 @@ null_convert <- function(x) {
 
 }
 
+#' Parse GET URL response
+#' @description Internal convenience function for parsing a "text" content of URL GET responses into JSON format
+#' @param url character URL if page to retrieve. Default is NULL.
+#' @importFrom httr GET content
+#' @importFrom jsonlite fromJSON
+#' @return json formatted list
+parse_gets <- function(
+    url     = NULL
+) {
+
+  # if no URL is given
+  if(is.null(url)) {
+
+    stop("Invalid NULL value provided to 'url'")
+
+  }
+
+    # make get request and extract content
+    resp <-
+      httr::content(
+        httr::GET(url = url),
+        as = "text"
+        )
+
+    # if an error is returned, return the error
+    if(grepl("error", resp, ignore.case = TRUE)) {
+      stop(resp)
+    }
+
+    # return "URL is properly formatted, but..." response
+    if(resp == "This URL is properly formatted, but returns zero records from CDSS.") {
+      stop(resp)
+    }
+    sublist = NULL
+
+    # get data from JSON format
+    resp <- jsonlite::fromJSON(resp)
+
+    return(resp)
+
+
+}
+
+#' GET Request Error message handler
+#' @description Internal function for generating dynamic error messages for failed GET requests. Designed to be called within another function and print out the functions input arguments.
+#' @param arg_lst list of function arguments by calling 'as.list(environment())'. Default is NULL.
+#' @param url character URL if page to retrieve. Default is NULL.
+#' @param ignore character vector of function arguments to ignore NULL check. Default is NULL.
+#' @param e_msg character error message. Default is NULL.
+#' @return character error message that includes the query inputs that led to the error, the requested URL, and the original error message
+query_error <- function(
+    arg_lst = NULL,
+    url     = NULL,
+    ignore  = NULL,
+    e_msg   = NULL
+) {
+
+  # if no function arguments are given, throw an error
+  if(is.null(arg_lst)) {
+
+    stop(paste0("provide a list of function arguments by calling 'as.list(environment())', within another function"))
+
+  } else {
+
+    # if certain arguments are specifically supposed to be ignored
+    if(!is.null(ignore)) {
+
+      # remove "api_key" from possible arguments
+      query_args <- arg_lst[!names(arg_lst) %in% ignore]
+
+    } else {
+
+      query_args <- arg_lst
+
+    }
+
+    return(
+      paste0(
+        "\n",
+        "DATA RETRIEVAL ERROR",
+        "\n", "Query: ",
+        "\n", paste0(
+          paste0(" - ", c(names(query_args))), ": ", c(query_args), collapse = "\n"
+        ),
+        "\n\nRequested URL:\n", url,
+        "\n\n", "Original error message:",
+        "\n-----------------------\n\n",
+        e_msg
+      )
+    )
+  }
+}
+
+
 #' Collapse a list/vector with a given separator into a single string
 #' @description Internal function for generating query string URls
 #' @param x list, or vector to collapse into single string
@@ -233,11 +327,12 @@ aoi_error_msg <- function() {
 #'
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
 #' @importFrom terra crs project is.points is.polygons is.lines vect centroids crds
+#' @importFrom methods is
 #' @return dataframe with lat/long columns
 parse_aoi <- function(aoi) {
 
   # if an SF object is provided, convert to Terra before extracting coordinates
-  if(class(aoi)[1] == "sf") {
+  if(methods::is(aoi, "sf")) {
 
     # message("sf")
 
@@ -258,7 +353,7 @@ parse_aoi <- function(aoi) {
   }
 
   # get coordinates from SpatVector points/polygons/lines
-  if(class(aoi)[1] == "SpatVector") {
+  if(methods::is(aoi, "SpatVector")) {
 
     # check CRS is 4326, and transform if necessary
     if(terra::crs(aoi, describe = T)$code != "4326") {
@@ -273,9 +368,7 @@ parse_aoi <- function(aoi) {
       # message("terra points")
 
       # Extract point coordinates
-      coords <-
-        aoi %>%
-        terra::crds()
+      coords <- terra::crds(aoi)
 
       # assign lng/lat
       lng <- coords[1]
@@ -290,9 +383,9 @@ parse_aoi <- function(aoi) {
 
       # Extract polygon centroid coordinates
       coords <-
-        aoi %>%
-        terra::centroids(inside = T) %>%
-        terra::crds()
+        terra::crds(
+          terra::centroids(aoi, inside = T)
+          )
 
       # assign lng/lat
       lng <- coords[1]
@@ -307,9 +400,9 @@ parse_aoi <- function(aoi) {
 
       # Extract line centroid coordinates
       coords <-
-        aoi %>%
-        terra::centroids(inside = T) %>%
-        terra::crds()
+        terra::crds(
+          terra::centroids(aoi, inside = T)
+        )
 
       lng <- coords[1]
       lat <- coords[2]
@@ -330,15 +423,14 @@ parse_aoi <- function(aoi) {
 #' Extract lat/long coordinates from an AOI
 #' @description Internal helper function. Checks that an AOI is of valid type and then extracts the latitude/longitude of the point or centroid of the given polygon.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
-#' @importFrom terra crs project is.points is.polygons is.lines vect centroids crds
-#' @importFrom dplyr `%>%`
+#' @importFrom methods is
 #' @return dataframe with lat/long columns
 extract_coords <- function(
     aoi
 ) {
 
   # check if matrix or dataframe before continuing
-  if(!any(is.matrix(aoi), is.data.frame(aoi), is.list(aoi), is.numeric(aoi), is.character(aoi),  class(aoi) == 'SpatVector')) {
+  if(!any(is.matrix(aoi), is.data.frame(aoi), is.list(aoi), is.numeric(aoi), is.character(aoi),  methods::is(aoi, "SpatVector"))) {
     stop(aoi_error_msg())
   }
 
@@ -346,7 +438,7 @@ extract_coords <- function(
   if(!is.null(aoi)) {
 
     # given a 2 column matrix of XY coords
-    if(any(all(class(aoi) == "list"), is.numeric(aoi), is.character(aoi))) {
+    if(any(all(methods::is(aoi, "list")), is.numeric(aoi), is.character(aoi))) {
 
       # message("List/vector")
 
@@ -377,9 +469,7 @@ extract_coords <- function(
     }
 
     # check if aoi is 'sf' or 'SpatVector'
-    if(class(aoi)[1] == "sf"| class(aoi)[1] == "SpatVector") {
-
-      # message(paste0("Class: ", class(aoi)))
+    if(methods::is(aoi, "sf") | methods::is(aoi, "SpatVector")) {
 
       # extract coordinates from spatial object
       parsed_coords <- parse_aoi(aoi = aoi)
@@ -395,7 +485,7 @@ extract_coords <- function(
 
     }
     # check if aoi is NON sf dataframe
-    if(is.data.frame(aoi) & !any(class(aoi) == "sf")) {
+    if(is.data.frame(aoi) & !any(methods::is(aoi, "sf"))) {
 
       # extract first 2 columns of datafame (X and Y)
       lng <- aoi[,1]
@@ -605,6 +695,8 @@ check_aoi <- function(
 #' @description Internal function for masking out extraneous points that fall outside of bounds of provided 'aoi' polygon. If not 'aoi' is provided to the function, the default behavior is to return the original set of points received from CDSS. Furthermore, if the AOI is anything other than a sf or terra polygon, the function will return the original set of data from CDSS.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry. Default is NULL.
 #' @param pts dataframe of points that should be masked to the given aoi. Dataframe must contain "utm_y" and "utm_x"columns
+#' @importFrom terra vect crs project is.polygons relate
+#' @importFrom methods is
 #' @return dataframe containing subset (or original) point data from the CDSS API
 aoi_mask <- function(
     aoi = NULL,
@@ -628,7 +720,7 @@ aoi_mask <- function(
   }
 
   # if an SF object is provided, convert to Terra before extracting coordinates
-  if(class(aoi)[1] == "sf") {
+  if(methods::is(aoi, "sf")) {
 
     # convert sf to terra SpatVector
     aoi <- terra::vect(aoi)
@@ -642,7 +734,7 @@ aoi_mask <- function(
   }
 
   # get coordinates from SpatVector points/polygons/lines
-  if(class(aoi)[1] == "SpatVector") {
+  if(methods::is(aoi, "SpatVector")) {
 
     # check CRS is 4326, and transform if necessary
     if(terra::crs(aoi, describe = T)$code != "4326") {
@@ -694,7 +786,6 @@ aoi_mask <- function(
 
 #' Locate all CDSS API Endpoints
 #' @description Returns a dataframe with the API endpoints for CDSS REST services
-#' @importFrom magrittr `%>%`
 #' @importFrom rvest read_html html_nodes html_table
 #' @return dataframe with API endpoint names, URLs and descriptions of each CDSS resource
 browse_api <- function() {
@@ -719,11 +810,23 @@ browse_api <- function() {
 
   # extract endpoint tables
   api_endpoints <-
-    page %>%
-    rvest::html_nodes("table") %>%
-    rvest::html_table() %>%
-    .[c(3:17)] %>%
-    do.call(rbind, .)
+    rvest::html_table(
+      rvest::html_nodes(page, "table")
+      )
+
+  # extract endpoint tables
+  api_endpoints <- api_endpoints[c(3:17)]
+
+  # do.call row bind list together
+  api_endpoints <- do.call(rbind, api_endpoints)
+
+  # extract endpoint tables
+  # api_endpoints <-
+  #   page %>%
+  #   rvest::html_nodes("table") %>%
+  #   rvest::html_table() %>%
+  #   .[c(3:17)] %>%
+  #   do.call(rbind, .)
 
   # add endpoint column
   api_endpoints$endpoint     <- gsub("GET ", "", api_endpoints$API)
@@ -748,7 +851,6 @@ browse_api <- function() {
 #' @description Returns the names, descriptions, and types for each response field for a given API endpoint
 #' @param endpoint_url character. URL to CDSS API REST Help page detailing the return fields for each endpoint. This URL can be found in the dataframe returned by the browse_api function
 #' @param endpoint_path character. full path name of CDSS API resource
-#' @importFrom magrittr `%>%`
 #' @importFrom rvest read_html html_nodes html_elements html_table
 #' @return dataframe with the endpoint name, field name, a description, the data type, and the endpoint URL
 get_resource_meta <- function(
@@ -779,11 +881,25 @@ get_resource_meta <- function(
 
   # extract help table detailing endpoint parameters
   field_tbl <-
-    field_page %>%
-    rvest::html_nodes("table") %>%
-    rvest::html_elements(xpath = "//*[@class = 'help-page-table']") %>%
-    rvest::html_table() %>%
-    do.call(rbind, .)
+    rvest::html_table(
+      rvest::html_elements(
+        rvest::html_nodes(
+          field_page, "table"
+          ),
+        xpath = "//*[@class = 'help-page-table']"
+        )
+      )
+
+  # do.call row bind list together
+  field_tbl <- do.call(rbind, field_tbl)
+
+  # extract help table detailing endpoint parameters
+  # field_tbl <-
+  #   field_page %>%
+  #   rvest::html_nodes("table") %>%
+  #   rvest::html_elements(xpath = "//*[@class = 'help-page-table']") %>%
+  #   rvest::html_table() %>%
+  #   do.call(rbind, .)
 
   # rename columns
   names(field_tbl) <- tolower(names(field_tbl))
@@ -802,47 +918,3 @@ get_resource_meta <- function(
 
   return(field_tbl)
 }
-
-
-# convert_args <- function(
-    #     arg_lst = NULL,
-#     ignore  = NULL,
-#     f       = "as.character"
-# ) {
-#
-#   # if no function arguments are given, throw an error
-#   if(is.null(arg_lst)) {
-#
-#     stop(paste0("provide a list of function arguments by calling 'as.list(environment())', within another function"))
-#
-#   } else {
-#
-#     # make sure provided function is "as.character", "as.numeric", or "as.integer"
-#     if(!f %in% c("as.character", "as.numeric", "as.integer")) {
-#
-#       stop(paste0("Invalid 'f' argument, provide either 'as.character', 'as.numeric', or 'as.integer' functions to 'f' argument"))
-#
-#     }
-#
-#     # match user provided function
-#     f <- match.fun(f)
-#
-#     # if certain arguments are specifically supposed to be ignored
-#     if(!is.null(ignore)) {
-#
-#       # remove "api_key" from possible arguments
-#       args <- arg_lst[!names(arg_lst) %in% ignore]
-#
-#     } else {
-#
-#       args <- arg_lst
-#
-#     }
-#
-#     args <- rapply(args, f = f, how = "replace")
-#
-#     return(args)
-#
-#   }
-#
-# }

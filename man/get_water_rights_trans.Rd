@@ -36,7 +36,7 @@ dataframe of water right transactions
 Make a request to the /waterrights/transaction endpoint to retrieve water rights transactions data via a spatial search or by county, division, water district, or WDID, within a given date range (start and end dates). Returns List of court decreed actions that affect amount and use(s) that can be used by each water right.
 }
 \examples{
-
+\dontrun{
 # Water right transactions within a county
 county_wr <- get_water_rights_trans(county = "Adams")
 
@@ -58,5 +58,5 @@ aoi_wr <- get_water_rights_trans(
                   radius = 20
                   )
 aoi_wr
-
+}
 }

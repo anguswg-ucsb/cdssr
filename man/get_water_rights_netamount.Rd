@@ -36,6 +36,7 @@ dataframe of water right net amounts
 Make a request to the /waterrights/netamount endpoint to retrieve water rights net amounts data via a spatial search or by county, division, water district, or WDID, within a given date range (start and end dates). Returns current status of a water right based on all of its court decreed actions.
 }
 \examples{
+\dontrun{
 # Water right net amounts within a county
 county_net <- get_water_rights_netamount(county = "Adams")
 
@@ -57,4 +58,5 @@ aoi_net <- get_water_rights_netamount(
                   )
 
  aoi_net
+ }
 }

@@ -27,7 +27,7 @@ get_climate_ts_day(
 \item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
 \value{
-dataframe of climate data station daily timeseries data
+dataframe of climate data station daily time series data
 }
 \description{
 Make a request to the /climatedata/climatestationtsday endpoint to retrieve climate stations daily time series data by station number, or Site IDs within a given date range (start and end dates)

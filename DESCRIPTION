@@ -1,6 +1,6 @@
 Package: cdssr
 Title: R Client for CDSS REST API services
-Version: 1.0.2.000
+Version: 1.1.0.000
 Authors@R: 
     person("Angus", "Watters", , "anguswatters@gmail.com", role = c("aut", "cre"))
 Description: Provides R functions for discovering and requesting data from the CDSS REST API.
@@ -10,8 +10,7 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Imports:
-    magrittr,
-    dplyr,
+    methods,
     rvest,
     httr,
     jsonlite,

@@ -7,11 +7,10 @@ utils::globalVariables(c("."))
 #' @param call_number numeric, unique call identifier
 #' @param start_date character date to request data start point YYYY-MM-DD
 #' @param end_date character date to request data end point YYYY-MM-DD
-#' @param active logical, whether to get active or historical administrative calls. Default iS TRUE and will retrieve active administrative calls.
+#' @param active logical, whether to get active or historical administrative calls. Default is TRUE, which will retrieve active administrative calls.
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of administrative calls data
 #' @export
 #' @examples
@@ -40,9 +39,12 @@ get_admin_calls <- function(
   api_key             = NULL
   ) {
 
+    # list of function inputs
+    input_args <- as.list(environment())
+
     # check function arguments for missing/invalid inputs
     arg_lst <- check_args(
-      arg_lst = as.list(environment()),
+      arg_lst = input_args,
       ignore  = c("api_key", "start_date", "end_date", "active"),
       f       = "all"
     )
@@ -109,7 +111,7 @@ get_admin_calls <- function(
     more_pages <- TRUE
 
     # print message
-    message(paste0("Retrieving Administrative calls (", ifelse(active, "ACTIVE", "HISTORICAL"), ")", " data"))
+    message(paste0("Retrieving ", ifelse(active, "ACTIVE", "HISTORICAL"), " Administrative calls data"))
 
     # while more pages are available, send get requests to CDSS API
     while (more_pages) {
@@ -136,7 +138,6 @@ get_admin_calls <- function(
 
       }
 
-      # api_key <- NULL
       # check whether to use API key or not
       if(!is.null(api_key)) {
 
@@ -145,36 +146,30 @@ get_admin_calls <- function(
       }
 
       # GET request to CDSS API
-      tryCatch(
-        {
+      tryCatch({
 
-          # query CDSS API
-          cdss_data <-
-            url %>%
-            httr::GET() %>%
-            httr::content(as = "text") %>%
-            jsonlite::fromJSON() %>%
-            dplyr::bind_rows() %>%
-            .$ResultList
+        # query CDSS API
+        cdss_data <- parse_gets(url = url)
 
-        },
-        error = function(e) {
+      },
+      error = function(e) {
 
-          message(paste0("Error in data retrieval of administrative calls"))
-          message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-          message(paste0("Query:\nDivision: ", division,
-                         "\nStart date: ", start_date,
-                         "\nEnd date: ", end_date,
-                         "\nLocation WDID(s): ", location_wdid))
-          message(paste0('\nHere is the URL address that was queried:\n'))
-          message(paste0(url))
-          message(paste0('And, here is the original error message:'))
-          message(paste0('-----------------------------------------'))
-          message(e)
-          stop()
+        # error message handler
+        message(
+          query_error(
+            arg_lst = input_args,
+            ignore  = c("url", "e"),
+            url     = url,
+            e_msg   = e
+          )
+        )
 
-        }
-      )
+        stop()
+
+      })
+
+      # Extract Result List
+      cdss_data <- cdss_data$ResultList
 
       # set clean names
       names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
@@ -185,7 +180,7 @@ get_admin_calls <- function(
       cdss_data$priority_date <- as.POSIXct(cdss_data$priority_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
       # bind data from this page
-      data_df <- dplyr::bind_rows(data_df, cdss_data)
+      data_df <- rbind(data_df, cdss_data)
 
       # Check if more pages to get to continue/stop while loop
       if (nrow(cdss_data) < page_size) {

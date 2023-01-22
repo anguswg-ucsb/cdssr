@@ -11,7 +11,6 @@ utils::globalVariables(c("."))
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS. Defaults to NULL.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows `%>%`
 #' @return dataframe of administrative structures
 #' @export
 #' @examples
@@ -33,16 +32,12 @@ get_structures <- function(
     api_key             = NULL
 ) {
 
-  # check if valid parameters are given
-  # if(all(is.null(aoi), is.null(county), is.null(division), is.null(gnis_id), is.null(water_district), is.null(wdid))) {
-  #
-  #   stop(paste0("Invalid 'aoi', 'county', 'division', 'gnis_id', 'water_district', or 'wdid' arguments"))
-  #
-  # }
+  # list of function inputs
+  input_args <- as.list(environment())
 
   # check function arguments for missing/invalid inputs
   arg_lst <- check_args(
-    arg_lst = as.list(environment()),
+    arg_lst = input_args,
     ignore  = c("api_key"),
     f       = "all"
   )
@@ -139,45 +134,36 @@ get_structures <- function(
     }
 
     # GET request to CDSS API
-    tryCatch(
-      {
+    tryCatch({
 
-        # query CDSS API
-        cdss_data <-
-          url %>%
-          httr::GET() %>%
-          httr::content(as = "text") %>%
-          jsonlite::fromJSON() %>%
-          dplyr::bind_rows() %>%
-          .$ResultList
+      # query CDSS API
+      cdss_data <- parse_gets(url = url)
 
-      },
-      error = function(e) {
+    },
+    error = function(e) {
 
-        message(paste0("Error in administrative structure query"))
-        message(paste0("Perhaps the URL address is incorrect OR there is no data available."))
-        message(paste0("Query:\n----------------------------------\nCounty: ", county,
-                       "\nDivision: ", division,
-                       "\nGNIS ID: ", gnis_id,
-                       "\nWater District: ", water_district,
-                       "\nWDID: ", wdid
-                       )
-                )
-        message(paste0('\nHere is the URL address that was queried:\n'))
-        message(paste0(url))
-        message(paste0('And, here is the original error message:'))
-        message(paste0('-----------------------------------------'))
-        message(e)
-        stop()
+      # error message handler
+      message(
+        query_error(
+          arg_lst = input_args,
+          ignore  = c("url", "e"),
+          url     = url,
+          e_msg   = e
+        )
+      )
 
-      }
-    )
+      stop()
+
+    })
+
+    # Extract Result List
+    cdss_data <- cdss_data$ResultList
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
     # bind data from this page
-    data_df <- dplyr::bind_rows(data_df, cdss_data)
+    data_df <- rbind(data_df, cdss_data)
 
     # Check if more pages to get to continue/stop while loop
     if (nrow(cdss_data) < page_size) {
