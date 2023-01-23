@@ -16,34 +16,7 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/index.html</loc>
   </url>
   <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/align_wcid.html</loc>
-  </url>
-  <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/aoi_error_msg.html</loc>
-  </url>
-  <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/aoi_mask.html</loc>
-  </url>
-  <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/api_endpoints.html</loc>
-  </url>
-  <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/browse_api.html</loc>
-  </url>
-  <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/check_aoi.html</loc>
-  </url>
-  <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/check_args.html</loc>
-  </url>
-  <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/check_radius.html</loc>
-  </url>
-  <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/collapse_vect.html</loc>
-  </url>
-  <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/extract_coords.html</loc>
   </url>
   <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_admin_calls.html</loc>
@@ -112,9 +85,6 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_reference_tbl.html</loc>
   </url>
   <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_resource_meta.html</loc>
-  </url>
-  <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/get_source_route_analysis.html</loc>
   </url>
   <url>
@@ -169,24 +139,6 @@
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/null_convert.html</loc>
-  </url>
-  <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/parse_aoi.html</loc>
-  </url>
-  <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/parse_date.html</loc>
-  </url>
-  <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/parse_gets.html</loc>
-  </url>
-  <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/query_error.html</loc>
-  </url>
-  <url>
     <loc>https://anguswg-ucsb.github.io/cdssr/reference/resource_meta.html</loc>
-  </url>
-  <url>
-    <loc>https://anguswg-ucsb.github.io/cdssr/reference/str_args.html</loc>
   </url>
 </urlset>
