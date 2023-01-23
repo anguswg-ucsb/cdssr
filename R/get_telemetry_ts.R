@@ -22,7 +22,6 @@ utils::globalVariables(c("."))
 #'            timescale           = "day",
 #'            include_third_party = TRUE
 #'            )
-#' telem_ts
 #'
 #' # Plot daily discharge data
 #' plot(telem_ts$meas_value~telem_ts$datetime, type = "l")

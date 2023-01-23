@@ -3,7 +3,8 @@
 #' @param arg_lst list of function arguments by calling 'as.list(environment())'
 #' @param ignore character vector of function arguments to ignore NULL check
 #' @param f character, either "any" or "all" to indicate whether to check for "any" or "all" NULL argument. If "any" then if any of the function arguments are NULL, then an error is thrown. If "all" then all relevant arguments must be NULL for an error to be thrown. Defaults to "any"
-#'
+#' @noRd
+#' @keywords internal
 #' @return character error statement with NULL arguments listed, or NULL if no error is thrown by NULL values
 check_args <- function(
     arg_lst = NULL,
@@ -60,6 +61,8 @@ check_args <- function(
 #' Convert non NULL list/vectors to characters
 #' @description Internal function for converting non NULL lists/vectors to characters. When NULL is provided, NULL is returned.
 #' @param x list, or vector to convert to character
+#' @noRd
+#' @keywords internal
 #' @return character list/vector of the same length as x
 null_convert <- function(x) {
 
@@ -84,6 +87,8 @@ null_convert <- function(x) {
 #' @param arg_lst list of function arguments by calling 'as.list(environment())'
 #' @param ignore character vector of function arguments to ignore NULL check
 #' @param envir an environment. If called within another function to alter the arguments of the outer function, use envir = environment()
+#' @noRd
+#' @keywords internal
 #' @return No returns, function reassigns function arguments to strings
 str_args <- function(
     arg_lst = NULL,
@@ -155,6 +160,8 @@ str_args <- function(
 #' @param url character URL if page to retrieve. Default is NULL.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
+#' @noRd
+#' @keywords internal
 #' @return json formatted list
 parse_gets <- function(
     url     = NULL
@@ -229,6 +236,8 @@ parse_gets <- function(
 #' @param url character URL if page to retrieve. Default is NULL.
 #' @param ignore character vector of function arguments to ignore NULL check. Default is NULL.
 #' @param e_msg character error message. Default is NULL.
+#' @noRd
+#' @keywords internal
 #' @return character error message that includes the query inputs that led to the error, the requested URL, and the original error message
 query_error <- function(
     arg_lst = NULL,
@@ -278,6 +287,8 @@ query_error <- function(
 #' @description Internal function for generating query string URls
 #' @param x list, or vector to collapse into single string
 #' @param sep character to separate list/vector items by
+#' @noRd
+#' @keywords internal
 #' @return single character string separated by given sep arg
 collapse_vect <- function(
     x    = NULL,
@@ -319,6 +330,8 @@ collapse_vect <- function(
 #' @param start logical, whether the given date is the starting or ending date
 #' @param format character, format to convert the date to. Defaults to MM-DD-YYYY.
 #' @param sep character separator to collapse date by. Defaults to "%2F"
+#' @noRd
+#' @keywords internal
 #' @return reformated date string
 parse_date <- function(
     date   = NULL,
@@ -380,6 +393,8 @@ parse_date <- function(
 #' Set wc_identifier name to releases or diversions
 #' @description Internal function for getting correct wc_identifier code for querying
 #' @param x character indicating whether "diversion" or "release" should be returned. Defaults to NULL and thus "diversion"
+#' @noRd
+#' @keywords internal
 #' @return wc_identifier equaling either "diversion" or "release"
 align_wcid <- function(x = NULL) {
 
@@ -413,6 +428,8 @@ align_wcid <- function(x = NULL) {
 
 #' Error message handling for extract_coords function
 #' @description Internal helper function that returns a boilerplate error message used in extract_coords function
+#' @noRd
+#' @keywords internal
 #' @return character error message
 aoi_error_msg <- function() {
 
@@ -430,6 +447,8 @@ aoi_error_msg <- function() {
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
 #' @importFrom terra crs project is.points is.polygons is.lines vect centroids crds
 #' @importFrom methods is
+#' @noRd
+#' @keywords internal
 #' @return dataframe with lat/long columns
 parse_aoi <- function(aoi) {
 
@@ -526,6 +545,8 @@ parse_aoi <- function(aoi) {
 #' @description Internal helper function. Checks that an AOI is of valid type and then extracts the latitude/longitude of the point or centroid of the given polygon.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
 #' @importFrom methods is
+#' @noRd
+#' @keywords internal
 #' @return dataframe with lat/long columns
 extract_coords <- function(
     aoi
@@ -711,6 +732,8 @@ extract_coords <- function(
 #' @description Internal helper function. Checks that an AOI is given and that the radius is within valid range of values. Radius must be: 0 < radius < 150.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
 #' @param radius numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
+#' @noRd
+#' @keywords internal
 #' @return numeric radius value or NULL
 check_radius <- function(
     aoi,
@@ -755,6 +778,8 @@ check_radius <- function(
 #' @description Internal helper function. Checks that an AOI is given and that the radius is within valid range of values. Radius must be: 0 < radius < 150.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
 #' @param radius numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
+#' @noRd
+#' @keywords internal
 #' @return named list containing lat, lng, and radius values
 check_aoi <- function(
     aoi    = NULL,
@@ -799,6 +824,8 @@ check_aoi <- function(
 #' @param pts dataframe of points that should be masked to the given aoi. Dataframe must contain "utm_y" and "utm_x"columns
 #' @importFrom terra vect crs project is.polygons relate
 #' @importFrom methods is
+#' @noRd
+#' @keywords internal
 #' @return dataframe containing subset (or original) point data from the CDSS API
 aoi_mask <- function(
     aoi = NULL,
@@ -889,6 +916,8 @@ aoi_mask <- function(
 #' Locate all CDSS API Endpoints
 #' @description Returns a dataframe with the API endpoints for CDSS REST services
 #' @importFrom rvest read_html html_nodes html_table
+#' @noRd
+#' @keywords internal
 #' @return dataframe with API endpoint names, URLs and descriptions of each CDSS resource
 browse_api <- function() {
 
@@ -946,6 +975,8 @@ browse_api <- function() {
 #' @param endpoint_url character. URL to CDSS API REST Help page detailing the return fields for each endpoint. This URL can be found in the dataframe returned by the browse_api function
 #' @param endpoint_path character. full path name of CDSS API resource
 #' @importFrom rvest read_html html_nodes html_elements html_table
+#' @noRd
+#' @keywords internal
 #' @return dataframe with the endpoint name, field name, a description, the data type, and the endpoint URL
 get_resource_meta <- function(
     endpoint_url  = NULL,
