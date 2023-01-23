@@ -205,4 +205,3 @@ get_admin_calls <- function(
     # return final binded dataframe
     return(data_df)
 }
-

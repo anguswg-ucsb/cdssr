@@ -141,6 +141,15 @@ str_args <- function(
 
 }
 
+# error_status_codes <- function() {
+#   return(
+#     data.frame(
+#       http_response = c("200", "400", "403", "404", "500", "502", "503"),
+#       error_code    = c("Ok", "Bad Request", "Forbidden", "Not Found", "Internal_Server_Error", "Connection_Failed", "Server_Unavailable")
+#       )
+#   )
+# }
+
 #' Parse GET URL response
 #' @description Internal convenience function for parsing a "text" content of URL GET responses into JSON format
 #' @param url character URL if page to retrieve. Default is NULL.
@@ -158,29 +167,59 @@ parse_gets <- function(
 
   }
 
-    # make get request and extract content
+  # make get request
+  resp <- httr::GET(url = url)
+
+  # if request is 200 (OK), return JSON content data
+  if(resp$status_code == 200) {
+
+    # get data and convert from JSON
     resp <-
-      httr::content(
-        httr::GET(url = url),
-        as = "text"
+      jsonlite::fromJSON(
+        httr::content(
+          resp,
+          as = "text"
+          )
         )
 
-    # if an error is returned, return the error
-    if(grepl("error", resp, ignore.case = TRUE)) {
-      stop(resp)
-    }
-
-    # return "URL is properly formatted, but..." response
-    if(resp == "This URL is properly formatted, but returns zero records from CDSS.") {
-      stop(resp)
-    }
-    sublist = NULL
-
-    # get data from JSON format
-    resp <- jsonlite::fromJSON(resp)
-
+    # return data
     return(resp)
 
+  } else {
+
+    # if request is NOT 200 (not OK), return error from CDSS API
+
+    # get error message out of response
+    resp <- httr::content(
+      resp,
+      as = "text"
+    )
+
+    # stop function and return error
+    stop(resp)
+
+  }
+
+    # resp <-
+    #   httr::content(
+    #     httr::GET(url = url),
+    #     as = "text"
+    #     )
+
+    # if an error is returned, return the error
+    # if(grepl("error", resp, ignore.case = TRUE)) {
+    #   stop(resp)
+    # }
+
+    # # return "URL is properly formatted, but..." response
+    # if(resp == "This URL is properly formatted, but returns zero records from CDSS.") {
+    #   stop(resp)
+    # }
+
+    # get data from JSON format
+    # resp <- jsonlite::fromJSON(resp)
+
+    # return(resp)
 
 }
 
