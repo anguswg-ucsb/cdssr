@@ -56,19 +56,19 @@ get_telemetry_stations <- function(
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/telemetrystations/telemetrystation/?"
 
-  # convert arguments to strings if necessary
-  str_args(
-    arg_lst = as.list(environment()),
-    ignore  = c("aoi"),
-    envir   = environment()
-  )
+  # # convert arguments to strings if necessary
+  # str_args(
+  #   arg_lst = as.list(environment()),
+  #   ignore  = c("aoi"),
+  #   envir   = environment()
+  # )
 
   # convert arguments to characters if necessary
-  # division        <- null_convert(division)
-  # gnis_id         <- null_convert(gnis_id)
-  # usgs_id         <- null_convert(usgs_id)
-  # water_district  <- null_convert(water_district)
-  # wdid            <- null_convert(wdid)
+  division        <- null_convert(division)
+  gnis_id         <- null_convert(gnis_id)
+  usgs_id         <- null_convert(usgs_id)
+  water_district  <- null_convert(water_district)
+  wdid            <- null_convert(wdid)
 
   # format multiple abbrev query string
   abbrev <- collapse_vect(

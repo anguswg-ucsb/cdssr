@@ -35,14 +35,14 @@ utils::globalVariables(c("."))
     # base API URL
     base <- "https://dwr.state.co.us/Rest/GET/api/v2/climatedata/climatestationfrostdates/?"
 
-    # convert arguments to strings if necessary
-    str_args(
-      arg_lst = as.list(environment()),
-      envir   = environment()
-    )
+    # # convert arguments to strings if necessary
+    # str_args(
+    #   arg_lst = as.list(environment()),
+    #   envir   = environment()
+    # )
 
     # convert arguments to characters if necessary
-    # station_number       <- null_convert(station_number)
+    station_number       <- null_convert(station_number)
 
     # reformat and extract valid start date
     start <- parse_date(

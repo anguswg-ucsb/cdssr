@@ -51,18 +51,18 @@ get_climate_stations <- function(
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/climatedata/climatestations/?"
 
-  # convert arguments to strings if necessary
-  str_args(
-    arg_lst = as.list(environment()),
-    ignore  = c("aoi"),
-    envir   = environment()
-  )
+  # # convert arguments to strings if necessary
+  # str_args(
+  #   arg_lst = as.list(environment()),
+  #   ignore  = c("aoi"),
+  #   envir   = environment()
+  # )
 
   # convert arguments to characters if necessary
-  # radius         <- null_convert(radius)
-  # division       <- null_convert(division)
-  # site_id        <- null_convert(site_id)
-  # water_district <- null_convert(water_district)
+  radius         <- null_convert(radius)
+  division       <- null_convert(division)
+  site_id        <- null_convert(site_id)
+  water_district <- null_convert(water_district)
 
   # format multiple site_id query string
   site_id <- collapse_vect(

@@ -70,16 +70,16 @@ get_admin_calls <- function(
     }
 
     # convert arguments to strings if necessary
-    str_args(
-      arg_lst = as.list(environment()),
-      ignore  = c("active"),
-      envir   = environment()
-    )
+    # str_args(
+    #   arg_lst = as.list(environment()),
+    #   ignore  = c("active"),
+    #   envir   = environment()
+    # )
 
     # convert arguments to characters if necessary
-    # division      <- null_convert(division)
-    # location_wdid <- null_convert(location_wdid)
-    # call_number   <- null_convert(call_number)
+    division      <- null_convert(division)
+    location_wdid <- null_convert(location_wdid)
+    call_number   <- null_convert(call_number)
 
     # stopifnot(is.character(division) | is.character(location_wdid) | is.character(call_number))
 
@@ -205,3 +205,4 @@ get_admin_calls <- function(
     # return final binded dataframe
     return(data_df)
 }
+
