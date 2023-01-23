@@ -49,12 +49,18 @@ get_gw_wl_wells <- function(
   # Base API
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/waterlevels/wells/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  management_district  <- null_convert(management_district)
-  designated_basin     <- null_convert(designated_basin)
-  division             <- null_convert(division)
-  water_district       <- null_convert(water_district)
-  wellid               <- null_convert(wellid)
+  # management_district  <- null_convert(management_district)
+  # designated_basin     <- null_convert(designated_basin)
+  # division             <- null_convert(division)
+  # water_district       <- null_convert(water_district)
+  # wellid               <- null_convert(wellid)
 
   # format county name
   if(!is.null(county)) {
@@ -214,8 +220,14 @@ get_gw_wl_wellmeasures <- function(
   # Base URL groundwater/waterlevels/wellmeasurements/
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/waterlevels/wellmeasurements/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  wellid  <- null_convert(wellid)
+  # wellid  <- null_convert(wellid)
 
   # reformat and extract valid start date
   start <- parse_date(
@@ -369,12 +381,18 @@ get_gw_gplogs_wells <- function(
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/geophysicallogs/wells/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  management_district  <- null_convert(management_district)
-  designated_basin     <- null_convert(designated_basin)
-  division             <- null_convert(division)
-  water_district       <- null_convert(water_district)
-  wellid               <- null_convert(wellid)
+  # management_district  <- null_convert(management_district)
+  # designated_basin     <- null_convert(designated_basin)
+  # division             <- null_convert(division)
+  # water_district       <- null_convert(water_district)
+  # wellid               <- null_convert(wellid)
 
   # format county name
   if(!is.null(county)) {
@@ -528,8 +546,14 @@ get_gw_gplogs_geologpicks <- function(
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/groundwater/geophysicallogs/geoplogpicks/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  wellid     <- null_convert(wellid)
+  # wellid     <- null_convert(wellid)
 
   # maximum records per page
   page_size  <- 50000

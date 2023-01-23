@@ -46,8 +46,14 @@ get_climate_ts_day <- function(
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/climatedata/climatestationtsday/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  station_number  <- null_convert(station_number)
+  # station_number  <- null_convert(station_number)
 
   # format multiple site_id query string
   site_id <- collapse_vect(
@@ -209,8 +215,14 @@ get_climate_ts_month <- function(
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/climatedata/climatestationtsmonth/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  station_number  <- null_convert(station_number)
+  # station_number  <- null_convert(station_number)
 
   # format multiple site_id query string
   site_id <- collapse_vect(
@@ -391,8 +403,14 @@ get_climate_ts <- function(
 
   }
 
+  # convert arguments to strings if necessary
+  # str_args(
+  #   arg_lst = as.list(environment()),
+  #   envir   = environment()
+  # )
+
   # convert arguments to characters if necessary
-  station_number  <- null_convert(station_number)
+  # station_number  <- null_convert(station_number)
 
   # list of valid timescales
   day_lst       <- c("day", "days", "daily", "d")

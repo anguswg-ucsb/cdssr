@@ -56,8 +56,14 @@ get_structure_divrecday <- function(
   # Base API URL for Daily Diversion Records
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/divrecday/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  wdid         <- null_convert(wdid)
+  # wdid         <- null_convert(wdid)
 
   # make sure correctly named wc_identifier
   wc_identifier <- align_wcid(x = wc_identifier)
@@ -237,8 +243,14 @@ get_structure_divrecmonth<- function(
   # Base API URL for Monthly Diversion Records
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/divrecmonth/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  wdid         <- null_convert(wdid)
+  # wdid         <- null_convert(wdid)
 
   # make sure correctly named wc_identifier
   wc_identifier <- align_wcid(x = wc_identifier)
@@ -415,8 +427,14 @@ get_structure_divrecyear <- function(
   # Base API URL for Monthly Diversion Records
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/divrecyear/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  wdid         <- null_convert(wdid)
+  # wdid         <- null_convert(wdid)
 
   # make sure correctly named wc_identifier
   wc_identifier <- align_wcid(x = wc_identifier)
@@ -634,8 +652,14 @@ get_structures_divrec_ts <- function(
          )
   }
 
+  # convert arguments to strings if necessary
+  # str_args(
+  #   arg_lst = as.list(environment()),
+  #   envir   = environment()
+  # )
+
   # convert arguments to characters if necessary
-  wdid         <- null_convert(wdid)
+  # wdid         <- null_convert(wdid)
 
   # Retrieve daily divrec data
   if(timescale %in% day_lst) {

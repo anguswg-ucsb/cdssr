@@ -54,8 +54,14 @@ get_structure_stage_ts <- function(
   # Base API URL for Daily Diversion Records
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/stagevolume/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  wdid    <- null_convert(wdid)
+  # wdid    <- null_convert(wdid)
 
   # reformat and extract valid start date
   start <- parse_date(

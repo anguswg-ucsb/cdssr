@@ -39,9 +39,15 @@ get_call_analysis_wdid <- function(
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/analysisservices/callanalysisbywdid/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  wdid      <- null_convert(wdid)
-  admin_no  <- null_convert(admin_no)
+  # wdid      <- null_convert(wdid)
+  # admin_no  <- null_convert(admin_no)
 
   # reformat and extract valid start date
   start <- parse_date(
@@ -189,10 +195,16 @@ get_call_analysis_gnisid <- function(
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/analysisservices/callanalysisbygnisid/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  gnis_id     <- null_convert(gnis_id)
-  admin_no    <- null_convert(admin_no)
-  stream_mile <- null_convert(stream_mile)
+  # gnis_id     <- null_convert(gnis_id)
+  # admin_no    <- null_convert(admin_no)
+  # stream_mile <- null_convert(stream_mile)
 
   # reformat and extract valid start date
   start <- parse_date(
@@ -340,10 +352,16 @@ get_call_analysis_gnisid <- function(
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/analysisservices/watersourcerouteframework/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  division       <- null_convert(division)
-  gnis_name      <- null_convert(gnis_name)
-  water_district <- null_convert(water_district)
+  # division       <- null_convert(division)
+  # gnis_name      <- null_convert(gnis_name)
+  # water_district <- null_convert(water_district)
 
   # maximum records per page
   page_size  <- 50000
@@ -471,11 +489,17 @@ get_source_route_analysis<- function(
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/analysisservices/watersourcerouteanalysis/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  lt_gnis_id       <- null_convert(lt_gnis_id)
-  lt_stream_mile   <- null_convert(lt_stream_mile)
-  ut_gnis_id       <- null_convert(ut_gnis_id)
-  ut_stream_mile   <- null_convert(ut_stream_mile)
+  # lt_gnis_id       <- null_convert(lt_gnis_id)
+  # lt_stream_mile   <- null_convert(lt_stream_mile)
+  # ut_gnis_id       <- null_convert(ut_gnis_id)
+  # ut_stream_mile   <- null_convert(ut_stream_mile)
 
   # maximum records per page
   page_size  <- 50000

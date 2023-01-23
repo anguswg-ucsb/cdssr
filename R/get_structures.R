@@ -52,10 +52,17 @@ get_structures <- function(
   # Base API URL
   base <- paste0("https://dwr.state.co.us/Rest/GET/api/v2/structures/?")
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("aoi"),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  division        <- null_convert(division)
-  gnis_id         <- null_convert(gnis_id)
-  water_district  <- null_convert(water_district)
+  # division        <- null_convert(division)
+  # gnis_id         <- null_convert(gnis_id)
+  # water_district  <- null_convert(water_district)
 
   # format multiple WDID query string
   wdid <- collapse_vect(

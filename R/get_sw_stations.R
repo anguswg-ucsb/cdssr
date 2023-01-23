@@ -53,10 +53,17 @@ get_sw_stations <- function(
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/surfacewater/surfacewaterstations/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("aoi"),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  division        <- null_convert(division)
-  station_name    <- null_convert(station_name)
-  water_district  <- null_convert(water_district)
+  # division        <- null_convert(division)
+  # station_name    <- null_convert(station_name)
+  # water_district  <- null_convert(water_district)
 
   # format multiple abbrev query string
   abbrev <- collapse_vect(

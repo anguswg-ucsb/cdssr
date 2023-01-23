@@ -77,8 +77,15 @@ get_telemetry_ts <- function(
       )
     }
 
-  # Base API URL for Daily Diversion Records
+  # base URL
   base <- paste0("https://dwr.state.co.us/Rest/GET/api/v2/telemetrystations/telemetrytimeseries", timescale, "/?")
+
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("include_third_party"),
+    envir   = environment()
+  )
 
   # reformat and extract valid start date
   start <- parse_date(

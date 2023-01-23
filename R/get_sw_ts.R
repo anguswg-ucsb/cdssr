@@ -39,8 +39,14 @@ get_sw_ts_day <- function(
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/surfacewater/surfacewatertsday/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  station_number  <- null_convert(station_number)
+  # station_number  <- null_convert(station_number)
 
   # format multiple abbrev query string
   abbrev <- collapse_vect(
@@ -202,8 +208,14 @@ get_sw_ts_month <- function(
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/surfacewater/surfacewatertsmonth/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  station_number  <- null_convert(station_number)
+  # station_number  <- null_convert(station_number)
 
   # format multiple abbrev query string
   abbrev <- collapse_vect(
@@ -368,8 +380,14 @@ get_sw_ts_wyear <- function(
   # base API URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/surfacewater/surfacewatertswateryear/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  station_number  <- null_convert(station_number)
+  # station_number  <- null_convert(station_number)
 
   # format multiple abbrev query string
   abbrev <- collapse_vect(
@@ -588,8 +606,14 @@ get_sw_ts <- function(
          )
   }
 
+  # convert arguments to strings if necessary
+  # str_args(
+  #   arg_lst = as.list(environment()),
+  #   envir   = environment()
+  # )
+
   # convert arguments to characters if necessary
-  station_number  <- null_convert(station_number)
+  # station_number  <- null_convert(station_number)
 
   # check which timescale to request data for
 

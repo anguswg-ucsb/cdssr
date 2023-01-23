@@ -78,6 +78,69 @@ null_convert <- function(x) {
 
 }
 
+
+#' Convert function arguments to strings
+#' @description Internal function for converting all or specific function arguments to strings
+#' @param arg_lst list of function arguments by calling 'as.list(environment())'
+#' @param ignore character vector of function arguments to ignore NULL check
+#' @param envir an environment. If called within another function to alter the arguments of the outer function, use envir = environment()
+#' @return No returns, function reassigns function arguments to strings
+str_args <- function(
+    arg_lst = NULL,
+    ignore  = NULL,
+    envir
+    ) {
+
+  # if no function arguments are given, throw an error
+  if(is.null(arg_lst)) {
+
+    stop(paste0("provide a list of function arguments by calling 'as.list(environment())', within another function"))
+
+  } else {
+
+    # if certain arguments are specifically supposed to be ignored
+    if(!is.null(ignore)) {
+
+      # remove "api_key" from possible arguments
+      args <- arg_lst[!names(arg_lst) %in% ignore]
+
+    } else {
+
+      args <- arg_lst
+
+    }
+
+    # convert all values to strings
+    str_lst  <- sapply(args, toString)
+
+    # if all arguments are NULL, return NULL
+    if(all(!nzchar(str_lst))) {
+
+      return(NULL)
+
+    }
+
+
+    # names and values of non NULL arguments
+    lst_names <- names(str_lst[str_lst != ""])
+    lst_vals  <- str_lst[str_lst != ""]
+
+    # loop through function arguments and reassign string values
+    for(i in 1:length(lst_names)) {
+
+      # reassign function arguments
+      assign(
+        x        = lst_names[i],
+        value    = unname(lst_vals[lst_names[i]]),
+        envir    = envir,
+        inherits = T
+      )
+    }
+
+  }
+
+}
+
 #' Parse GET URL response
 #' @description Internal convenience function for parsing a "text" content of URL GET responses into JSON format
 #' @param url character URL if page to retrieve. Default is NULL.
@@ -819,14 +882,6 @@ browse_api <- function() {
 
   # do.call row bind list together
   api_endpoints <- do.call(rbind, api_endpoints)
-
-  # extract endpoint tables
-  # api_endpoints <-
-  #   page %>%
-  #   rvest::html_nodes("table") %>%
-  #   rvest::html_table() %>%
-  #   .[c(3:17)] %>%
-  #   do.call(rbind, .)
 
   # add endpoint column
   api_endpoints$endpoint     <- gsub("GET ", "", api_endpoints$API)

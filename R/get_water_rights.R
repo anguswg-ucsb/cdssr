@@ -67,10 +67,17 @@ get_water_rights_netamount <- function(
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/waterrights/netamount/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("aoi"),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  division        <- null_convert(division)
-  water_district  <- null_convert(water_district)
-  wdid            <- null_convert(wdid)
+  # division        <- null_convert(division)
+  # water_district  <- null_convert(water_district)
+  # wdid            <- null_convert(wdid)
 
   # check and extract spatial data from 'aoi' and 'radius' args for location search query
   aoi_lst <- check_aoi(
@@ -258,10 +265,17 @@ get_water_rights_trans <- function(
   # base URL
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/waterrights/transaction/?"
 
+  # convert arguments to strings if necessary
+  str_args(
+    arg_lst = as.list(environment()),
+    ignore  = c("aoi"),
+    envir   = environment()
+  )
+
   # convert arguments to characters if necessary
-  division        <- null_convert(division)
-  water_district  <- null_convert(water_district)
-  wdid            <- null_convert(wdid)
+  # division        <- null_convert(division)
+  # water_district  <- null_convert(water_district)
+  # wdid            <- null_convert(wdid)
 
   # check and extract spatial data from 'aoi' and 'radius' args for location search query
   aoi_lst <- check_aoi(
