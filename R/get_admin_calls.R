@@ -186,6 +186,9 @@ get_admin_calls <- function(
       cdss_data$datetime      <- as.POSIXct(cdss_data$date_time_set, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
       cdss_data$priority_date <- as.POSIXct(cdss_data$priority_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
 
+      # use sprintf() to extract all true decimal places of admin numbers
+      cdss_data$priority_admin_number <- sprintf("%.5f",  cdss_data$priority_admin_number)
+
       # bind data from this page
       data_df <- rbind(data_df, cdss_data)
 

@@ -40,23 +40,17 @@ Make a request to the /waterrights/netamount endpoint to retrieve water rights n
 # Water right net amounts within a county
 county_net <- get_water_rights_netamount(county = "Adams")
 
-county_net
-
 # Water right net amounts within a division
 division_net <- get_water_rights_netamount(division = 1)
-
-division_net
 
 # Water right net amounts for a WDID
 wdid_net <- get_water_rights_netamount(wdid   = "0100555")
 
-wdid_net
 # Water right net amounts within a 20 mile search radius
 aoi_net <- get_water_rights_netamount(
                   aoi    = data.frame(X = -104.3379, Y = 39.87417),
                   radius = 20
                   )
 
- aoi_net
  }
 }

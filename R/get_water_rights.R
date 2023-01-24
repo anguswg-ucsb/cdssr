@@ -18,24 +18,18 @@ utils::globalVariables(c("."))
 #' # Water right net amounts within a county
 #' county_net <- get_water_rights_netamount(county = "Adams")
 #'
-#' county_net
-#'
 #' # Water right net amounts within a division
 #' division_net <- get_water_rights_netamount(division = 1)
-#'
-#' division_net
 #'
 #' # Water right net amounts for a WDID
 #' wdid_net <- get_water_rights_netamount(wdid   = "0100555")
 #'
-#' wdid_net
 #' # Water right net amounts within a 20 mile search radius
 #' aoi_net <- get_water_rights_netamount(
 #'                   aoi    = data.frame(X = -104.3379, Y = 39.87417),
 #'                   radius = 20
 #'                   )
 #'
-#'  aoi_net
 #'  }
 get_water_rights_netamount <- function(
     aoi                 = NULL,
@@ -170,6 +164,9 @@ get_water_rights_netamount <- function(
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
+    # use sprintf() to extract all true decimal places of admin numbers
+    cdss_data$admin_number <- sprintf("%.5f",  cdss_data$admin_number)
+
     # bind data from this page
     data_df <- rbind(data_df, cdss_data)
 
@@ -216,24 +213,20 @@ get_water_rights_netamount <- function(
 #' # Water right transactions within a county
 #' county_wr <- get_water_rights_trans(county = "Adams")
 #'
-#' county_wr
 #'
 #' # Water right transactions within a division
 #' division_wr <- get_water_rights_trans(division = 1)
 #'
-#' division_wr
 #'
 #' # Water right transactions for a WDID
 #' wdid_wr <- get_water_rights_trans(wdid   = "2000502")
 #'
-#' wdid_wr
 #'
 #' # Water right transactions within a 20 mile search radius
 #' aoi_wr <- get_water_rights_trans(
 #'                   aoi    = data.frame(X = -104.3379, Y = 39.87417),
 #'                   radius = 20
 #'                   )
-#' aoi_wr
 #' }
 get_water_rights_trans <- function(
     aoi                 = NULL,
@@ -367,6 +360,9 @@ get_water_rights_trans <- function(
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+    # use sprintf() to extract all true decimal places of admin numbers
+    cdss_data$admin_number <- sprintf("%.5f",  cdss_data$admin_number)
 
     # bind data from this page
     data_df <- rbind(data_df, cdss_data)

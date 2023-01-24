@@ -132,6 +132,10 @@ get_call_analysis_wdid <- function(
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
 
+    # use sprintf() to extract all true decimal places of admin numbers
+    cdss_data$analysis_wr_admin_no <- sprintf("%.5f",  cdss_data$analysis_wr_admin_no)
+    cdss_data$priority_admin_no    <- sprintf("%.5f",  cdss_data$priority_admin_no)
+
     # bind data from this page
     data_df <- rbind(data_df, cdss_data)
     # data_df <- dplyr::bind_rows(data_df, cdss_data)
@@ -289,6 +293,10 @@ get_call_analysis_gnisid <- function(
 
     # set clean names
     names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+    # use sprintf() to extract all true decimal places of admin numbers
+    cdss_data$analysis_wr_admin_no <- sprintf("%.5f",  cdss_data$analysis_wr_admin_no)
+    cdss_data$priority_admin_no    <- sprintf("%.5f",  cdss_data$priority_admin_no)
 
     # set datetime column
     cdss_data$datetime      <- as.POSIXct(cdss_data$analysis_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")

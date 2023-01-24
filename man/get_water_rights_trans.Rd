@@ -40,23 +40,19 @@ Make a request to the /waterrights/transaction endpoint to retrieve water rights
 # Water right transactions within a county
 county_wr <- get_water_rights_trans(county = "Adams")
 
-county_wr
 
 # Water right transactions within a division
 division_wr <- get_water_rights_trans(division = 1)
 
-division_wr
 
 # Water right transactions for a WDID
 wdid_wr <- get_water_rights_trans(wdid   = "2000502")
 
-wdid_wr
 
 # Water right transactions within a 20 mile search radius
 aoi_wr <- get_water_rights_trans(
                   aoi    = data.frame(X = -104.3379, Y = 39.87417),
                   radius = 20
                   )
-aoi_wr
 }
 }
