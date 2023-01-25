@@ -390,6 +390,61 @@ parse_date <- function(
 
 }
 
+#' Create yearly date ranges to make batch GET requests
+#' @description Internal function for extracting necessary yearly start and end dates to make a batch of smaller GET requests, instead 1 large date range. Allows for larger date ranges to be queried from the CDSS API without encountering a server side error.
+#' @param start_date character date to start date range from in YYY-MM-DD format. Default is NULL.
+#' @param end_date character date to end date range in YYYY-MM-DD format. Default is NULL.
+#' @noRd
+#' @keywords internal
+#' @return dataframe with dates in batches of 1 year
+batch_dates <- function(
+    start_date = NULL,
+    end_date   = NULL
+    ) {
+
+  if(any(is.null(start_date), is.null(end_date))) {
+
+    stop("Invalid or missing 'start_date', 'end_date' arguments")
+
+  }
+
+  # make sure dates are Date types
+  start_date   <- as.Date(start_date)
+  end_date     <- as.Date(end_date)
+
+  # sequence through date years
+  year_vect <- seq(from = start_date, to = end_date, by = 'year')
+
+  # make a dataframe of start and end dates
+  date_df <- data.frame(
+    starts = year_vect,
+    ends   = year_vect[1:length(year_vect)+1]
+  )
+
+  # remove overlapping start and end dates
+  date_df$ends <- date_df$ends - 1
+
+  # replace last NA date with the end date
+  date_df$ends[is.na(date_df$ends)] <- end_date
+
+  # if last row of dataframe is same start and end dates, remove it and fix last end date to match given end_date
+  if(date_df$starts[nrow(date_df)] == date_df$ends[nrow(date_df)]) {
+    # remove last row
+    date_df <- date_df[1:nrow(date_df)-1, ]
+
+    # add 1 day to new last row to include final date
+    date_df$ends[nrow(date_df)] <- date_df$ends[nrow(date_df)] + 1
+
+    return(date_df)
+
+    } else {
+
+      return(date_df)
+
+      }
+  }
+
+
 #' Set wc_identifier name to releases or diversions
 #' @description Internal function for getting correct wc_identifier code for querying
 #' @param x character indicating whether "diversion" or "release" should be returned. Defaults to NULL and thus "diversion"

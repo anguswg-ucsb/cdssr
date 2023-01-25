@@ -7,9 +7,9 @@ utils::globalVariables(c("."))
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
-#' @return dataframe of call services by WDID
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
+#' @return dataframe of call services by WDID
 #' @export
 get_call_analysis_wdid <- function(
     wdid                = NULL,
@@ -49,112 +49,130 @@ get_call_analysis_wdid <- function(
   wdid      <- null_convert(wdid)
   admin_no  <- null_convert(admin_no)
 
-  # reformat and extract valid start date
-  start <- parse_date(
-    date   = start_date,
-    start  = TRUE,
-    format = "%m-%d-%Y",
-    sep    = "%2F"
-  )
-
-  # reformat and extract valid end date
-  end <- parse_date(
-    date   = end_date,
-    start  = FALSE,
-    format = "%m-%d-%Y",
-    sep    = "%2F"
-  )
-
-  # maximum records per page
-  page_size  <- 50000
-
-  # initialize empty dataframe to store data from multiple pages
-  data_df    <-  data.frame()
-
-  # initialize first page index
-  page_index <- 1
-
-  # Loop through pages until there are no more pages to get
-  more_pages <- TRUE
+  # make a dataframe of date ranges to issue GET requests in smaller batches
+  date_df <- batch_dates(
+    start_date = start_date,
+    end_date   = end_date
+    )
 
   # print message
   message(paste0("Retrieving call anaylsis by WDID"))
 
-  # while more pages are avaliable, send get requests to CDSS API
-  while (more_pages) {
+  # go through range of dates in date_df and make batch GET requests
+  cdss_lst <- lapply(1:nrow(date_df), function(i) {
 
-    # Construct query URL w/o API key
-    url <- paste0(
-      base,
-      "format=json&dateFormat=spaceSepToSeconds",
-      "&adminNo=", admin_no,
-      "&endDate=", end,
-      "&startDate=", start,
-      "&wdid=", wdid,
-      "&pageSize=", page_size,
-      "&pageIndex=", page_index
+    # reformat and extract valid start date
+    start <- parse_date(
+      date   = date_df$starts[i],
+      start  = TRUE,
+      format = "%m-%d-%Y",
+      sep    = "%2F"
     )
 
-    # check whether to use API key or not
-    if(!is.null(api_key)) {
+    # reformat and extract valid end date
+    end <- parse_date(
+      date   = date_df$ends[i],
+      start  = FALSE,
+      format = "%m-%d-%Y",
+      sep    = "%2F"
+    )
 
-      # Construct query URL w/ API key
-      url <- paste0(url, "&apiKey=", api_key)
+    message(paste0("Start date: ", date_df$starts[i], " - (", start, ")", "\nEnd date: ", date_df$ends[i], "- (", end, ")\n"))
 
-    }
+    # maximum records per page
+    page_size  <- 50000
 
-    # GET request to CDSS API
-    tryCatch({
+    # initialize empty dataframe to store data from multiple pages
+    data_df    <-  data.frame()
 
-      # query CDSS API
-      cdss_data <- parse_gets(url = url)
+    # initialize first page index
+    page_index <- 1
 
-    },
-    error = function(e) {
+    # Loop through pages until there are no more pages to get
+    more_pages <- TRUE
 
-      # error message handler
-      message(
-        query_error(
-          arg_lst = input_args,
-          ignore  = c("url", "e"),
-          url     = url,
-          e_msg   = e
-        )
+    # while more pages are available, send get requests to CDSS API
+    while (more_pages) {
+
+      # Construct query URL w/o API key
+      url <- paste0(
+        base,
+        "format=json&dateFormat=spaceSepToSeconds",
+        "&adminNo=", admin_no,
+        "&endDate=", end,
+        "&startDate=", start,
+        "&wdid=", wdid,
+        "&pageSize=", page_size,
+        "&pageIndex=", page_index
       )
 
-      stop()
+      # check whether to use API key or not
+      if(!is.null(api_key)) {
 
-    })
+        # Construct query URL w/ API key
+        url <- paste0(url, "&apiKey=", api_key)
 
-    # Extract Result List
-    cdss_data <- cdss_data$ResultList
+      }
 
-    # set clean names
-    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+      # GET request to CDSS API
+      tryCatch({
 
-    # use sprintf() to extract all true decimal places of admin numbers
-    cdss_data$analysis_wr_admin_no <- sprintf("%.5f",  cdss_data$analysis_wr_admin_no)
-    cdss_data$priority_admin_no    <- sprintf("%.5f",  cdss_data$priority_admin_no)
+        # query CDSS API
+        cdss_data <- parse_gets(url = url)
 
-    # bind data from this page
-    data_df <- rbind(data_df, cdss_data)
-    # data_df <- dplyr::bind_rows(data_df, cdss_data)
+      },
+      error = function(e) {
 
-    # Check if more pages to get to continue/stop while loop
-    if (nrow(cdss_data) < page_size) {
+        # error message handler
+        message(
+          query_error(
+            arg_lst = input_args,
+            ignore  = c("url", "e"),
+            url     = url,
+            e_msg   = e
+          )
+        )
 
-      more_pages <- FALSE
+        stop()
 
-    } else {
+      })
 
-      page_index <- page_index + 1
+      # Extract Result List
+      cdss_data <- cdss_data$ResultList
+
+      # set clean names
+      names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+      # use sprintf() to extract all true decimal places of admin numbers
+      cdss_data$analysis_wr_admin_no <- sprintf("%.5f",  cdss_data$analysis_wr_admin_no)
+      cdss_data$priority_admin_no    <- sprintf("%.5f",  cdss_data$priority_admin_no)
+
+      # set datetime column
+      cdss_data$datetime      <- as.POSIXct(cdss_data$analysis_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
+
+      # bind data from this page
+      data_df <- rbind(data_df, cdss_data)
+
+      # Check if more pages to get to continue/stop while loop
+      if (nrow(cdss_data) < page_size) {
+
+        more_pages <- FALSE
+
+      } else {
+
+        page_index <- page_index + 1
+
+      }
 
     }
+    data_df
+  })
 
-  }
+  # bind dataframe rows
+  cdss_lst <- do.call(rbind, cdss_lst)
 
   # return final binded dataframe
-  return(data_df)
+  return(cdss_lst)
 
 }
 
@@ -166,9 +184,9 @@ get_call_analysis_wdid <- function(
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
-#' @return dataframe of call services by GNIS ID
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
+#' @return dataframe of call services by GNIS ID
 #' @export
 get_call_analysis_gnisid <- function(
     gnis_id             = NULL,
@@ -210,116 +228,132 @@ get_call_analysis_gnisid <- function(
   admin_no    <- null_convert(admin_no)
   stream_mile <- null_convert(stream_mile)
 
-  # reformat and extract valid start date
-  start <- parse_date(
-    date   = start_date,
-    start  = TRUE,
-    format = "%m-%d-%Y",
-    sep    = "%2F"
+
+  # make a dataframe of date ranges to issue GET requests in smaller batches
+  date_df <- batch_dates(
+    start_date = start_date,
+    end_date   = end_date
   )
-
-  # reformat and extract valid end date
-  end <- parse_date(
-    date   = end_date,
-    start  = FALSE,
-    format = "%m-%d-%Y",
-    sep    = "%2F"
-  )
-
-  # maximum records per page
-  page_size  <- 50000
-
-  # initialize empty dataframe to store data from multiple pages
-  data_df    <-  data.frame()
-
-  # initialize first page index
-  page_index <- 1
-
-  # Loop through pages until there are no more pages to get
-  more_pages <- TRUE
 
   # print message
   message(paste0("Retrieving call anaylsis by GNIS ID"))
 
-  # while more pages are avaliable, send get requests to CDSS API
-  while (more_pages) {
+  # go through range of dates in date_df and make batch GET requests
+  cdss_lst <- lapply(1:nrow(date_df), function(i) {
 
-    # Construct query URL w/o API key
-    url <- paste0(
-      base,
-      "format=json&dateFormat=spaceSepToSeconds",
-      "&adminNo=", admin_no,
-      "&endDate=", end,
-      "&gnisId=", gnis_id,
-      "&startDate=", start,
-      "&streamMile=", stream_mile,
-      "&pageSize=", page_size,
-      "&pageIndex=", page_index
+    # reformat and extract valid start date
+    start <- parse_date(
+      date   = date_df$starts[i],
+      start  = TRUE,
+      format = "%m-%d-%Y",
+      sep    = "%2F"
     )
 
-    # check whether to use API key or not
-    if(!is.null(api_key)) {
+    # reformat and extract valid end date
+    end <- parse_date(
+      date   = date_df$ends[i],
+      start  = FALSE,
+      format = "%m-%d-%Y",
+      sep    = "%2F"
+    )
 
-      # Construct query URL w/ API key
-      url <- paste0(url, "&apiKey=", api_key)
+    # message(paste0("Start date: ", date_df$starts[i], " - (", start, ")", "\nEnd date: ", date_df$ends[i], "- (", end, ")\n"))
 
-    }
+    # maximum records per page
+    page_size  <- 50000
 
-    # GET request to CDSS API
-    tryCatch({
+    # initialize empty dataframe to store data from multiple pages
+    data_df    <-  data.frame()
 
-      # query CDSS API
-      cdss_data <- parse_gets(url = url)
+    # initialize first page index
+    page_index <- 1
 
-    },
-    error = function(e) {
+    # Loop through pages until there are no more pages to get
+    more_pages <- TRUE
 
-      # error message handler
-      message(
-        query_error(
-          arg_lst = input_args,
-          ignore  = c("url", "e"),
-          url     = url,
-          e_msg   = e
-        )
+    # while more pages are available, send get requests to CDSS API
+    while (more_pages) {
+
+      # Construct query URL w/o API key
+      url <- paste0(
+        base,
+        "format=json&dateFormat=spaceSepToSeconds",
+        "&adminNo=", admin_no,
+        "&endDate=", end,
+        "&gnisId=", gnis_id,
+        "&startDate=", start,
+        "&streamMile=", stream_mile,
+        "&pageSize=", page_size,
+        "&pageIndex=", page_index
       )
 
-      stop()
+      # check whether to use API key or not
+      if(!is.null(api_key)) {
 
-    })
+        # Construct query URL w/ API key
+        url <- paste0(url, "&apiKey=", api_key)
 
-    # Extract Result List
-    cdss_data <- cdss_data$ResultList
+      }
 
-    # set clean names
-    names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+      # GET request to CDSS API
+      tryCatch({
 
-    # use sprintf() to extract all true decimal places of admin numbers
-    cdss_data$analysis_wr_admin_no <- sprintf("%.5f",  cdss_data$analysis_wr_admin_no)
-    cdss_data$priority_admin_no    <- sprintf("%.5f",  cdss_data$priority_admin_no)
+        # query CDSS API
+        cdss_data <- parse_gets(url = url)
 
-    # set datetime column
-    cdss_data$datetime      <- as.POSIXct(cdss_data$analysis_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
+      },
+      error = function(e) {
 
-    # bind data from this page
-    data_df <- rbind(data_df, cdss_data)
-    # data_df <- dplyr::bind_rows(data_df, cdss_data)
+        # error message handler
+        message(
+          query_error(
+            arg_lst = input_args,
+            ignore  = c("url", "e"),
+            url     = url,
+            e_msg   = e
+          )
+        )
 
-    # Check if more pages to get to continue/stop while loop
-    if (nrow(cdss_data) < page_size) {
+        stop()
 
-      more_pages <- FALSE
+      })
 
-    } else {
+      # Extract Result List
+      cdss_data <- cdss_data$ResultList
 
-      page_index <- page_index + 1
+      # set clean names
+      names(cdss_data) <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2",  names(cdss_data))))
+
+      # use sprintf() to extract all true decimal places of admin numbers
+      cdss_data$analysis_wr_admin_no <- sprintf("%.5f",  cdss_data$analysis_wr_admin_no)
+      cdss_data$priority_admin_no    <- sprintf("%.5f",  cdss_data$priority_admin_no)
+
+      # set datetime column
+      cdss_data$datetime      <- as.POSIXct(cdss_data$analysis_date, format="%Y-%m-%d %H:%M:%S", tz = "UTC")
+
+      # bind data from this page
+      data_df <- rbind(data_df, cdss_data)
+
+      # Check if more pages to get to continue/stop while loop
+      if (nrow(cdss_data) < page_size) {
+
+        more_pages <- FALSE
+
+      } else {
+
+        page_index <- page_index + 1
+
+      }
 
     }
+    data_df
+  })
 
-  }
+  # bind dataframe rows
+  cdss_lst <- do.call(rbind, cdss_lst)
 
   # return final binded dataframe
-  return(data_df)
+  return(cdss_lst)
 
 }
 
@@ -333,7 +367,7 @@ get_call_analysis_gnisid <- function(
 #' @importFrom jsonlite fromJSON
 #' @return dataframe of water source route framework
 #' @export
-  get_source_route_framework <- function(
+get_source_route_framework <- function(
     division            = NULL,
     gnis_name           = NULL,
     water_district      = NULL,
