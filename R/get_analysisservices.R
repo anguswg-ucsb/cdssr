@@ -77,7 +77,7 @@ get_call_analysis_wdid <- function(
       sep    = "%2F"
     )
 
-    message(paste0("Start date: ", date_df$starts[i], " - (", start, ")", "\nEnd date: ", date_df$ends[i], "- (", end, ")\n"))
+    # message(paste0("Start date: ", date_df$starts[i], " - (", start, ")", "\nEnd date: ", date_df$ends[i], "- (", end, ")\n"))
 
     # maximum records per page
     page_size  <- 50000
