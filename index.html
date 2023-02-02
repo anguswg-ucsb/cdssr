@@ -243,7 +243,7 @@
 </h4>
 <p>To check out the various CDSS API endpoint, <strong><code>cdssr</code></strong> comes packaged with an <strong><code>api_endpoint</code></strong> table which details endpoint names, descriptions, and relevant URLs.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="fu">cdssr</span><span class="fu">::</span><span class="va"><a href="reference/api_endpoints.html">api_endpoints</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu">tibble</span><span class="op">(</span><span class="fu">cdssr</span><span class="fu">::</span><span class="va"><a href="reference/api_endpoints.html">api_endpoints</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 61 × 5</span></span>
 <span><span class="co">#&gt;    resource                                      descrip…¹ endpo…² url   endpo…³</span></span>
 <span><span class="co">#&gt;    &lt;chr&gt;                                         &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;  </span></span>
@@ -267,7 +267,7 @@
 </h4>
 <p><strong><code>cdssr</code></strong> also comes packaged with a <strong><code>resource_meta</code></strong> dataset which provides meta data for the data retrieved by <strong><code>cdssr</code></strong> (via the CDSS REST API)</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="fu">cdssr</span><span class="fu">::</span><span class="va"><a href="reference/resource_meta.html">resource_meta</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu">tibble</span><span class="op">(</span><span class="fu">cdssr</span><span class="fu">::</span><span class="va"><a href="reference/resource_meta.html">resource_meta</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1,031 × 5</span></span>
 <span><span class="co">#&gt;    endpoint                          name                  descr…¹ type  endpo…²</span></span>
 <span><span class="co">#&gt;    &lt;chr&gt;                             &lt;chr&gt;                 &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;  </span></span>
@@ -604,7 +604,7 @@
 <span><span class="co"># 2. Selecting the WDID's of interest from our search results</span></span>
 <span><span class="va">ditch_wdids</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">structures</span> <span class="op">%&gt;%</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ciu_code</span> <span class="op">==</span> <span class="st">"A"</span>, <span class="va">structure_type</span> <span class="op">==</span> <span class="st">"DITCH"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">filter</span><span class="op">(</span><span class="va">ciu_code</span> <span class="op">==</span> <span class="st">"A"</span>, <span class="va">structure_type</span> <span class="op">==</span> <span class="st">"DITCH"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="va">.</span><span class="op">$</span><span class="va">wdid</span></span>
 <span></span>
 <span><span class="co"># 3. Providing the WDID's as a vector to get_structures_divrec_ts()</span></span>
