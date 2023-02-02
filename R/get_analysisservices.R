@@ -56,7 +56,7 @@ get_call_analysis_wdid <- function(
     )
 
   # print message
-  message(paste0("Retrieving call anaylsis by WDID"))
+  message(paste0("Retrieving call analysis by WDID"))
 
   # go through range of dates in date_df and make batch GET requests
   cdss_lst <- lapply(1:nrow(date_df), function(i) {
@@ -236,7 +236,7 @@ get_call_analysis_gnisid <- function(
   )
 
   # print message
-  message(paste0("Retrieving call anaylsis by GNIS ID"))
+  message(paste0("Retrieving call analysis by GNIS ID"))
 
   # go through range of dates in date_df and make batch GET requests
   cdss_lst <- lapply(1:nrow(date_df), function(i) {
@@ -492,7 +492,7 @@ get_source_route_framework <- function(
 
   }
 
-#' 	Returns all WDID(s), and their stream mile, located between two different stream locations on the DWR Water Source Framework
+#' Returns all WDID(s), and their stream mile, located between two different stream locations on the DWR Water Source Framework
 #' @description Makes a request to the analysisservices/watersourcerouteanalysis/ endpoint to retrieve the DWR source route framework analysis data
 #' @param lt_gnis_id character or numeric,	lower terminus GNIS ID
 #' @param lt_stream_mile character or numeric, lower terminus stream mile

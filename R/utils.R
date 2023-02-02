@@ -407,13 +407,15 @@ batch_dates <- function(
     stop("Invalid or missing 'start_date', 'end_date' arguments")
 
   }
-
+  # start_date = "2000-01-01"
+  # end_date = "2002-02-11"
   # make sure dates are Date types
   start_date   <- as.Date(start_date)
   end_date     <- as.Date(end_date)
 
   # sequence through date years
   year_vect <- seq(from = start_date, to = end_date, by = 'year')
+  # year_vect <- seq(from = start_date, to = end_date, by = '6 months')
 
   # make a dataframe of start and end dates
   date_df <- data.frame(
