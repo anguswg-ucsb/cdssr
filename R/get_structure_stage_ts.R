@@ -7,6 +7,8 @@ utils::globalVariables(c("."))
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
+#' @noRd
+#' @keywords internal
 #' @return dataframe with stage/volume data for CDSS structure of interest
 inner_structure_stage_ts <- function(
     wdid            = NULL,
@@ -167,6 +169,13 @@ inner_structure_stage_ts <- function(
 #'
 #' # plot volume
 #' plot(stage_vol$volume~stage_vol$datetime, type = "s")
+#'
+#' # get stage/volume data for multiple WDIDs
+#' multi_wdids <- get_structure_stage_ts(
+#'                wdid          = c("0504010", "0504020", "0504021"),
+#'                start_date    = "2021-06-01",
+#'                end_date      = "2021-08-01"
+#'                )
 get_structure_stage_ts <- function(
     wdid            = NULL,
     start_date      = "1900-01-01",
@@ -180,15 +189,24 @@ get_structure_stage_ts <- function(
   # loop over WDIDs and call inner_structure_stage_ts function and bind results rows
   cdss_data <- lapply(1:length(wdid), function(i) {
 
-      # message(paste0(i, "/", length(wdid), " - ", wdid[i]))
+      message(paste0("WDID: ", wdid[i]))
 
+    tryCatch({
       inner_structure_stage_ts(
         wdid            = wdid[i],
         start_date      = start_date,
         end_date        = end_date,
         api_key         = api_key
       )
+
+    },
+    error = function(e) {
+
+      NULL
+
     })
+
+  })
 
   # bind rows of dataframes
   cdss_data <- do.call(rbind, cdss_data)

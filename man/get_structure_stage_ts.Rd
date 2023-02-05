@@ -39,4 +39,11 @@ plot(stage_vol$stage~stage_vol$datetime, type = "s")
 
 # plot volume
 plot(stage_vol$volume~stage_vol$datetime, type = "s")
+
+# get stage/volume data for multiple WDIDs
+multi_wdids <- get_structure_stage_ts(
+               wdid          = c("0504010", "0504020", "0504021"),
+               start_date    = "2021-06-01",
+               end_date      = "2021-08-01"
+               )
 }
