@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="index.html">cdssr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1.200</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2.000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -234,6 +234,12 @@
 <td><strong>get_source_route_framework()</strong></td>
 <td>Returns the DWR source route framework reference table for the criteria specified</td>
 <td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#AnalysisServicesController&amp;#gettingstarted&amp;#jsonxml" class="external-link">analysisservices/watersourcerouteframework</a></td>
+</tr>
+<tr class="odd">
+<td>21</td>
+<td><strong>get_parceluse_ts()</strong></td>
+<td>Returns list of Parcel Use Time Series</td>
+<td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#ParcelUseTSController&amp;#gettingstarted&amp;#jsonxml" class="external-link">structures/parcelusets</a></td>
 </tr>
 </tbody>
 </table>
@@ -538,6 +544,12 @@
 <td>Returns telemetry time series data (raw, hour, day)</td>
 <td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#TelemetryStationsController&amp;#gettingstarted&amp;#jsonxml" class="external-link">telemetrystations/telemetrytimeseries</a></td>
 </tr>
+<tr class="odd">
+<td>7</td>
+<td><strong>get_parceluse_ts()</strong></td>
+<td>Returns list of Parcel Use Time Series</td>
+<td><a href="https://dwr.state.co.us/rest/get/help#Datasets&amp;#ParcelUseTSController&amp;#gettingstarted&amp;#jsonxml" class="external-link">structures/parcelusets</a></td>
+</tr>
 </tbody>
 </table>
 <p><br></p>
@@ -558,21 +570,21 @@
 <span>                      timescale           <span class="op">=</span> <span class="st">"day"</span>           <span class="co"># select daily timescale </span></span>
 <span>                               <span class="op">)</span></span>
 <span><span class="co">#&gt; Retrieving telemetry station time series data (day - DISCHRG)</span></span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 572 × 7</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    abbrev   parameter meas_date      meas_…¹ meas_…² datetime            times…³</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;   &lt;dttm&gt;              &lt;chr&gt;  </span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 ANDDITCO DISCHRG   2020-05-07 00…    3.05 cfs     2020-05-07 00:00:00 day    </span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 ANDDITCO DISCHRG   2020-05-08 00…    3.04 cfs     2020-05-08 00:00:00 day    </span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 ANDDITCO DISCHRG   2020-05-09 00…    2.98 cfs     2020-05-09 00:00:00 day    </span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 ANDDITCO DISCHRG   2020-05-10 00…    2.95 cfs     2020-05-10 00:00:00 day    </span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 ANDDITCO DISCHRG   2020-05-11 00…    2.95 cfs     2020-05-11 00:00:00 day    </span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 ANDDITCO DISCHRG   2020-05-12 00…    2.95 cfs     2020-05-12 00:00:00 day    </span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 ANDDITCO DISCHRG   2020-05-13 00…    2.95 cfs     2020-05-13 00:00:00 day    </span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 ANDDITCO DISCHRG   2020-05-14 00…    2.95 cfs     2020-05-14 00:00:00 day    </span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 ANDDITCO DISCHRG   2020-05-15 00…    2.95 cfs     2020-05-15 00:00:00 day    </span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 ANDDITCO DISCHRG   2020-05-16 00…    2.95 cfs     2020-05-16 00:00:00 day    </span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 562 more rows, and abbreviated variable names ¹​meas_value, ²​meas_unit,</span></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ³​timescale</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 572 × 11</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    abbrev   parameter meas_date    meas_…¹ meas_…² flag_a flag_b meas_…³ modif…⁴</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;  </span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 ANDDITCO DISCHRG   2020-05-07 …    3.05 cfs     O      &lt;NA&gt;        33 2020-0…</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 ANDDITCO DISCHRG   2020-05-08 …    3.04 cfs     O      &lt;NA&gt;        96 2020-0…</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 ANDDITCO DISCHRG   2020-05-09 …    2.98 cfs     O      &lt;NA&gt;        96 2020-0…</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 ANDDITCO DISCHRG   2020-05-10 …    2.95 cfs     O      &lt;NA&gt;        96 2020-0…</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 ANDDITCO DISCHRG   2020-05-11 …    2.95 cfs     O      &lt;NA&gt;        96 2020-0…</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 ANDDITCO DISCHRG   2020-05-12 …    2.95 cfs     O      &lt;NA&gt;        96 2020-0…</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 ANDDITCO DISCHRG   2020-05-13 …    2.95 cfs     O      &lt;NA&gt;        96 2020-0…</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 ANDDITCO DISCHRG   2020-05-14 …    2.95 cfs     O      &lt;NA&gt;         9 2020-0…</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 ANDDITCO DISCHRG   2020-05-15 …    2.95 cfs     O      &lt;NA&gt;        63 2020-0…</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 ANDDITCO DISCHRG   2020-05-16 …    2.95 cfs     O      &lt;NA&gt;        96 2020-0…</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 562 more rows, 2 more variables: datetime &lt;dttm&gt;, timescale &lt;chr&gt;, and</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   abbreviated variable names ¹​meas_value, ²​meas_unit, ³​meas_count, ⁴​modified</span></span></code></pre></div>
 <p><img src="https://cdsspy-images.s3.us-west-1.amazonaws.com/discharge_timeseries_plot2.png"></p>
 <p><br><br></p>
 </div>
