@@ -101,6 +101,7 @@ Below is a table of all of the CDSS API endpoints that **`cdssr`** provides func
 |18    | **get_water_rights_trans()**         | Returns court decreed actions that affect amount and use(s) that can be used by each water right | [waterrights/transaction](https://dwr.state.co.us/rest/get/help#Datasets&#WaterRightsController&#gettingstarted&#jsonxml)|
 |19    | **get_call_analysis_wdid()**   | 	Performs a call analysis that returns a time series showing the percentage of each day that the specified WDID and priority was out of priority and the downstream call in priority | [analysisservices/callanalysisbywdid](https://dwr.state.co.us/rest/get/help#Datasets&#AnalysisServicesController&#gettingstarted&#jsonxml)    |
 |20    | **get_source_route_framework()**         | Returns the DWR source route framework reference table for the criteria specified | [analysisservices/watersourcerouteframework](https://dwr.state.co.us/rest/get/help#Datasets&#AnalysisServicesController&#gettingstarted&#jsonxml)|
+|21    | **get_parceluse_ts()**         | Returns list of Parcel Use Time Series | [structures/parcelusets](https://dwr.state.co.us/rest/get/help#Datasets&#ParcelUseTSController&#gettingstarted&#jsonxml) |
 
 #### **Example: Explore endpoint** 
 To check out the various CDSS API endpoint, **`cdssr`** comes packaged with an **`api_endpoint`** table which details endpoint names, descriptions, and relevant URLs. 
@@ -279,6 +280,8 @@ The functions in the table below retrieve time series data from the various time
 |4     | **get_gw_wl_wellmeasures()**          | Returns  Groundwater Measurements | [groundwater/waterlevels/wellmeasurements](https://dwr.state.co.us/rest/get/help#Datasets&#GroundwaterLevelsController&#gettingstarted&#jsonxml)                          |
 |5    | **get_sw_ts()**                | Returns Surface Water Time Series                                  | [surfacewater/surfacewaterts](https://dwr.state.co.us/rest/get/help#Datasets&#SurfaceWaterController&#gettingstarted&#jsonxml)        |
 |6    | **get_telemetry_ts()**         | Returns telemetry time series data (raw, hour, day) | [telemetrystations/telemetrytimeseries](https://dwr.state.co.us/rest/get/help#Datasets&#TelemetryStationsController&#gettingstarted&#jsonxml)|
+|7    | **get_parceluse_ts()**         | Returns list of Parcel Use Time Series | [structures/parcelusets](https://dwr.state.co.us/rest/get/help#Datasets&#ParcelUseTSController&#gettingstarted&#jsonxml) |
+
 
 <br>
 

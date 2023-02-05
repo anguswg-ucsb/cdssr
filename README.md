@@ -96,6 +96,7 @@ provides functions for.
 | 18    | **get_water_rights_trans()**     | Returns court decreed actions that affect amount and use(s) that can be used by each water right                                                                                    | [waterrights/transaction](https://dwr.state.co.us/rest/get/help#Datasets&#WaterRightsController&#gettingstarted&#jsonxml)                                                                                                                    |
 | 19    | **get_call_analysis_wdid()**     | Performs a call analysis that returns a time series showing the percentage of each day that the specified WDID and priority was out of priority and the downstream call in priority | [analysisservices/callanalysisbywdid](https://dwr.state.co.us/rest/get/help#Datasets&#AnalysisServicesController&#gettingstarted&#jsonxml)                                                                                                   |
 | 20    | **get_source_route_framework()** | Returns the DWR source route framework reference table for the criteria specified                                                                                                   | [analysisservices/watersourcerouteframework](https://dwr.state.co.us/rest/get/help#Datasets&#AnalysisServicesController&#gettingstarted&#jsonxml)                                                                                            |
+| 21    | **get_parceluse_ts()**           | Returns list of Parcel Use Time Series                                                                                                                                              | [structures/parcelusets](https://dwr.state.co.us/rest/get/help#Datasets&#ParcelUseTSController&#gettingstarted&#jsonxml)                                                                                                                     |
 
 #### **Example: Explore endpoint**
 
@@ -341,6 +342,7 @@ various time series related CDSS API endpoints.
 | 4     | **get_gw_wl_wellmeasures()**   | Returns Groundwater Measurements                        | [groundwater/waterlevels/wellmeasurements](https://dwr.state.co.us/rest/get/help#Datasets&#GroundwaterLevelsController&#gettingstarted&#jsonxml)                                                                                     |
 | 5     | **get_sw_ts()**                | Returns Surface Water Time Series                       | [surfacewater/surfacewaterts](https://dwr.state.co.us/rest/get/help#Datasets&#SurfaceWaterController&#gettingstarted&#jsonxml)                                                                                                       |
 | 6     | **get_telemetry_ts()**         | Returns telemetry time series data (raw, hour, day)     | [telemetrystations/telemetrytimeseries](https://dwr.state.co.us/rest/get/help#Datasets&#TelemetryStationsController&#gettingstarted&#jsonxml)                                                                                        |
+| 7     | **get_parceluse_ts()**         | Returns list of Parcel Use Time Series                  | [structures/parcelusets](https://dwr.state.co.us/rest/get/help#Datasets&#ParcelUseTSController&#gettingstarted&#jsonxml)                                                                                                             |
 
 <br>
 
@@ -368,21 +370,21 @@ discharge_ts <- cdssr::get_telemetry_ts(
 #> Retrieving telemetry station time series data (day - DISCHRG)
 ```
 
-    #> # A tibble: 572 × 7
-    #>    abbrev   parameter meas_date      meas_…¹ meas_…² datetime            times…³
-    #>    <chr>    <chr>     <chr>            <dbl> <chr>   <dttm>              <chr>  
-    #>  1 ANDDITCO DISCHRG   2020-05-07 00…    3.05 cfs     2020-05-07 00:00:00 day    
-    #>  2 ANDDITCO DISCHRG   2020-05-08 00…    3.04 cfs     2020-05-08 00:00:00 day    
-    #>  3 ANDDITCO DISCHRG   2020-05-09 00…    2.98 cfs     2020-05-09 00:00:00 day    
-    #>  4 ANDDITCO DISCHRG   2020-05-10 00…    2.95 cfs     2020-05-10 00:00:00 day    
-    #>  5 ANDDITCO DISCHRG   2020-05-11 00…    2.95 cfs     2020-05-11 00:00:00 day    
-    #>  6 ANDDITCO DISCHRG   2020-05-12 00…    2.95 cfs     2020-05-12 00:00:00 day    
-    #>  7 ANDDITCO DISCHRG   2020-05-13 00…    2.95 cfs     2020-05-13 00:00:00 day    
-    #>  8 ANDDITCO DISCHRG   2020-05-14 00…    2.95 cfs     2020-05-14 00:00:00 day    
-    #>  9 ANDDITCO DISCHRG   2020-05-15 00…    2.95 cfs     2020-05-15 00:00:00 day    
-    #> 10 ANDDITCO DISCHRG   2020-05-16 00…    2.95 cfs     2020-05-16 00:00:00 day    
-    #> # … with 562 more rows, and abbreviated variable names ¹​meas_value, ²​meas_unit,
-    #> #   ³​timescale
+    #> # A tibble: 572 × 11
+    #>    abbrev   parameter meas_date    meas_…¹ meas_…² flag_a flag_b meas_…³ modif…⁴
+    #>    <chr>    <chr>     <chr>          <dbl> <chr>   <chr>  <chr>    <int> <chr>  
+    #>  1 ANDDITCO DISCHRG   2020-05-07 …    3.05 cfs     O      <NA>        33 2020-0…
+    #>  2 ANDDITCO DISCHRG   2020-05-08 …    3.04 cfs     O      <NA>        96 2020-0…
+    #>  3 ANDDITCO DISCHRG   2020-05-09 …    2.98 cfs     O      <NA>        96 2020-0…
+    #>  4 ANDDITCO DISCHRG   2020-05-10 …    2.95 cfs     O      <NA>        96 2020-0…
+    #>  5 ANDDITCO DISCHRG   2020-05-11 …    2.95 cfs     O      <NA>        96 2020-0…
+    #>  6 ANDDITCO DISCHRG   2020-05-12 …    2.95 cfs     O      <NA>        96 2020-0…
+    #>  7 ANDDITCO DISCHRG   2020-05-13 …    2.95 cfs     O      <NA>        96 2020-0…
+    #>  8 ANDDITCO DISCHRG   2020-05-14 …    2.95 cfs     O      <NA>         9 2020-0…
+    #>  9 ANDDITCO DISCHRG   2020-05-15 …    2.95 cfs     O      <NA>        63 2020-0…
+    #> 10 ANDDITCO DISCHRG   2020-05-16 …    2.95 cfs     O      <NA>        96 2020-0…
+    #> # … with 562 more rows, 2 more variables: datetime <dttm>, timescale <chr>, and
+    #> #   abbreviated variable names ¹​meas_value, ²​meas_unit, ³​meas_count, ⁴​modified
 
 ![](https://cdsspy-images.s3.us-west-1.amazonaws.com/discharge_timeseries_plot2.png)
 
