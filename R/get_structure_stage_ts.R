@@ -1,6 +1,6 @@
 utils::globalVariables(c("."))
-#' Return Structure stage/volume Records
-#' @description Make a request to the api/v2/structures/divrec/stagevolume/ endpoint to retrieve structure stage/volume data for a specified WDID within a specified date range.
+#' Return individual Structure stage/volume Records
+#' @description Internal function - Make a request to the api/v2/structures/divrec/stagevolume/ endpoint to retrieve structure stage/volume data for a specified WDID within a specified date range.
 #' @param wdid character indicating WDID code of structure
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
@@ -8,21 +8,7 @@ utils::globalVariables(c("."))
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @return dataframe with stage/volume data for CDSS structure of interest
-#' @export
-#' @examples
-#' # Request endpoint: api/v2/structures/divrec/stagevolume
-#' stage_vol <- get_structure_stage_ts(
-#'                    wdid             = "0303732",
-#'                    start_date       = "2000-01-01",
-#'                    end_date         = "2005-01-01"
-#'                  )
-#'
-#' # plot stage
-#' plot(stage_vol$stage~stage_vol$datetime, type = "s")
-#'
-#' # plot volume
-#' plot(stage_vol$volume~stage_vol$datetime, type = "s")
-get_structure_stage_ts <- function(
+inner_structure_stage_ts <- function(
     wdid            = NULL,
     start_date      = "1900-01-01",
     end_date        = Sys.Date(),
@@ -44,11 +30,6 @@ get_structure_stage_ts <- function(
 
     stop(arg_lst)
 
-  }
-
-  # if more than one WDID is provided, use the first WDID
-  if(length(wdid) > 1) {
-    stop(paste0("Invalid 'wdid' argument\nMultiple WDID query is unsupported by the 'api/v2/structures/divrec/stagevolume/' endpoint\nPlease enter a single valid WDID"))
   }
 
   # Base API URL for Daily Diversion Records
@@ -90,9 +71,6 @@ get_structure_stage_ts <- function(
 
   # Loop through pages until there are no more pages to get
   more_pages <- TRUE
-
-  # print message
-  message(paste0("Retrieving stage/volume data"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -168,5 +146,54 @@ get_structure_stage_ts <- function(
 
 }
 
+#' Return Structure stage/volume records
+#' @description Make a request to the api/v2/structures/divrec/stagevolume/ endpoint to retrieve structure stage/volume data for WDID(s) within a specified date range.
+#' @param wdid character vector or list of WDID codes
+#' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
+#' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
+#' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @return dataframe with stage/volume data for CDSS structure(s) of interest
+#' @export
+#' @examples
+#' # Request endpoint: api/v2/structures/divrec/stagevolume
+#' stage_vol <- get_structure_stage_ts(
+#'                    wdid             = "0303732",
+#'                    start_date       = "2000-01-01",
+#'                    end_date         = "2005-01-01"
+#'                  )
+#'
+#' # plot stage
+#' plot(stage_vol$stage~stage_vol$datetime, type = "s")
+#'
+#' # plot volume
+#' plot(stage_vol$volume~stage_vol$datetime, type = "s")
+get_structure_stage_ts <- function(
+    wdid            = NULL,
+    start_date      = "1900-01-01",
+    end_date        = Sys.Date(),
+    api_key         = NULL
+) {
+
+  # print message
+  message(paste0("Retrieving stage/volume data"))
+
+  # loop over WDIDs and call inner_structure_stage_ts function and bind results rows
+  cdss_data <- lapply(1:length(wdid), function(i) {
+
+      # message(paste0(i, "/", length(wdid), " - ", wdid[i]))
+
+      inner_structure_stage_ts(
+        wdid            = wdid[i],
+        start_date      = start_date,
+        end_date        = end_date,
+        api_key         = api_key
+      )
+    })
+
+  # bind rows of dataframes
+  cdss_data <- do.call(rbind, cdss_data)
 
 
+  return(cdss_data)
+
+}

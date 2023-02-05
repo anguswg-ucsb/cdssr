@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_structure_stage_ts.R
 \name{get_structure_stage_ts}
 \alias{get_structure_stage_ts}
-\title{Return Structure stage/volume Records}
+\title{Return Structure stage/volume records}
 \usage{
 get_structure_stage_ts(
   wdid = NULL,
@@ -12,7 +12,7 @@ get_structure_stage_ts(
 )
 }
 \arguments{
-\item{wdid}{character indicating WDID code of structure}
+\item{wdid}{character vector or list of WDID codes}
 
 \item{start_date}{character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".}
 
@@ -21,10 +21,10 @@ get_structure_stage_ts(
 \item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
 \value{
-dataframe with stage/volume data for CDSS structure of interest
+dataframe with stage/volume data for CDSS structure(s) of interest
 }
 \description{
-Make a request to the api/v2/structures/divrec/stagevolume/ endpoint to retrieve structure stage/volume data for a specified WDID within a specified date range.
+Make a request to the api/v2/structures/divrec/stagevolume/ endpoint to retrieve structure stage/volume data for WDID(s) within a specified date range.
 }
 \examples{
 # Request endpoint: api/v2/structures/divrec/stagevolume
