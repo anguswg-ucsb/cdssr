@@ -90,6 +90,7 @@
 <span class="r-in"><span>                   end_date         <span class="op">=</span> <span class="st">"2005-01-01"</span></span></span>
 <span class="r-in"><span>                 <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Retrieving stage/volume data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> WDID: 0303732</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># plot stage</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stage_vol</span><span class="op">$</span><span class="va">stage</span><span class="op">~</span><span class="va">stage_vol</span><span class="op">$</span><span class="va">datetime</span>, type <span class="op">=</span> <span class="st">"s"</span><span class="op">)</span></span></span>
@@ -98,6 +99,32 @@
 <span class="r-in"><span><span class="co"># plot volume</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stage_vol</span><span class="op">$</span><span class="va">volume</span><span class="op">~</span><span class="va">stage_vol</span><span class="op">$</span><span class="va">datetime</span>, type <span class="op">=</span> <span class="st">"s"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="get_structure_stage_ts-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># get stage/volume data for multiple WDIDs</span></span></span>
+<span class="r-in"><span><span class="va">multi_wdids</span> <span class="op">&lt;-</span> <span class="fu">get_structure_stage_ts</span><span class="op">(</span></span></span>
+<span class="r-in"><span>               wdid          <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0504010"</span>, <span class="st">"0504020"</span>, <span class="st">"0504021"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>               start_date    <span class="op">=</span> <span class="st">"2021-06-01"</span>,</span></span>
+<span class="r-in"><span>               end_date      <span class="op">=</span> <span class="st">"2021-08-01"</span></span></span>
+<span class="r-in"><span>               <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Retrieving stage/volume data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> WDID: 0504010</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> WDID: 0504020</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> WDID: 0504021</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> DATA RETRIEVAL ERROR</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Query: </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - wdid: 0504021</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - start_date: 2021-06-01</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - end_date: 2021-08-01</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - api_key: NULL</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Requested URL:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/stagevolume/?format=json&amp;dateFormat=spaceSepToSeconds&amp;min-dataMeasDate=06%2F01%2F2021&amp;max-dataMeasDate=08%2F01%2F2021&amp;wdid=0504021&amp;pageSize=50000&amp;pageIndex=1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Original error message:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -----------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Error in parse_gets(url = url): This URL is properly formatted, but returns zero records from CDSS.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
