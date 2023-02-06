@@ -18,9 +18,10 @@ dataframe of groundwater geophysical log picks for a given well ID
 Make a request to the groundwater/geophysicallogs/wells endpoint to retrieve groundwater geophysical log picks for the given well ID.
 }
 \examples{
+\dontrun{
 # Request endpoint: api/v2/groundwater/geophysicallogs/geoplogpicks/
 gplogpicks <- get_gw_gplogs_geologpicks(
   wellid = 2409
  )
- gplogpicks
+}
 }

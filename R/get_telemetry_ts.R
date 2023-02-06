@@ -13,6 +13,7 @@ utils::globalVariables(c("."))
 #' @return dataframe with telemetry station time series data
 #' @export
 #' @examples
+#' \dontrun{
 #' # Retrieve daily discharge for CLAFTCCO telemetry station
 #' telem_ts <- get_telemetry_ts(
 #'            abbrev              = "CLAFTCCO",
@@ -25,6 +26,7 @@ utils::globalVariables(c("."))
 #'
 #' # Plot daily discharge data
 #' plot(telem_ts$meas_value~telem_ts$datetime, type = "l")
+#' }
 get_telemetry_ts <- function(
     abbrev              = NULL,
     parameter           = "DISCHRG",

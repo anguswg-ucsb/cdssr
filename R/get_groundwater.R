@@ -14,11 +14,14 @@ utils::globalVariables(c("."))
 #' @return dataframe of groundwater wells within the given query specifications
 #' @export
 #' @examples
+#' \dontrun{
 #' # Request endpoint: api/v2/groundwater/waterlevels/wells/
 #' wl_wells <- get_gw_wl_wells(
 #'   county = "ADAMS"
 #'  )
-#'  plot(wl_wells$latitude~wl_wells$longitude)
+#'
+#' plot(wl_wells$latitude~wl_wells$longitude)
+#' }
 get_gw_wl_wells <- function(
     county              = NULL,
     designated_basin    = NULL,
@@ -175,25 +178,18 @@ get_gw_wl_wells <- function(
   return(data_df)
 }
 
-#' Return groundwater water level well measurements
-#' @description  Make a request to the groundwater/waterlevels/wellmeasurements endpoint to retrieve groundwater water level well measurement data.
+#' Return individual groundwater water level well measurements
+#' @description  Internal - Make a request to the groundwater/waterlevels/wellmeasurements endpoint to retrieve groundwater water level well measurement data.
 #' @param wellid character, indicating the Well ID to query
 #' @param start_date character date to request data start point YYYY-MM-DD.
 #' @param end_date character date to request data end point YYYY-MM-DD. Default is set to the current date function is run.
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
+#' @noRd
+#' @keywords internal
 #' @return dataframe of groundwater wells within the given query specifications
-#' @export
-#' @examples
-#' # Request endpoint: api/v2/groundwater/waterlevels/wellmeasurements
-#' well_measure <- get_gw_wl_wellmeasures(
-#'                   wellid = 1274
-#'                    )
-#'
-#' # plot depth to water
-#' plot(well_measure$depth_to_water~well_measure$datetime, type = "l")
-get_gw_wl_wellmeasures <- function(
+inner_gw_wl_wellmeasures <- function(
     wellid           = NULL,
     start_date       = "1950-01-01",
     end_date         = Sys.Date(),
@@ -257,7 +253,7 @@ get_gw_wl_wellmeasures <- function(
   # Loop through pages until there are no more pages to get
   more_pages <- TRUE
 
-  message(paste0("Retrieving groundwater well measurements"))
+  # message(paste0("Retrieving groundwater well measurements"))
 
   # while more pages are avaliable, send get requests to CDSS API
   while (more_pages) {
@@ -332,6 +328,84 @@ get_gw_wl_wellmeasures <- function(
   return(data_df)
 }
 
+#' Return groundwater water level well measurements
+#' @description  Make a request to the groundwater/waterlevels/wellmeasurements endpoint to retrieve groundwater water level well measurement data.
+#' @param wellid character vector or list of well IDs
+#' @param start_date character date to request data start point (YYYY-MM-DD).
+#' @param end_date character date to request data end point (YYYY-MM-DD). Default is set to the current date function is run.
+#' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
+#' @return dataframe of groundwater wells within the given query specifications
+#' @export
+#' @examples
+#' \dontrun{
+#' # Request endpoint: api/v2/groundwater/waterlevels/wellmeasurements
+#' well_measure <- get_gw_wl_wellmeasures(
+#'                   wellid = 1274
+#'                    )
+#'
+#' # plot depth to water
+#' plot(well_measure$depth_to_water~well_measure$datetime, type = "l")
+#'
+#' # get data from multiple well IDs
+#' multi_well <- get_gw_wl_wellmeasures(
+#'                   wellid = c("84", "85", "94")
+#'                    )
+#'  }
+get_gw_wl_wellmeasures <- function(
+    wellid           = NULL,
+    start_date       = "1950-01-01",
+    end_date         = Sys.Date(),
+    api_key          = NULL
+) {
+
+  # print message
+  message(paste0("Retrieving groundwater well measurements"))
+
+  # if only one site given, set verbose to FALSE to avoid superfluous messages
+  if(length(wellid) <= 1) {
+
+    verbose = FALSE
+
+    # if multiple sites given, set verbose to TRUE to clarify to user each query made
+  } else {
+
+    verbose = TRUE
+
+  }
+
+  # loop over Well IDs and call inner_gw_wl_wellmeasures() function and bind results rows
+  data_df <- lapply(1:length(wellid), function(i) {
+
+    if(verbose == TRUE) {
+
+      message(paste0("Well ID: ", wellid[i]))
+
+    }
+
+    tryCatch({
+      inner_gw_wl_wellmeasures(
+        wellid           = wellid[i],
+        start_date       = start_date,
+        end_date         = end_date,
+        api_key          = api_key
+      )
+
+    },
+    error = function(e) {
+
+      NULL
+
+    })
+
+  })
+
+  # bind rows of dataframes
+  data_df <- do.call(rbind, data_df)
+
+  return(data_df)
+
+}
+
 #' Search for groundwater geophysicallog wells
 #' @description Make a request to the groundwater/geophysicallogs/wells endpoint to retrieve groundwater geophysicallog wells data.
 #' @param county character, indicating the county to query
@@ -346,11 +420,14 @@ get_gw_wl_wellmeasures <- function(
 #' @return dataframe of groundwater wells within the given query specifications
 #' @export
 #' @examples
+#' \dontrun{
 #' # Request endpoint: api/v2/groundwater/geophysicallogs/wells/
 #' gplog_wells <- get_gw_gplogs_wells(
 #'   county = "ADAMS"
 #'  )
-#'  plot(gplog_wells$latitude~gplog_wells$longitude)
+#'
+#' plot(gplog_wells$latitude~gplog_wells$longitude)
+#'  }
 get_gw_gplogs_wells <- function(
     county              = NULL,
     designated_basin    = NULL,
@@ -516,11 +593,12 @@ get_gw_gplogs_wells <- function(
 #' @return dataframe of groundwater geophysical log picks for a given well ID
 #' @export
 #' @examples
+#' \dontrun{
 #' # Request endpoint: api/v2/groundwater/geophysicallogs/geoplogpicks/
 #' gplogpicks <- get_gw_gplogs_geologpicks(
 #'   wellid = 2409
 #'  )
-#'  gplogpicks
+#' }
 get_gw_gplogs_geologpicks <- function(
     wellid              = NULL,
     api_key             = NULL

@@ -516,7 +516,9 @@ get_sw_ts_wyear <- function(
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @return dataframe of surface water station time series data
+#' @export
 #' @examples
+#' \dontrun{
 #' # Retrieve surface water daily time series
 #' sw_ts_day <-
 #'  get_sw_ts(
@@ -551,7 +553,7 @@ get_sw_ts_wyear <- function(
 #'
 #' # plot average water year flow
 #' plot(sw_ts_year$avg_qcfs~sw_ts_year$water_year, type = "s")
-#' @export
+#' }
 get_sw_ts <- function(
     abbrev              = NULL,
     station_number      = NULL,

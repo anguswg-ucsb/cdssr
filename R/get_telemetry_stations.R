@@ -14,7 +14,9 @@ utils::globalVariables(c("."))
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @return dataframe of telemetry station info
+#' @export
 #' @examples
+#' \dontrun{
 #' # Retrieve telemetry stations within a county
 #' telemetry_station <- get_telemetry_stations(
 #'                                county = "Adams"
@@ -22,7 +24,7 @@ utils::globalVariables(c("."))
 #'
 #' # plot telemetry station locations
 #' plot(telemetry_station$latitude~telemetry_station$longitude)
-#' @export
+#' }
 get_telemetry_stations <- function(
     aoi                 = NULL,
     radius              = NULL,

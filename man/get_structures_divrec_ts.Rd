@@ -33,6 +33,7 @@ dataframe with diversion records data for CDSS structure of interest
 Make a request to the CDSS API /structures/divrec endpoints to get diversion/releases time series data for administrative structures by wdid, within a given date range (start and end dates) and at a specified temporal resolution.
 }
 \examples{
+\dontrun{
 # Request endpoint: api/v2/structures/divrec/divrecday
 divrecord_day <- get_structures_divrec_ts(
                wdid             = "2302917",
@@ -68,4 +69,5 @@ divrecord_year <- get_structures_divrec_ts(
 
 # plot yearly diversion record
 plot(divrecord_year$data_value~divrecord_year$data_meas_date, type = "s")
+}
 }

@@ -36,6 +36,7 @@ dataframe of surface water station time series data
 Make a request to the /surfacewater/surfacewaterts/ endpoints (surfacewatertsday, surfacewatertsmonth, surfacewatertswateryear) to retrieve surface water station time series data by station abbreviations, station number, or USGS Site IDs within a given date range (start and end dates)
 }
 \examples{
+\dontrun{
 # Retrieve surface water daily time series
 sw_ts_day <-
  get_sw_ts(
@@ -70,4 +71,5 @@ sw_ts_year <-
 
 # plot average water year flow
 plot(sw_ts_year$avg_qcfs~sw_ts_year$water_year, type = "s")
+}
 }

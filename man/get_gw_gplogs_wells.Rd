@@ -36,9 +36,12 @@ dataframe of groundwater wells within the given query specifications
 Make a request to the groundwater/geophysicallogs/wells endpoint to retrieve groundwater geophysicallog wells data.
 }
 \examples{
+\dontrun{
 # Request endpoint: api/v2/groundwater/geophysicallogs/wells/
 gplog_wells <- get_gw_gplogs_wells(
   county = "ADAMS"
  )
- plot(gplog_wells$latitude~gplog_wells$longitude)
+
+plot(gplog_wells$latitude~gplog_wells$longitude)
+ }
 }

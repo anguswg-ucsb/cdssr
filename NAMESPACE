@@ -3,6 +3,7 @@
 export(get_admin_calls)
 export(get_call_analysis_gnisid)
 export(get_call_analysis_wdid)
+export(get_climate_frostdates)
 export(get_climate_stations)
 export(get_climate_ts)
 export(get_gw_gplogs_geologpicks)

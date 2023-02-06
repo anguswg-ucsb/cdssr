@@ -45,6 +45,7 @@ dataframe of telemetry station info
 Make a request to the telemetrystations/telemetrystation/ endpoint to locate telemetry stations by AOI, station abbreviations, county, division, station abbreviation, GNIS ID, USGS Station ID, or WDID
 }
 \examples{
+\dontrun{
 # Retrieve telemetry stations within a county
 telemetry_station <- get_telemetry_stations(
                                county = "Adams"
@@ -52,4 +53,5 @@ telemetry_station <- get_telemetry_stations(
 
 # plot telemetry station locations
 plot(telemetry_station$latitude~telemetry_station$longitude)
+}
 }

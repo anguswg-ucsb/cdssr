@@ -157,6 +157,7 @@ inner_structure_stage_ts <- function(
 #' @return dataframe with stage/volume data for CDSS structure(s) of interest
 #' @export
 #' @examples
+#' \dontrun{
 #' # Request endpoint: api/v2/structures/divrec/stagevolume
 #' stage_vol <- get_structure_stage_ts(
 #'                    wdid             = "0303732",
@@ -176,6 +177,7 @@ inner_structure_stage_ts <- function(
 #'                start_date    = "2021-06-01",
 #'                end_date      = "2021-08-01"
 #'                )
+#' }
 get_structure_stage_ts <- function(
     wdid            = NULL,
     start_date      = "1900-01-01",
@@ -186,10 +188,26 @@ get_structure_stage_ts <- function(
   # print message
   message(paste0("Retrieving stage/volume data"))
 
+  # if only one site given, set verbose to FALSE to avoid superfluous messages
+  if(length(wdid) <= 1) {
+
+    verbose = FALSE
+
+  # if multiple sites given, set verbose to TRUE to clarify to user each query made
+  } else {
+
+    verbose = TRUE
+
+  }
+
   # loop over WDIDs and call inner_structure_stage_ts function and bind results rows
-  cdss_data <- lapply(1:length(wdid), function(i) {
+  data_df <- lapply(1:length(wdid), function(i) {
+
+    if(verbose == TRUE) {
 
       message(paste0("WDID: ", wdid[i]))
+
+    }
 
     tryCatch({
       inner_structure_stage_ts(
@@ -209,9 +227,9 @@ get_structure_stage_ts <- function(
   })
 
   # bind rows of dataframes
-  cdss_data <- do.call(rbind, cdss_data)
+  data_df <- do.call(rbind, data_df)
 
 
-  return(cdss_data)
+  return(data_df)
 
 }

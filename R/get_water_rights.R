@@ -12,7 +12,6 @@ utils::globalVariables(c("."))
 #' @importFrom jsonlite fromJSON
 #' @return dataframe of water right net amounts
 #' @export
-#'
 #' @examples
 #' \dontrun{
 #' # Water right net amounts within a county

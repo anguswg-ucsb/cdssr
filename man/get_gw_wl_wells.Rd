@@ -36,9 +36,12 @@ dataframe of groundwater wells within the given query specifications
 Make a request to the groundwater/waterlevels/wells endpoint to retrieve groundwater water level wells data.
 }
 \examples{
+\dontrun{
 # Request endpoint: api/v2/groundwater/waterlevels/wells/
 wl_wells <- get_gw_wl_wells(
   county = "ADAMS"
  )
- plot(wl_wells$latitude~wl_wells$longitude)
+
+plot(wl_wells$latitude~wl_wells$longitude)
+}
 }

@@ -36,6 +36,7 @@ dataframe with telemetry station time series data
 Make a request to the /telemetrystations/telemetrytimeseries endpoint to retrieve raw, hourly, or daily telemetry station time series data by station abbreviations, within a given date range (start and end dates).
 }
 \examples{
+\dontrun{
 # Retrieve daily discharge for CLAFTCCO telemetry station
 telem_ts <- get_telemetry_ts(
            abbrev              = "CLAFTCCO",
@@ -48,4 +49,5 @@ telem_ts <- get_telemetry_ts(
 
 # Plot daily discharge data
 plot(telem_ts$meas_value~telem_ts$datetime, type = "l")
+}
 }

@@ -13,14 +13,16 @@ utils::globalVariables(c("."))
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @return dataframe of surface water station info
+#' @export
 #' @examples
+#' \dontrun{
 #' # Retrieve surface water station info from Larimer county
 #' sw_stations <- get_sw_stations(
 #'                     county = "Larimer"
 #'                     )
 #' # plot latitude/longitude of surface water stations
 #' plot(sw_stations$latitude~sw_stations$longitude)
-#' @export
+#' }
 get_sw_stations <- function(
     aoi                 = NULL,
     radius              = NULL,

@@ -565,6 +565,7 @@ get_structure_divrecyear <- function(
 #' @return dataframe with diversion records data for CDSS structure of interest
 #' @export
 #' @examples
+#' \dontrun{
 #' # Request endpoint: api/v2/structures/divrec/divrecday
 #' divrecord_day <- get_structures_divrec_ts(
 #'                wdid             = "2302917",
@@ -600,6 +601,7 @@ get_structure_divrecyear <- function(
 #'
 #' # plot yearly diversion record
 #' plot(divrecord_year$data_value~divrecord_year$data_meas_date, type = "s")
+#' }
 get_structures_divrec_ts <- function(
     wdid            = NULL,
     wc_identifier   = NULL,

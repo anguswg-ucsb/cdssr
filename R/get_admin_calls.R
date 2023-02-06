@@ -14,12 +14,12 @@ utils::globalVariables(c("."))
 #' @return dataframe of administrative calls data
 #' @export
 #' @examples
+#' \dontrun{
 #' # Retrieve ACTIVE administrative calls
 #' active_calls <- get_admin_calls(
 #'                division     = 1,
 #'                active       = TRUE
 #'            )
-#' active_calls
 #'
 #' # Retrieve HISTORICAL administrative calls
 #' historic_calls <- get_admin_calls(
@@ -28,7 +28,7 @@ utils::globalVariables(c("."))
 #'                end_date     = "2005-01-01",
 #'                active       = FALSE
 #'                )
-#' historic_calls
+#' }
 get_admin_calls <- function(
   division            = NULL,
   location_wdid       = NULL,

@@ -36,6 +36,7 @@ dataframe of climate station timeseries data
 Make a request to the /climatedata/climatestationts endpoints to retrieve daily or monthly (climatestationtsday or climatestationtsmonth)climate station time series data by station number or Site IDs within a given date range (start and end dates)
 }
 \examples{
+\dontrun{
 # Retrieve daily maximum temperatures
 daily_maxtemp <- get_climate_ts(
   site_id     = "USC00055984",
@@ -59,4 +60,5 @@ monthly_precip <- get_climate_ts(
 
  # plot daily max temp at climate station
  plot(monthly_precip$avg_value~monthly_precip$datetime, type = "l")
+ }
 }

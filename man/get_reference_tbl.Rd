@@ -18,6 +18,7 @@ dataframe of CDSS endpoint Reference Table
 Makes requests to the /referencetables/ endpoints and returns helpful reference tables. Reference tables can help identify valid inputs for querying CDSS API resources using cdssr. For more detailed information visit: https://dwr.state.co.us/rest/get/help#Datasets&#ReferenceTablesController&#gettingstarted&#jsonxml.
 }
 \examples{
+\dontrun{
 # Retrieve station flag reference table
 flag_tbl <- get_reference_tbl(
    table_name = "flags"
@@ -37,4 +38,5 @@ climate_params <- get_reference_tbl(
 water_districts <- get_reference_tbl(
    table_name = "waterdistricts"
    )
+}
 }

@@ -8,6 +8,7 @@ utils::globalVariables(c("."))
   #' @importFrom httr GET content
   #' @importFrom jsonlite fromJSON
   #' @return dataframe of climate data frost dates data
+  #' @export
   get_climate_frostdates <- function(
       station_number      = NULL,
       start_date          = "1900-01-01",

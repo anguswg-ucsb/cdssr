@@ -12,11 +12,11 @@ get_gw_wl_wellmeasures(
 )
 }
 \arguments{
-\item{wellid}{character, indicating the Well ID to query}
+\item{wellid}{character vector or list of well IDs}
 
-\item{start_date}{character date to request data start point YYYY-MM-DD.}
+\item{start_date}{character date to request data start point (YYYY-MM-DD).}
 
-\item{end_date}{character date to request data end point YYYY-MM-DD. Default is set to the current date function is run.}
+\item{end_date}{character date to request data end point (YYYY-MM-DD). Default is set to the current date function is run.}
 
 \item{api_key}{character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
@@ -27,6 +27,7 @@ dataframe of groundwater wells within the given query specifications
 Make a request to the groundwater/waterlevels/wellmeasurements endpoint to retrieve groundwater water level well measurement data.
 }
 \examples{
+\dontrun{
 # Request endpoint: api/v2/groundwater/waterlevels/wellmeasurements
 well_measure <- get_gw_wl_wellmeasures(
                   wellid = 1274
@@ -34,4 +35,10 @@ well_measure <- get_gw_wl_wellmeasures(
 
 # plot depth to water
 plot(well_measure$depth_to_water~well_measure$datetime, type = "l")
+
+# get data from multiple well IDs
+multi_well <- get_gw_wl_wellmeasures(
+                  wellid = c("84", "85", "94")
+                   )
+ }
 }

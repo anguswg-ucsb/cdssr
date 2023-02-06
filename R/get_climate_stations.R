@@ -11,7 +11,9 @@
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @return dataframe of climate data station info
+#' @export
 #' @examples
+#' \dontrun{
 #' # get climate stations in Adams County, CO
 #' climate_stations  <- get_climate_stations(
 #'                        county = "Adams"
@@ -19,7 +21,7 @@
 #'
 #' # plot latitude/longitude of climate stations
 #' plot(climate_stations$latitude~climate_stations$longitude)
-#' @export
+#' }
 get_climate_stations <- function(
     aoi                 = NULL,
     radius              = NULL,

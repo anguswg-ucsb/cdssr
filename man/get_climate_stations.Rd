@@ -39,6 +39,7 @@ dataframe of climate data station info
 Make a request to the climatedata/climatestations/ endpoint to locate climate stations by AOI, county, division, station name, Site ID or water district.
 }
 \examples{
+\dontrun{
 # get climate stations in Adams County, CO
 climate_stations  <- get_climate_stations(
                        county = "Adams"
@@ -46,4 +47,5 @@ climate_stations  <- get_climate_stations(
 
 # plot latitude/longitude of climate stations
 plot(climate_stations$latitude~climate_stations$longitude)
+}
 }

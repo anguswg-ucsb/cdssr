@@ -354,7 +354,9 @@ get_climate_ts_month <- function(
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @return dataframe of climate station timeseries data
+#' @export
 #' @examples
+#' \dontrun{
 #' # Retrieve daily maximum temperatures
 #' daily_maxtemp <- get_climate_ts(
 #'   site_id     = "USC00055984",
@@ -378,7 +380,7 @@ get_climate_ts_month <- function(
 #'
 #'  # plot daily max temp at climate station
 #'  plot(monthly_precip$avg_value~monthly_precip$datetime, type = "l")
-#' @export
+#'  }
 get_climate_ts <- function(
     station_number      = NULL,
     site_id             = NULL,

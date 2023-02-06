@@ -927,7 +927,9 @@ get_ref_stationflags<- function(
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @return dataframe of CDSS endpoint Reference Table
+#' @export
 #' @examples
+#' \dontrun{
 #' # Retrieve station flag reference table
 #' flag_tbl <- get_reference_tbl(
 #'    table_name = "flags"
@@ -947,7 +949,7 @@ get_ref_stationflags<- function(
 #' water_districts <- get_reference_tbl(
 #'    table_name = "waterdistricts"
 #'    )
-#' @export
+#' }
 get_reference_tbl <- function(
     table_name           = NULL,
     api_key              = NULL

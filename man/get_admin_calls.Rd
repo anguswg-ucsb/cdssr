@@ -36,12 +36,12 @@ dataframe of administrative calls data
 Make a request to the api/v2/administrativecalls endpoints to locate active or historical administrative calls by division, location WDID, or call number within a specified date range.
 }
 \examples{
+\dontrun{
 # Retrieve ACTIVE administrative calls
 active_calls <- get_admin_calls(
                division     = 1,
                active       = TRUE
            )
-active_calls
 
 # Retrieve HISTORICAL administrative calls
 historic_calls <- get_admin_calls(
@@ -50,5 +50,5 @@ historic_calls <- get_admin_calls(
                end_date     = "2005-01-01",
                active       = FALSE
                )
-historic_calls
+}
 }

@@ -42,10 +42,12 @@ dataframe of surface water station info
 Make a request to the /surfacewater/surfacewaterstations endpoint to locate surface water stations by AOI, station abbreviation, county, division, station name, USGS ID or water_district.
 }
 \examples{
+\dontrun{
 # Retrieve surface water station info from Larimer county
 sw_stations <- get_sw_stations(
                     county = "Larimer"
                     )
 # plot latitude/longitude of surface water stations
 plot(sw_stations$latitude~sw_stations$longitude)
+}
 }

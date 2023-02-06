@@ -14,6 +14,7 @@ utils::globalVariables(c("."))
 #' @return dataframe of administrative structures
 #' @export
 #' @examples
+#' \dontrun{
 #' # Request endpoint: api/v2/structures/
 #' divrec_structures <- get_structures(
 #'                            county = "Boulder"
@@ -21,6 +22,7 @@ utils::globalVariables(c("."))
 #'
 #' # plot administrative structure locations
 #' plot(divrec_structures$latdecdeg~divrec_structures$longdecdeg)
+#' }
 get_structures <- function(
     aoi                 = NULL,
     radius              = NULL,
