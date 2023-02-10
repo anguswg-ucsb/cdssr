@@ -10,6 +10,7 @@ get_call_analysis_gnisid(
   stream_mile = NULL,
   start_date = "1900-01-01",
   end_date = Sys.Date(),
+  batch = FALSE,
   api_key = NULL
 )
 }
@@ -23,6 +24,8 @@ get_call_analysis_gnisid(
 \item{start_date}{character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".}
 
 \item{end_date}{character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.}
+
+\item{batch}{logical, whether to break date range calls into batches of 1 year. This can speed up data retrieval for date ranges greater than a year. A date range of 5 years would be batched into 5 separate API calls for each year. Default is FALSE, will run a single query for the entire date range.}
 
 \item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.}
 }
