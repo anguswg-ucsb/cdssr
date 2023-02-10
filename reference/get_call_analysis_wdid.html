@@ -53,6 +53,7 @@
 <span>  admin_no <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  start_date <span class="op">=</span> <span class="st">"1900-01-01"</span>,</span>
 <span>  end_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  batch <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  api_key <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -73,6 +74,10 @@
 
 <dt>end_date</dt>
 <dd><p>character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.</p></dd>
+
+
+<dt>batch</dt>
+<dd><p>logical, whether to break date range calls into batches of 1 year. This can speed up data retrieval for date ranges greater than a year. A date range of 5 years would be batched into 5 separate API calls for each year. Default is FALSE, will run a single query for the entire date range.</p></dd>
 
 
 <dt>api_key</dt>
