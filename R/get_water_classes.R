@@ -70,7 +70,7 @@ get_water_classes <- function(
   timestep   <- valid_timesteps(timestep)
 
   # Base API URL
-  base <- "https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/waterclasses/?"
+  base       <- "https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/waterclasses/?"
 
   # # convert arguments to strings if necessary
   # str_args(
@@ -84,6 +84,13 @@ get_water_classes <- function(
   gnis_id         <- null_convert(gnis_id)
   water_district  <- null_convert(water_district)
   wdid            <- null_convert(wdid)
+
+  # if wc_identifier is given, add * to indicate "contains" this string
+  if(!is.null(wc_identifier)) {
+
+    wc_identifier <- paste0("*", wc_identifier, "*")
+
+  }
 
   # reformat and extract valid start date
   start <- parse_date(

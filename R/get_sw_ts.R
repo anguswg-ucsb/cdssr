@@ -9,6 +9,8 @@ utils::globalVariables(c("."))
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
+#' @noRd
+#' @keywords internal
 #' @return dataframe of surface water station daily time series data
 get_sw_ts_day <- function(
     abbrev              = NULL,
@@ -178,6 +180,8 @@ get_sw_ts_day <- function(
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
+#' @noRd
+#' @keywords internal
 #' @return dataframe of surface water station monthly time series data
 get_sw_ts_month <- function(
     abbrev              = NULL,
@@ -350,6 +354,8 @@ get_sw_ts_month <- function(
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
+#' @noRd
+#' @keywords internal
 #' @return dataframe of annual surface water station time series data
 get_sw_ts_wyear <- function(
     abbrev              = NULL,

@@ -103,7 +103,7 @@ get_structures <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retreiving administrative structures"))
+  message(paste0("Retrieving administrative structures"))
 
   # if location based search
   if(all(!is.null(lng), !is.null(lat))) {
