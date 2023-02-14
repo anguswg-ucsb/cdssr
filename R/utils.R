@@ -334,60 +334,58 @@ collapse_vect <- function(
 #' @keywords internal
 #' @return reformated date string
 parse_date <- function(
-    date   = NULL,
-    start  = TRUE,
-    format = "%m-%d-%Y",
-    sep    = "%2F"
+    date        = NULL,
+    start       = TRUE,
+    format      = "%m-%d-%Y",
+    sep         = "%2F"
 ) {
+    # if the given date is the starting date or the ending date
+    if(start){
 
-  # if the given date is the starting date or the ending date
-  if(start){
+      if(is.null(date)) {
 
-    if(is.null(date)) {
+        date = "1900-01-01"
 
-      date = "1900-01-01"
+      }
 
+      # reformat and extract date
+      out_date <- format(as.Date(date, format = "%Y-%m-%d"), format)
+
+      # if an invalid date is given, default to earliest date
+      if(is.na(out_date)) {
+
+        out_date <- format(as.Date("1900-01-01", format = "%Y-%m-%d"), format)
+
+      }
+
+      # collapse date with given seperator
+      out_date <- gsub("-", sep, out_date)
+
+      return(out_date)
+
+    } else {
+
+      if(is.null(date)) {
+
+        date = Sys.Date()
+
+      }
+
+      # reformat and extract date
+      out_date <- format(as.Date(date, format = "%Y-%m-%d"), format)
+
+      # if an invalid date is given, default to earliest date
+      if(is.na(out_date)) {
+
+        out_date <- format(as.Date("1900-01-01", format = "%Y-%m-%d"), format)
+
+      }
+
+      # collapse date with given seperator
+      out_date <- gsub("-", sep, out_date)
+
+      return(out_date)
     }
-
-    # reformat and extract date
-    out_date <- format(as.Date(date, format = "%Y-%m-%d"), format)
-
-    # if an invalid date is given, default to earliest date
-    if(is.na(out_date)) {
-
-      out_date <- format(as.Date("1900-01-01", format = "%Y-%m-%d"), format)
-
-    }
-
-    # collapse date with given seperator
-    out_date <- gsub("-", sep, out_date)
-
-    return(out_date)
-
-  } else {
-
-    if(is.null(date)) {
-
-      date = Sys.Date()
-
-    }
-
-    # reformat and extract date
-    out_date <- format(as.Date(date, format = "%Y-%m-%d"), format)
-
-    # if an invalid date is given, default to earliest date
-    if(is.na(out_date)) {
-
-      out_date <- format(as.Date("1900-01-01", format = "%Y-%m-%d"), format)
-
-    }
-
-    # collapse date with given seperator
-    out_date <- gsub("-", sep, out_date)
-
-    return(out_date)
-  }
-
 }
 
 #' Create yearly date ranges to make batch GET requests

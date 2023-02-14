@@ -12,8 +12,8 @@ get_water_classes(
   gnis_id = NULL,
   water_district = NULL,
   wdid = NULL,
-  start_date = "1900-01-01",
-  end_date = Sys.Date(),
+  start_date = NULL,
+  end_date = NULL,
   divrectype = NULL,
   ciu_code = NULL,
   wc_identifier = NULL,
@@ -63,7 +63,7 @@ wc <- get_water_classes(
                    county     = "Boulder",
                    start_date = "1999-01-01",
                    end_date   = "2005-01-01",
-                   year       = "year"
+                   timestep   = "year"
                    )
 }
 }

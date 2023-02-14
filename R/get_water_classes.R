@@ -26,7 +26,7 @@ utils::globalVariables(c("."))
 #'                    county     = "Boulder",
 #'                    start_date = "1999-01-01",
 #'                    end_date   = "2005-01-01",
-#'                    year       = "year"
+#'                    timestep   = "year"
 #'                    )
 #' }
 get_water_classes <- function(
@@ -37,8 +37,8 @@ get_water_classes <- function(
     gnis_id             = NULL,
     water_district      = NULL,
     wdid                = NULL,
-    start_date          = "1900-01-01",
-    end_date            = Sys.Date(),
+    start_date          = NULL,
+    end_date            = NULL,
     divrectype          = NULL,
     ciu_code            = NULL,
     wc_identifier       = NULL,
@@ -92,21 +92,39 @@ get_water_classes <- function(
 
   }
 
-  # reformat and extract valid start date
-  start <- parse_date(
-    date   = start_date,
-    start  = TRUE,
-    format = "%m-%d-%Y",
-    sep    = "%2F"
-  )
+  # if start_date is NULL, return NULL
+  if(is.null(start_date)) {
 
-  # reformat and extract valid end date
-  end <- parse_date(
-    date   = end_date,
-    start  = FALSE,
-    format = "%m-%d-%Y",
-    sep    = "%2F"
-  )
+    start <- NULL
+
+  } else {
+
+    # reformat and extract valid start date
+    start <- parse_date(
+      date        = start_date,
+      start       = TRUE,
+      format      = "%m-%d-%Y",
+      sep         = "%2F"
+    )
+
+  }
+
+  # if end_date is NULL, return NULL
+  if(is.null(end_date)) {
+
+    end <- NULL
+
+  } else {
+
+    # reformat and extract valid end date
+    end <- parse_date(
+      date        = end_date,
+      start       = FALSE,
+      format      = "%m-%d-%Y",
+      sep         = "%2F"
+    )
+
+  }
 
   # format multiple WDID query string
   wdid <- collapse_vect(
@@ -182,7 +200,6 @@ get_water_classes <- function(
       "&pageIndex=", page_index
     )
 
-    # api_key <- NULL
     # check whether to use API key or not
     if(!is.null(api_key)) {
 
