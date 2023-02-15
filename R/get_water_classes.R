@@ -1,18 +1,18 @@
 utils::globalVariables(c("."))
 #' Returns list of waterclasses
 #' @description Make a request to the /structures/divrec/waterclasses endpoint to identify water classes via a spatial search or by division, county, water_district, GNIS, or WDID.
-#' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
-#' @param radius numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
+#' @param wdid character vector or list of characters indicating WDID code of structure
 #' @param county character, indicating the county to query
 #' @param division numeric, indicating the water division to query
-#' @param gnis_id character, water source - Geographic Name Information System ID
 #' @param water_district numeric, indicating the water district to query
-#' @param wdid character vector or list of characters indicating WDID code of structure
-#' @param start_date character date of first measurement in the well’s period of record (YYYY-MM-DD). Default is start date is "1900-01-01".
-#' @param end_date character date of last measurement in the well’s period of record (YYYY-MM-DD). Default end date is the current date the function is run.
+#' @param wc_identifier character, series of water class codes that provide the location of the diversion, the SOURCE of water, the USE of the water and the administrative operation required to make the diversion. The Water Class, combined with a daily, monthly or annual volume, constitutes a Diversion Record.
+#' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
+#' @param radius numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
+#' @param gnis_id character, water source - Geographic Name Information System ID
+#' @param start_date character date of first measurement in the well’s period of record (YYYY-MM-DD). Default is NULL.
+#' @param end_date character date of last measurement in the well’s period of record (YYYY-MM-DD). Default is NULL.
 #' @param divrectype character, type of record: "DivComment", "DivTotal", "RelComment", "RelTolal", "StageVolume", or "WaterClass".
 #' @param ciu_code character, current in use code of structure
-#' @param wc_identifier character, A Water Class consists of a series of codes that provide the location of the diversion, the SOURCE of water, the USE of the water and the administrative operation required to make the diversion. The Water Class, combined with a daily, monthly or annual volume, constitutes a Diversion Record.
 #' @param timestep character, timestep, one of "day", "month", "year"
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS. Defaults to NULL.
 #' @importFrom httr GET content
@@ -30,18 +30,18 @@ utils::globalVariables(c("."))
 #'                    )
 #' }
 get_water_classes <- function(
-    aoi                 = NULL,
-    radius              = NULL,
+    wdid                = NULL,
     county              = NULL,
     division            = NULL,
-    gnis_id             = NULL,
     water_district      = NULL,
-    wdid                = NULL,
+    wc_identifier       = NULL,
+    aoi                 = NULL,
+    radius              = NULL,
+    gnis_id             = NULL,
     start_date          = NULL,
     end_date            = NULL,
     divrectype          = NULL,
     ciu_code            = NULL,
-    wc_identifier       = NULL,
     timestep            = NULL,
     api_key             = NULL
 ) {
@@ -52,7 +52,8 @@ get_water_classes <- function(
   # check function arguments for missing/invalid inputs
   arg_lst <- check_args(
     arg_lst = input_args,
-    ignore  = c("api_key", "start_date", "end_date", "aoi", "radius", "ciu_code", "divrectype", "gnis_id", "timestep"),
+    ignore  = c("api_key", "start_date", "end_date", "aoi", "radius",
+                "ciu_code", "divrectype", "gnis_id", "timestep"),
     f       = "all"
   )
 
@@ -83,12 +84,11 @@ get_water_classes <- function(
   division        <- null_convert(division)
   gnis_id         <- null_convert(gnis_id)
   water_district  <- null_convert(water_district)
-  wdid            <- null_convert(wdid)
 
   # if wc_identifier is given, add * to indicate "contains" this string
   if(!is.null(wc_identifier)) {
 
-    wc_identifier <- paste0("*", wc_identifier, "*")
+    wc_id <- align_wcid(wc_identifier)
 
   }
 
@@ -190,7 +190,7 @@ get_water_classes <- function(
       "&min-porStart=", start,
       "&gnisId=", gnis_id,
       "&waterDistrict=", water_district,
-      "&wcIdentifier=", wc_identifier,
+      "&wcIdentifier=", wc_id,
       "&wdid=", wdid,
       "&latitude=", lat,
       "&longitude=", lng,

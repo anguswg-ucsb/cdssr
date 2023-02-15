@@ -449,7 +449,7 @@ batch_dates <- function(
 #' @param x character indicating whether "diversion" or "release" should be returned. Defaults to NULL and thus "diversion"
 #' @noRd
 #' @keywords internal
-#' @return wc_identifier equaling either "diversion" or "release"
+#' @return wc_identifier equaling either "diversion", "release", or a properly formatted water class identifier string
 align_wcid <- function(x = NULL) {
 
   # if no wc_identifier given, return "diversion"
@@ -457,27 +457,35 @@ align_wcid <- function(x = NULL) {
 
     x <- "diversion"
 
-    return(x)
+  }
+
+  # check if x is not in any of diversion/release lists
+  if(!x %in% c("diversion", "diversions", "div", "divs", "d",
+               "release", "releases", "rel", "rels", "r")) {
+
+    # format wcidentifer query
+    x <- paste0(gsub(":", "%3A",   unlist(strsplit(x, " "))), collapse = "+")
 
   }
 
-  # if wc ID in the diversions list
+  # if wc_identifier in the diversions list
   if(x %in% c("diversion", "diversions", "div", "divs", "d")) {
 
     x <- "diversion"
 
-    return(x)
   }
 
-  # if wc ID in the releases list
+  # if wc_identifier in the releases list
   if(x %in% c("release", "releases", "rel", "rels", "r")) {
 
     x <- "release"
 
-    return(x)
-
   }
 
+  # format wc_identifier string as "contains" statement
+  x <- paste0("*", x, "*")
+
+  return(x)
 }
 
 #' Error message handling for extract_coords function

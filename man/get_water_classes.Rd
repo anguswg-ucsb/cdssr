@@ -5,46 +5,46 @@
 \title{Returns list of waterclasses}
 \usage{
 get_water_classes(
-  aoi = NULL,
-  radius = NULL,
+  wdid = NULL,
   county = NULL,
   division = NULL,
-  gnis_id = NULL,
   water_district = NULL,
-  wdid = NULL,
+  wc_identifier = NULL,
+  aoi = NULL,
+  radius = NULL,
+  gnis_id = NULL,
   start_date = NULL,
   end_date = NULL,
   divrectype = NULL,
   ciu_code = NULL,
-  wc_identifier = NULL,
   timestep = NULL,
   api_key = NULL
 )
 }
 \arguments{
-\item{aoi}{list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry}
-
-\item{radius}{numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.}
+\item{wdid}{character vector or list of characters indicating WDID code of structure}
 
 \item{county}{character, indicating the county to query}
 
 \item{division}{numeric, indicating the water division to query}
 
-\item{gnis_id}{character, water source - Geographic Name Information System ID}
-
 \item{water_district}{numeric, indicating the water district to query}
 
-\item{wdid}{character vector or list of characters indicating WDID code of structure}
+\item{wc_identifier}{character, series of water class codes that provide the location of the diversion, the SOURCE of water, the USE of the water and the administrative operation required to make the diversion. The Water Class, combined with a daily, monthly or annual volume, constitutes a Diversion Record.}
 
-\item{start_date}{character date of first measurement in the well’s period of record (YYYY-MM-DD). Default is start date is "1900-01-01".}
+\item{aoi}{list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry}
 
-\item{end_date}{character date of last measurement in the well’s period of record (YYYY-MM-DD). Default end date is the current date the function is run.}
+\item{radius}{numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.}
+
+\item{gnis_id}{character, water source - Geographic Name Information System ID}
+
+\item{start_date}{character date of first measurement in the well’s period of record (YYYY-MM-DD). Default is NULL.}
+
+\item{end_date}{character date of last measurement in the well’s period of record (YYYY-MM-DD). Default is NULL.}
 
 \item{divrectype}{character, type of record: "DivComment", "DivTotal", "RelComment", "RelTolal", "StageVolume", or "WaterClass".}
 
 \item{ciu_code}{character, current in use code of structure}
-
-\item{wc_identifier}{character, A Water Class consists of a series of codes that provide the location of the diversion, the SOURCE of water, the USE of the water and the administrative operation required to make the diversion. The Water Class, combined with a daily, monthly or annual volume, constitutes a Diversion Record.}
 
 \item{timestep}{character, timestep, one of "day", "month", "year"}
 

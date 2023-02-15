@@ -2,7 +2,7 @@ utils::globalVariables(c("."))
 #' Return Structure Daily Diversion/Release Records
 #' @description     Make a request to the api/v2/structures/divrec/divrecday/ endpoint to retrieve daily structure diversion/release data for a specified WDID within a specified date range.
 #' @param wdid character vector or list of characters indicating WDID code of structure
-#' @param wc_identifier character indicating whether "diversion" or "release" should be returned. Default is NULL which will return diversions.
+#' @param wc_identifier character, series of water class codes that provide the location of the diversion, the SOURCE of water, the USE of the water and the administrative operation required to make the diversion. Provide "diversion" or "release" to retrieve diversion/release records. Default is NULL which will return diversions records.
 #' @param start_date character date to request data start point YYYY-MM-DD. Default start date is "1900-01-01".
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
@@ -34,24 +34,24 @@ get_structure_divrecday <- function(
 
   }
 
-  # valid parameters
-  div_lst <- c("diversion", "diversions", "div", "divs", "d")
-  rel_lst <- c("release", "releases", "rel", "rels", "r")
-  wc_id_lst <- c(div_lst, rel_lst)
-
-  # make wc ID lowercase
-  wc_identifier <- tolower(wc_identifier)
-
-  # check if parameter is valid
-  if(!wc_identifier %in% wc_id_lst) {
-
-    stop(paste0("Invalid `wc_identifier` argument: ", wc_identifier,
-                "\nMust be one of the following:\n",
-                "Diversions: ",
-                paste(c(div_lst), collapse = ", "),  "\nReleases: ",
-                paste(c(rel_lst), collapse = ", ")))
-
-  }
+  # # valid parameters
+  # div_lst <- c("diversion", "diversions", "div", "divs", "d")
+  # rel_lst <- c("release", "releases", "rel", "rels", "r")
+  # wc_id_lst <- c(div_lst, rel_lst)
+  #
+  # # make wc ID lowercase
+  # wc_identifier <- tolower(wc_identifier)
+  #
+  # # check if parameter is valid
+  # if(!wc_identifier %in% wc_id_lst) {
+  #
+  #   stop(paste0("Invalid `wc_identifier` argument: ", wc_identifier,
+  #               "\nMust be one of the following:\n",
+  #               "Diversions: ",
+  #               paste(c(div_lst), collapse = ", "),  "\nReleases: ",
+  #               paste(c(rel_lst), collapse = ", ")))
+  #
+  # }
 
   # Base API URL for Daily Diversion Records
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/divrecday/?"
@@ -66,7 +66,7 @@ get_structure_divrecday <- function(
   wdid         <- null_convert(wdid)
 
   # make sure correctly named wc_identifier
-  wc_identifier <- align_wcid(x = wc_identifier)
+  wc_id <- align_wcid(x = wc_identifier)
 
   # format multiple WDID query
   wdid <- collapse_vect(
@@ -90,8 +90,8 @@ get_structure_divrecday <- function(
     sep    = "%2F"
   )
 
-  # format wcidentifer query
-  wc_identifier <- paste0(gsub(":", "%3A",   unlist(strsplit(wc_identifier, " "))), collapse = "+")
+  # # format wcidentifer query
+  # wc_identifier <- paste0(gsub(":", "%3A",   unlist(strsplit(wc_identifier, " "))), collapse = "+")
 
   # maximum records per page
   page_size  <- 50000
@@ -106,17 +106,17 @@ get_structure_divrecday <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving daily ", wc_identifier, " data"))
+  message(paste0("Retrieving daily divrec data (", wc_identifier ,")"))
 
-  # while more pages are avaliable, send get requests to CDSS API
+  # while more pages are available, send get requests to CDSS API
   while (more_pages) {
 
     # Construct query URL w/o API key
     url <- paste0(
       base,
       "format=json&dateFormat=spaceSepToSeconds",
-      "&wcIdentifier=*", wc_identifier,
-      "*&min-dataMeasDate=", start,
+      "&wcIdentifier=", wc_id,
+      "&min-dataMeasDate=", start,
       "&max-dataMeasDate=", end,
       "&wdid=", wdid,
       "&pageSize=", page_size,
@@ -189,7 +189,7 @@ get_structure_divrecday <- function(
 #' Return Structure Monthly Diversion/Release Records
 #' @description Make a request to the api/v2/structures/divrec/divrecmonth/ endpoint to retrieve monthly structure  diversion/release data for a specified WDID within a specified date range.
 #' @param wdid character vector or list of characters indicating WDID code of structure
-#' @param wc_identifier character indicating whether "diversion" or "release" should be returned. Default is NULL which will return diversions.
+#' @param wc_identifier character, series of water class codes that provide the location of the diversion, the SOURCE of water, the USE of the water and the administrative operation required to make the diversion. Provide "diversion" or "release" to retrieve diversion/release records. Default is NULL which will return diversions records.
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
@@ -221,39 +221,14 @@ get_structure_divrecmonth<- function(
 
   }
 
-  # valid parameters
-  div_lst   <- c("diversion", "diversions", "div", "divs", "d")
-  rel_lst   <- c("release", "releases", "rel", "rels", "r")
-  wc_id_lst <- c(div_lst, rel_lst)
-
-  # make wc ID lowercase
-  wc_identifier <- tolower(wc_identifier)
-
-  # check if parameter is valid
-  if(!wc_identifier %in% wc_id_lst) {
-
-    stop(paste0("Invalid `wc_identifier` argument: ", wc_identifier,
-                "\nMust be one of the following:\n",
-                "Diversions: ",
-                paste(c(div_lst), collapse = ", "),  "\nReleases: ",
-                paste(c(rel_lst), collapse = ", ")))
-
-  }
-
   # Base API URL for Monthly Diversion Records
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/divrecmonth/?"
-
-  # # convert arguments to strings if necessary
-  # str_args(
-  #   arg_lst = as.list(environment()),
-  #   envir   = environment()
-  # )
 
   # convert arguments to characters if necessary
   wdid         <- null_convert(wdid)
 
   # make sure correctly named wc_identifier
-  wc_identifier <- align_wcid(x = wc_identifier)
+  wc_id <- align_wcid(x = wc_identifier)
 
   # format multiple WDID query
   wdid <- collapse_vect(
@@ -277,8 +252,8 @@ get_structure_divrecmonth<- function(
     sep    = "%2F"
   )
 
-  # format wcidentifer query
-  wc_identifier <- paste0(gsub(":", "%3A",   unlist(strsplit(wc_identifier, " "))), collapse = "+")
+  # # format wcidentifer query
+  # wc_identifier <- paste0(gsub(":", "%3A",   unlist(strsplit(wc_identifier, " "))), collapse = "+")
 
   # maximum records per page
   page_size  <- 50000
@@ -293,7 +268,7 @@ get_structure_divrecmonth<- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving monthly ", wc_identifier, " data"))
+  message(paste0("Retrieving monthly divrec data (", wc_identifier ,")"))
 
   # while more pages are available, send get requests to CDSS API
   while (more_pages) {
@@ -304,8 +279,8 @@ get_structure_divrecmonth<- function(
       "format=json&dateFormat=spaceSepToSeconds",
       "&min-dataMeasDate=", start,
       "&max-dataMeasDate=", end,
-      "&wcIdentifier=*", wc_identifier,
-      "*&wdid=", wdid,
+      "&wcIdentifier=", wc_id,
+      "&wdid=", wdid,
       "&pageSize=", page_size,
       "&pageIndex=", page_index
     )
@@ -373,7 +348,7 @@ get_structure_divrecmonth<- function(
 #' Return Structure Yearly Diversion/Release Records
 #' @description Make a request to the api/v2/structures/divrec/divrecyear/ endpoint to retrieve annual structure diversion/release data for a specified WDID within a specified date range.
 #' @param wdid character vector or list of characters indicating WDID code of structure
-#' @param wc_identifier character indicating whether "diversion" or "release" should be returned. Default is NULL which will return diversions.
+#' @param wc_identifier wc_identifier character, series of water class codes that provide the location of the diversion, the SOURCE of water, the USE of the water and the administrative operation required to make the diversion. Provide "diversion" or "release" to retrieve diversion/release records. Default is NULL which will return diversions records.
 #' @param start_date character date to request data start point YYYY-MM-DD. Default start date is "1900-01-01".
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
 #' @param api_key character, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS.
@@ -405,39 +380,14 @@ get_structure_divrecyear <- function(
 
   }
 
-  # valid parameters
-  div_lst   <- c("diversion", "diversions", "div", "divs", "d")
-  rel_lst   <- c("release", "releases", "rel", "rels", "r")
-  wc_id_lst <- c(div_lst, rel_lst)
-
-  # make wc ID lowercase
-  wc_identifier <- tolower(wc_identifier)
-
-  # check if parameter is valid
-  if(!wc_identifier %in% wc_id_lst) {
-
-    stop(paste0("Invalid `wc_identifier` argument: ", wc_identifier,
-                "\nMust be one of the following:\n",
-                "Diversions: ",
-                paste(c(div_lst), collapse = ", "),  "\nReleases: ",
-                paste(c(rel_lst), collapse = ", ")))
-
-  }
-
-  # Base API URL for Monthly Diversion Records
+  # Base API URL for annual Diversion Records
   base <- "https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/divrecyear/?"
 
-  # convert arguments to strings if necessary
-  # str_args(
-  #   arg_lst = as.list(environment()),
-  #   envir   = environment()
-  # )
-
   # convert arguments to characters if necessary
-  wdid         <- null_convert(wdid)
+  wdid          <- null_convert(wdid)
 
   # make sure correctly named wc_identifier
-  wc_identifier <- align_wcid(x = wc_identifier)
+  wc_id <- align_wcid(x = wc_identifier)
 
   # format multiple WDID query
   wdid <- collapse_vect(
@@ -459,9 +409,6 @@ get_structure_divrecyear <- function(
     format = "%Y"
   )
 
-  # format wcidentifer query
-  wc_identifier <- paste0(gsub(":", "%3A",   unlist(strsplit(wc_identifier, " "))), collapse = "+")
-
   # maximum records per page
   page_size  <- 50000
 
@@ -475,9 +422,11 @@ get_structure_divrecyear <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving yearly ", wc_identifier, " data from CDSS API"))
+  message(paste0("Retrieving yearly divrec data (", wc_identifier ,")"))
+  # message(paste0("Retrieving yearly divrec data (WC Identifier: ",
+  #                gsub("[%]+3A", ":", gsub("[*]+", "", wc_identifier)) ,")"))
 
-  # while more pages are avaliable, send get requests to CDSS API
+  # while more pages are available, send get requests to CDSS API
   while (more_pages) {
 
     # Construct query URL w/o API key
@@ -486,8 +435,8 @@ get_structure_divrecyear <- function(
       "format=json&dateFormat=spaceSepToSeconds",
       "&min-dataMeasDate=", start_year,
       "&max-dataMeasDate=", end_year,
-      "&wcIdentifier=*", wc_identifier,
-      "*&wdid=", wdid,
+      "&wcIdentifier=", wc_id,
+      "&wdid=", wdid,
       "&pageSize=", page_size,
       "&pageIndex=", page_index
     )
@@ -555,7 +504,7 @@ get_structure_divrecyear <- function(
 #' Return diversion/releases record data for administrative structures
 #' @description Make a request to the CDSS API /structures/divrec endpoints to get diversion/releases time series data for administrative structures by wdid, within a given date range (start and end dates) and at a specified temporal resolution.
 #' @param wdid character vector or list of characters indicating WDID code of structure.
-#' @param wc_identifier character indicating whether "diversion" or "release" should be returned. Default is NULL which will return diversions.
+#' @param wc_identifier character, series of water class codes that provide the location of the diversion, the SOURCE of water, the USE of the water and the administrative operation required to make the diversion. Provide "diversion" or "release" to retrieve diversion/release records. Default is NULL which will return diversions records.
 #' @param start_date character date to request data start point YYYY-MM-DD. Default is start date is "1900-01-01".
 #' @param end_date character date to request data end point YYYY-MM-DD. Default end date is the current date the function is run.
 #' @param timescale character indicating the time series time step. Either "day", "month", "year". Default is to return daily time series.

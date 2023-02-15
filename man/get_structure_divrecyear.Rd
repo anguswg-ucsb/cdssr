@@ -15,7 +15,7 @@ get_structure_divrecyear(
 \arguments{
 \item{wdid}{character vector or list of characters indicating WDID code of structure}
 
-\item{wc_identifier}{character indicating whether "diversion" or "release" should be returned. Default is NULL which will return diversions.}
+\item{wc_identifier}{wc_identifier character, series of water class codes that provide the location of the diversion, the SOURCE of water, the USE of the water and the administrative operation required to make the diversion. Provide "diversion" or "release" to retrieve diversion/release records. Default is NULL which will return diversions records.}
 
 \item{start_date}{character date to request data start point YYYY-MM-DD. Default start date is "1900-01-01".}
 
