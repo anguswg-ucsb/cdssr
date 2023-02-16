@@ -65,8 +65,11 @@ get_structure_divrecday <- function(
   # convert arguments to characters if necessary
   wdid         <- null_convert(wdid)
 
-  # make sure correctly named wc_identifier
-  wc_id <- align_wcid(x = wc_identifier)
+  # correctly format wc_identifier, if NULL, return "*diversion*"
+  wc_id        <- align_wcid(
+                      x       = wc_identifier,
+                      default = "*diversion*"
+                      )
 
   # format multiple WDID query
   wdid <- collapse_vect(
@@ -90,9 +93,6 @@ get_structure_divrecday <- function(
     sep    = "%2F"
   )
 
-  # # format wcidentifer query
-  # wc_identifier <- paste0(gsub(":", "%3A",   unlist(strsplit(wc_identifier, " "))), collapse = "+")
-
   # maximum records per page
   page_size  <- 50000
 
@@ -106,7 +106,7 @@ get_structure_divrecday <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving daily divrec data (", wc_identifier ,")"))
+  message(paste0("Retrieving daily divrec data (", ifelse(is.null(wc_identifier), "diversion", wc_identifier) ,")"))
 
   # while more pages are available, send get requests to CDSS API
   while (more_pages) {
@@ -227,8 +227,21 @@ get_structure_divrecmonth<- function(
   # convert arguments to characters if necessary
   wdid         <- null_convert(wdid)
 
-  # make sure correctly named wc_identifier
-  wc_id <- align_wcid(x = wc_identifier)
+  # # if NOT NULL, format wc_identifier
+  # if(!is.null(wc_identifier)) {
+  #   # correctly format wc_identifier
+  #   wc_id <- align_wcid(x = wc_identifier)
+  #   # if NULL, default wc_identifier to "diversion"
+  # } else {
+  #   # default
+  #   wc_id <- align_wcid(x = "diversion")
+  # }
+
+  # correctly format wc_identifier, if NULL, return "*diversion*"
+  wc_id        <- align_wcid(
+                    x       = wc_identifier,
+                    default = "*diversion*"
+                  )
 
   # format multiple WDID query
   wdid <- collapse_vect(
@@ -268,7 +281,7 @@ get_structure_divrecmonth<- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving monthly divrec data (", wc_identifier ,")"))
+  message(paste0("Retrieving monthly divrec data (", ifelse(is.null(wc_identifier), "diversion", wc_identifier) ,")"))
 
   # while more pages are available, send get requests to CDSS API
   while (more_pages) {
@@ -386,8 +399,11 @@ get_structure_divrecyear <- function(
   # convert arguments to characters if necessary
   wdid          <- null_convert(wdid)
 
-  # make sure correctly named wc_identifier
-  wc_id <- align_wcid(x = wc_identifier)
+  # correctly format wc_identifier, if NULL, return "*diversion*"
+  wc_id <- align_wcid(
+    x       = wc_identifier,
+    default = "*diversion*"
+  )
 
   # format multiple WDID query
   wdid <- collapse_vect(
@@ -422,7 +438,8 @@ get_structure_divrecyear <- function(
   more_pages <- TRUE
 
   # print message
-  message(paste0("Retrieving yearly divrec data (", wc_identifier ,")"))
+  message(paste0("Retrieving yearly divrec data (", ifelse(is.null(wc_identifier), "diversion", wc_identifier) ,")"))
+
   # message(paste0("Retrieving yearly divrec data (WC Identifier: ",
   #                gsub("[%]+3A", ":", gsub("[*]+", "", wc_identifier)) ,")"))
 

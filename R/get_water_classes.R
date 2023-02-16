@@ -73,24 +73,26 @@ get_water_classes <- function(
   # Base API URL
   base       <- "https://dwr.state.co.us/Rest/GET/api/v2/structures/divrec/waterclasses/?"
 
-  # # convert arguments to strings if necessary
-  # str_args(
-  #   arg_lst = as.list(environment()),
-  #   ignore  = c("aoi"),
-  #   envir   = environment()
-  # )
-
   # convert arguments to characters if necessary
   division        <- null_convert(division)
   gnis_id         <- null_convert(gnis_id)
   water_district  <- null_convert(water_district)
 
-  # if wc_identifier is given, add * to indicate "contains" this string
-  if(!is.null(wc_identifier)) {
+  # correctly format wc_identifier, if NULL, return NULL
+  wc_id <- align_wcid(
+    x       = wc_identifier,
+    default = NULL
+  )
 
-    wc_id <- align_wcid(wc_identifier)
-
-  }
+  # # if NOT NULL, format wc_identifier
+  # if(!is.null(wc_identifier)) {
+  #   # correctly format wc_identifier
+  #   wc_id <- align_wcid(x = wc_identifier)
+  #   # if NULL, default wc_identifier to NULL
+  # } else {
+  #   # default
+  #   wc_id <- NULL
+  # }
 
   # if start_date is NULL, return NULL
   if(is.null(start_date)) {

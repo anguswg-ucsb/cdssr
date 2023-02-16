@@ -447,15 +447,32 @@ batch_dates <- function(
 #' Set wc_identifier name to releases or diversions
 #' @description Internal function for getting correct wc_identifier code for querying
 #' @param x character indicating whether "diversion" or "release" should be returned. Defaults to NULL and thus "diversion"
+#' @param default value to return if function x argument is NULL. Default is NULL
 #' @noRd
 #' @keywords internal
 #' @return wc_identifier equaling either "diversion", "release", or a properly formatted water class identifier string
-align_wcid <- function(x = NULL) {
+align_wcid <- function(
+    x       = NULL,
+    default = NULL
+    ) {
 
   # if no wc_identifier given, return "diversion"
+  # if no wc_identifier given, return NULL
+  # if(is.null(x)) {
+  #
+  #   x <- NULL
+  #   # x <- "diversion"
+  #
+  #   return(NULL)
+  #
+  # }
+  # if x is NULL/ not given, return "default"
   if(is.null(x)) {
 
-    x <- "diversion"
+    # if(is.null(default))
+    # default <- paste0("*", default, "*")
+
+    return(default)
 
   }
 
@@ -487,6 +504,7 @@ align_wcid <- function(x = NULL) {
 
   return(x)
 }
+
 
 #' Error message handling for extract_coords function
 #' @description Internal helper function that returns a boilerplate error message used in extract_coords function
