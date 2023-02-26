@@ -24,11 +24,11 @@ get_water_classes(
 \arguments{
 \item{wdid}{character vector or list of characters indicating WDID code of structure}
 
-\item{county}{character, indicating the county to query}
+\item{county}{character, county to query}
 
-\item{division}{numeric, indicating the water division to query}
+\item{division}{numeric, water division to query}
 
-\item{water_district}{numeric, indicating the water district to query}
+\item{water_district}{numeric, water district to query}
 
 \item{wc_identifier}{character, series of water class codes that provide the location of the diversion, the SOURCE of water, the USE of the water and the administrative operation required to make the diversion. The Water Class, combined with a daily, monthly or annual volume, constitutes a Diversion Record.}
 
@@ -51,7 +51,7 @@ get_water_classes(
 \item{api_key}{character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS. Defaults to NULL.}
 }
 \value{
-dataframe of administrative structures
+dataframe of water class data for administrative structures
 }
 \description{
 Make a request to the /structures/divrec/waterclasses endpoint to identify water classes via a spatial search or by division, county, water_district, GNIS, or WDID.

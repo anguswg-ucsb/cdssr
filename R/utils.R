@@ -446,8 +446,8 @@ batch_dates <- function(
 
 #' Set wc_identifier name to releases or diversions
 #' @description Internal function for getting correct wc_identifier code for querying
-#' @param x character indicating whether "diversion" or "release" should be returned. Defaults to NULL and thus "diversion"
-#' @param default value to return if function x argument is NULL. Default is NULL
+#' @param x character indicating whether "diversion" or "release" should be returned. Defaults to NULL and will return value of 'default' argument.
+#' @param default value to return if "x" argument is NULL. Default is NULL
 #' @noRd
 #' @keywords internal
 #' @return wc_identifier equaling either "diversion", "release", or a properly formatted water class identifier string
@@ -485,14 +485,14 @@ align_wcid <- function(
 
   }
 
-  # if wc_identifier in the diversions list
+  # if x in the diversions list
   if(x %in% c("diversion", "diversions", "div", "divs", "d")) {
 
     x <- "diversion"
 
   }
 
-  # if wc_identifier in the releases list
+  # if x in the releases list
   if(x %in% c("release", "releases", "rel", "rels", "r")) {
 
     x <- "release"

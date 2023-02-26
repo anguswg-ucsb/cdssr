@@ -2,9 +2,9 @@ utils::globalVariables(c("."))
 #' Returns list of waterclasses
 #' @description Make a request to the /structures/divrec/waterclasses endpoint to identify water classes via a spatial search or by division, county, water_district, GNIS, or WDID.
 #' @param wdid character vector or list of characters indicating WDID code of structure
-#' @param county character, indicating the county to query
-#' @param division numeric, indicating the water division to query
-#' @param water_district numeric, indicating the water district to query
+#' @param county character, county to query
+#' @param division numeric, water division to query
+#' @param water_district numeric, water district to query
 #' @param wc_identifier character, series of water class codes that provide the location of the diversion, the SOURCE of water, the USE of the water and the administrative operation required to make the diversion. The Water Class, combined with a daily, monthly or annual volume, constitutes a Diversion Record.
 #' @param aoi list of length 2 containing an XY coordinate pair, 2 column matrix/dataframe of XY coordinates, sf or Terra SpatVector point/polygon/linestring geometry
 #' @param radius numeric, search radius in miles around given point (or the centroid of a polygon). If an AOI is given, radius defaults to 20 miles. If no AOI is given, then default is NULL.
@@ -17,7 +17,7 @@ utils::globalVariables(c("."))
 #' @param api_key character, API authorization token, optional. If more than maximum number of requests per day is desired, an API key can be obtained from CDSS. Defaults to NULL.
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @return dataframe of administrative structures
+#' @return dataframe of water class data for administrative structures
 #' @export
 #' @examples
 #' \dontrun{
