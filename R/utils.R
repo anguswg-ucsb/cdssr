@@ -459,9 +459,6 @@ align_wcid <- function(
   # if x is NULL/ not given, return "default"
   if(is.null(x)) {
 
-    # if(is.null(default))
-    # default <- paste0("*", default, "*")
-
     return(default)
 
   }
