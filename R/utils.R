@@ -456,16 +456,6 @@ align_wcid <- function(
     default = NULL
     ) {
 
-  # if no wc_identifier given, return "diversion"
-  # if no wc_identifier given, return NULL
-  # if(is.null(x)) {
-  #
-  #   x <- NULL
-  #   # x <- "diversion"
-  #
-  #   return(NULL)
-  #
-  # }
   # if x is NULL/ not given, return "default"
   if(is.null(x)) {
 
