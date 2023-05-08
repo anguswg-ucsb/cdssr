@@ -51,11 +51,8 @@ check_args <- function(
 
       return(NULL)
 
-
     }
-
   }
-
 }
 
 #' Convert non NULL list/vectors to characters
@@ -78,9 +75,7 @@ null_convert <- function(x) {
     return(x)
 
   }
-
 }
-
 
 #' Convert function arguments to strings
 #' @description Internal function for converting all or specific function arguments to strings
@@ -206,27 +201,6 @@ parse_gets <- function(
     stop(resp)
 
   }
-
-    # resp <-
-    #   httr::content(
-    #     httr::GET(url = url),
-    #     as = "text"
-    #     )
-
-    # if an error is returned, return the error
-    # if(grepl("error", resp, ignore.case = TRUE)) {
-    #   stop(resp)
-    # }
-
-    # # return "URL is properly formatted, but..." response
-    # if(resp == "This URL is properly formatted, but returns zero records from CDSS.") {
-    #   stop(resp)
-    # }
-
-    # get data from JSON format
-    # resp <- jsonlite::fromJSON(resp)
-
-    # return(resp)
 
 }
 
@@ -698,102 +672,6 @@ extract_coords <- function(
   return(coord_df)
 
 }
-# extract_coords <- function(
-#     aoi,
-#     verbose = FALSE
-# ) {
-#
-#   # print class of aoi
-#   if(verbose == TRUE){
-#     message(paste(class(aoi)))
-#   }
-#
-#   # check if matrix or dataframe before continuing
-#   if(!any(is.matrix(aoi), is.data.frame(aoi))) {
-#     stop(paste0("Invalid AOI type, must be 2 column matrix/dataframe of XY coordinates, SF POINT/MULTIPOINT or SF POLYGON/MULTIPOLYGON object"))
-#   }
-#
-#   # if spatial data is provided, check type and try to extract XY coordinates
-#   if(!is.null(aoi)) {
-#
-#
-#     # given a 2 column mateix of XY coords
-#     if(any(is.matrix(aoi) == TRUE)) {
-#
-#       lng <- aoi[1]
-#       lat <- aoi[2]
-#
-#       if(any(is.null(lat), is.null(lng))) {
-#
-#         stop(paste0("List must be of length 2 and ordered latitude, longitude"))
-#
-#       }
-#     }
-#
-#     # given a type of dataframe
-#     if(is.data.frame(aoi) == TRUE) {
-#
-#       # given a SF point or polygon
-#       if(any(class(aoi) == "sf")) {
-#
-#         # if SF object is a point, extract coordinates
-#         if(sf::st_geometry_type(aoi) == "POINT" | sf::st_geometry_type(aoi) == "MULTIPOINT") {
-#
-#           coords <-
-#             aoi %>%
-#             sf::st_coordinates()
-#
-#           lng <- coords[1]
-#           lat <- coords[2]
-#
-#         }
-#
-#         # if SF object is a polygon, find centroid and extract coordinates
-#         if(sf::st_geometry_type(aoi) == "POLYGON" | sf::st_geometry_type(aoi) == "MULTIPOLYGON") {
-#
-#           coords <-
-#             aoi %>%
-#             sf::st_centroid() %>%
-#             sf::st_coordinates()
-#
-#           lng <- coords[1]
-#           lat <- coords[2]
-#
-#         }
-#
-#         if(any(is.null(lat), is.null(lng))) {
-#
-#           stop(paste0("SF object must be of geometry type POINT or POLYGON"))
-#         }
-#       } else {
-#
-#         names(aoi) <- toupper(names(aoi))
-#
-#         lng <- aoi$X
-#         lat <- aoi$Y
-#
-#         if(any(is.null(lat), is.null(lng))) {
-#
-#           stop(paste0("Must be two column dataframe of XY coordinate"))
-#         }
-#       }
-#     }
-#
-#   } else {
-#
-#     stop(paste0("Invalid AOI type, must be 2 column matrix/dataframe of XY coordinates, SF POINT/MULTIPOINT or SF POLYGON/MULTIPOLYGON object"))
-#
-#   }
-#
-#   # dataframe of coordinates
-#   coord_df <- data.frame(
-#     lng = lng,
-#     lat = lat
-#   )
-#
-#   return(coord_df)
-#
-# }
 
 #' Validate radius for location search queries
 #' @description Internal helper function. Checks that an AOI is given and that the radius is within valid range of values. Radius must be: 0 < radius < 150.
